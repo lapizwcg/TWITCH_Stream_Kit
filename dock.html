@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stream Kit — пульт</title>
+<script type="importmap">{
+  "imports": {
+    "./_framework/dotnet.js": "./_framework/dotnet.dj31vhw010.js",
+    "./_framework/dotnet.native.js": "./_framework/dotnet.native.p447wmble3.js",
+    "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
+    "./dock.js": "./dock.lpn8qhezt1.js",
+    "./kit.js": "./kit.xs7i624fhw.js",
+    "./twitch.js": "./twitch.2p4xr7kxbh.js",
+    "./wcg.js": "./wcg.giu2jrnd8e.js"
+  },
+  "scopes": {},
+  "integrity": {
+    "./_framework/dotnet.dj31vhw010.js": "sha256-19Q8VSikM77GsSiJmWWYOWs24eBubbq/oXF69FJmuUw=",
+    "./_framework/dotnet.js": "sha256-19Q8VSikM77GsSiJmWWYOWs24eBubbq/oXF69FJmuUw=",
+    "./_framework/dotnet.native.js": "sha256-qTge1N2/+QZMQ1+iyxRbCYKxVt40It2tR7Xv/BNMqc8=",
+    "./_framework/dotnet.native.p447wmble3.js": "sha256-qTge1N2/+QZMQ1+iyxRbCYKxVt40It2tR7Xv/BNMqc8=",
+    "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
+    "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
+    "./dock.js": "sha256-9/dDYf9HKx2FEdQ+FPOqP1sT9NbwQlt9EJc+AGFbif0=",
+    "./dock.lpn8qhezt1.js": "sha256-9/dDYf9HKx2FEdQ+FPOqP1sT9NbwQlt9EJc+AGFbif0=",
+    "./kit.js": "sha256-//ngjURTv4f12kB2ndfLDka7P0EBkpxLqgKj15rTNfY=",
+    "./kit.xs7i624fhw.js": "sha256-//ngjURTv4f12kB2ndfLDka7P0EBkpxLqgKj15rTNfY=",
+    "./twitch.2p4xr7kxbh.js": "sha256-+nJn8qk3+rrTrKZhHkW242fIFx0EwoKGiI/rPcPkn2U=",
+    "./twitch.js": "sha256-+nJn8qk3+rrTrKZhHkW242fIFx0EwoKGiI/rPcPkn2U=",
+    "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
+    "./wcg.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04="
+  }
+}</script>
+<!-- САМООБНОВЛЕНИЕ: GitHub Pages разрешает кэш до 10 минут, а браузер OBS держит страницы и дольше — после выкладки работала бы
+     старая версия. Номер версии вписывает tools/deploy.py (здесь и в version.json); отстали — перезагружаемся по новому адресу,
+     которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
+<script>
+(function () {
+  var CURRENT = '20261030-224404-44b6f81';
+  if (CURRENT.indexOf('__') === 0) return;
+  fetch('version.json', { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.v || j.v === CURRENT || sessionStorage.getItem('kit.updatedTo') === j.v) return;
+      sessionStorage.setItem('kit.updatedTo', j.v);
+      var u = new URL(location.href);
+      u.searchParams.set('v', j.v);
+      location.replace(u.href);
+    })
+    .catch(function () {});
+})();
+</script>
+<link rel="stylesheet" href="dock.css">
+</head>
+<body>
+<!-- ДОК-ПАНЕЛЬ OBS: меню настроек. Показы — источники-браузеры (index.html), они берут настройки отсюда сразу, без перезагрузки -->
+<header class="top">
+  <b class="brand">Stream Kit</b>
+  <span id="link" class="link off" title="Есть ли открытый источник-оверлей">оверлей не найден</span>
+</header>
+
+<!-- аккаунт Twitch: вход, кто вошёл, связь с событиями канала. Док держит связь, пока OBS открыт (и когда док скрыт) -->
+<section id="account" class="account">
+  <div id="accOut">
+    <button class="btn twitch" id="login">Войти через Twitch</button>
+    <div class="note">Нужно, чтобы оповещения и счёт цели шли сами. Twitch спросит доступ к фолловерам и сабам.</div>
+  </div>
+  <div id="accIn" class="acc-in" hidden>
+    <img id="accAvatar" class="avatar" alt="">
+    <div class="acc-who">
+      <b id="accName"></b>
+      <span id="accStatus" class="acc-status"></span>
+    </div>
+    <button class="btn ghost small" id="logout">Выйти</button>
+  </div>
+  <div id="accError" class="acc-error" hidden></div>
+</section>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="follow">Фолловеры</button>
+  <button class="tab" data-tab="goals">Цели</button>
+</nav>
+
+<main>
+  <section id="tab-follow" class="pane">
+    <label class="row switch">
+      <input type="checkbox" id="followOn">
+      <span>Показывать оповещения о фолловерах</span>
+    </label>
+
+    <div class="field">
+      <div class="label">Место на экране</div>
+      <div id="followPos" class="screen" role="radiogroup" aria-label="Место на экране">
+        <button data-pos="tl" title="слева сверху"></button><button data-pos="t" title="сверху"></button><button data-pos="tr" title="справа сверху"></button>
+        <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
+        <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
+      </div>
+    </div>
+
+    <label class="field">
+      <div class="label">Заголовок</div>
+      <input id="followTitle" type="text" maxlength="40" placeholder="НОВЫЙ ФОЛЛОУЕР">
+    </label>
+
+    <label class="field">
+      <div class="label">Сколько держится: <b id="followSecondsVal"></b></div>
+      <input id="followSeconds" type="range" min="2" max="15" step="1">
+    </label>
+
+    <div class="field">
+      <div class="label">Проверка</div>
+      <form id="followTest" class="test">
+        <input id="followTestName" type="text" maxlength="25" placeholder="ник для теста">
+        <button class="btn">Показать</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="tab-goals" class="pane" hidden>
+    <label class="row switch">
+      <input type="checkbox" id="goalOn">
+      <span>Показывать цель</span>
+    </label>
+
+    <div class="field">
+      <div class="label">Место на экране</div>
+      <div id="goalPos" class="screen" role="radiogroup" aria-label="Место цели на экране">
+        <button data-pos="tl" title="слева сверху"></button><button data-pos="t" title="сверху"></button><button data-pos="tr" title="справа сверху"></button>
+        <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
+        <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
+      </div>
+    </div>
+
+    <label class="field">
+      <div class="label">Заголовок</div>
+      <input id="goalTitle" type="text" maxlength="40" placeholder="ЦЕЛЬ">
+    </label>
+
+    <label class="field">
+      <div class="label">Что считаем</div>
+      <select id="goalSource">
+        <option value="followers">Фолловеры канала</option>
+        <option value="subs">Сабы канала</option>
+        <option value="manual">Вручную</option>
+      </select>
+    </label>
+
+    <div class="field">
+      <div class="label">Счёт</div>
+      <div class="counter">
+        <button class="btn ghost" id="goalMinus" title="−1">−1</button>
+        <input id="goalCurrent" type="number" min="0" step="1" aria-label="Сейчас">
+        <button class="btn" id="goalPlus" title="+1">+1</button>
+        <span class="of">из</span>
+        <input id="goalTarget" type="number" min="1" step="1" aria-label="Цель">
+      </div>
+      <div class="note" id="goalNote"></div>
+    </div>
+
+    <button class="btn ghost" id="goalReset">Сбросить счёт</button>
+  </section>
+</main>
+
+<footer class="help">
+  <div class="label">Показы в OBS</div>
+  <p>Источники → + → Браузер, 1920×1080 — на весь экран (место карточки задаётся здесь):</p>
+  <div class="copy"><code id="overlayUrl"></code><button class="btn small" id="copyUrl">Копировать</button></div>
+</footer>
+
+<!-- через import, а не src: имена скриптов при сборке получают отпечаток, карта импорта (importmap) действует только на import -->
+<script type="module">import './dock.js';</script>
+</body>
+</html>

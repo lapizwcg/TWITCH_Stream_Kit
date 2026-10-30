@@ -1,0 +1,5 @@
+wcg.root
+data/fx.json
+data/mats.json
+data/font/font.bin
+data/font/font.png
