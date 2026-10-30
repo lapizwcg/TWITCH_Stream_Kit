@@ -5,6 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stream Kit — оповещения</title>
 <script type="importmap"></script>
+<!-- САМООБНОВЛЕНИЕ: GitHub Pages разрешает кэш до 10 минут, а браузер OBS держит страницы и дольше — после выкладки работала бы
+     старая версия. Номер версии вписывает tools/deploy.py (здесь и в version.json); отстали — перезагружаемся по новому адресу,
+     которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
+<script>
+(function () {
+  var CURRENT = '__KIT_VERSION__';
+  if (CURRENT.indexOf('__') === 0) return;
+  fetch('version.json', { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.v || j.v === CURRENT || sessionStorage.getItem('kit.updatedTo') === j.v) return;
+      sessionStorage.setItem('kit.updatedTo', j.v);
+      var u = new URL(location.href);
+      u.searchParams.set('v', j.v);
+      location.replace(u.href);
+    })
+    .catch(function () {});
+})();
+</script>
 <style>
 /* оверлей: страница и холст прозрачные — OBS кладёт их поверх видео */
 html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
