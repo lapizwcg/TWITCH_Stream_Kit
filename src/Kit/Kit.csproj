@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- STREAM KIT — инструменты стримера на движке WCG Engine: оверлеи для OBS (оповещения, цель, оформление). Две цели, как у
+       движка: net10.0 — ПК (проверка и снимки), net10.0-browser — браузер (источник-браузер OBS). Движок — по пути ../WCGEngine -->
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net10.0-browser</TargetFrameworks>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>Kit</RootNamespace>
+    <AssemblyName>Kit</AssemblyName>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../WCGEngine/src/WcgEngine/WcgEngine.csproj" />
+  </ItemGroup>
+</Project>

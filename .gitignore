@@ -1,0 +1,10 @@
+bin/
+obj/
+shots/
+pub/
+*.user
+.vs/
+__pycache__/
+hosts/Web/wwwroot/wcg.js
+hosts/Web/wwwroot/game/
+save/

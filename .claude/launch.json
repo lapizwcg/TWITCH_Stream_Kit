@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "streamkit",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-I", "tools/serve.py", "5600"],
+      "port": 5600
+    }
+  ]
+}

@@ -1,0 +1,1563 @@
+[
+ {
+  "group": "Цвет",
+  "id": "c_red",
+  "label": "Красный",
+  "mode": "hue",
+  "hue": 0,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_orange",
+  "label": "Оранжевый",
+  "mode": "hue",
+  "hue": 30,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_yellow",
+  "label": "Жёлтый",
+  "mode": "hue",
+  "hue": 60,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_lime",
+  "label": "Лаймовый",
+  "mode": "hue",
+  "hue": 90,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_green",
+  "label": "Зелёный",
+  "mode": "hue",
+  "hue": 120,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_teal",
+  "label": "Бирюзовый",
+  "mode": "hue",
+  "hue": 150,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_cyan",
+  "label": "Голубой",
+  "mode": "hue",
+  "hue": 180,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_azure",
+  "label": "Лазурный",
+  "mode": "hue",
+  "hue": 210,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_blue",
+  "label": "Синий",
+  "mode": "hue",
+  "hue": 240,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_indigo",
+  "label": "Индиго",
+  "mode": "hue",
+  "hue": 270,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_violet",
+  "label": "Фиолетовый",
+  "mode": "hue",
+  "hue": 300,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Цвет",
+  "id": "c_magenta",
+  "label": "Малиновый",
+  "mode": "hue",
+  "hue": 330,
+  "sat": 1,
+  "form": "all"
+ },
+ {
+  "group": "Камни",
+  "id": "ruby",
+  "label": "Рубин",
+  "mode": "gem",
+  "hue": [
+   344,
+   6
+  ],
+  "sat": [
+   0.76,
+   0.34
+  ],
+  "val": [
+   0.14,
+   0.97
+  ],
+  "gamma": 0.8,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "sapphire",
+  "label": "Сапфир",
+  "mode": "gem",
+  "hue": [
+   234,
+   208
+  ],
+  "sat": [
+   0.76,
+   0.36
+  ],
+  "val": [
+   0.12,
+   0.97
+  ],
+  "gamma": 0.8,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "emerald",
+  "label": "Изумруд",
+  "mode": "gem",
+  "hue": [
+   162,
+   140
+  ],
+  "sat": [
+   0.76,
+   0.36
+  ],
+  "val": [
+   0.1,
+   0.94
+  ],
+  "gamma": 0.8,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "amethyst",
+  "label": "Аметист",
+  "mode": "gem",
+  "hue": [
+   288,
+   264
+  ],
+  "sat": [
+   0.68,
+   0.32
+  ],
+  "val": [
+   0.14,
+   0.97
+  ],
+  "gamma": 0.8,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "topaz",
+  "label": "Топаз",
+  "mode": "gem",
+  "hue": [
+   36,
+   50
+  ],
+  "sat": [
+   0.74,
+   0.32
+  ],
+  "val": [
+   0.2,
+   0.98
+  ],
+  "gamma": 0.8,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "peridot",
+  "label": "Перидот",
+  "mode": "gem",
+  "hue": [
+   92,
+   74
+  ],
+  "sat": [
+   0.72,
+   0.32
+  ],
+  "val": [
+   0.18,
+   0.94
+  ],
+  "gamma": 0.8,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "tourmaline",
+  "label": "Турмалин",
+  "mode": "gem",
+  "hue": [
+   318,
+   338
+  ],
+  "sat": [
+   0.7,
+   0.32
+  ],
+  "val": [
+   0.16,
+   0.96
+  ],
+  "gamma": 0.8,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "garnet",
+  "label": "Гранат",
+  "mode": "gem",
+  "hue": [
+   326,
+   342
+  ],
+  "sat": [
+   0.84,
+   0.36
+  ],
+  "val": [
+   0.06,
+   0.66
+  ],
+  "gamma": 0.85,
+  "spec": 10,
+  "shade": 0.6,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "amber",
+  "label": "Янтарь",
+  "mode": "gem",
+  "hue": [
+   16,
+   30
+  ],
+  "sat": [
+   0.9,
+   0.44
+  ],
+  "val": [
+   0.18,
+   0.94
+  ],
+  "gamma": 0.8,
+  "spec": 7,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "uranium",
+  "label": "Уранит",
+  "mode": "gem",
+  "hue": [
+   84,
+   96
+  ],
+  "sat": [
+   0.92,
+   0.46
+  ],
+  "val": [
+   0.16,
+   0.92
+  ],
+  "gamma": 0.8,
+  "spec": 8,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "malachite",
+  "label": "Малахит",
+  "mode": "gem",
+  "hue": [
+   140,
+   122
+  ],
+  "sat": [
+   0.62,
+   0.3
+  ],
+  "val": [
+   0.14,
+   0.72
+  ],
+  "gamma": 0.85,
+  "spec": 5,
+  "shade": 0.8,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "lapis",
+  "label": "Лазурит",
+  "mode": "gem",
+  "hue": [
+   228,
+   240
+  ],
+  "sat": [
+   0.74,
+   0.42
+  ],
+  "val": [
+   0.1,
+   0.72
+  ],
+  "gamma": 0.85,
+  "spec": 4,
+  "shade": 0.75,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "obsidian",
+  "label": "Обсидиан",
+  "mode": "gem",
+  "hue": [
+   278,
+   296
+  ],
+  "sat": [
+   0.44,
+   0.1
+  ],
+  "val": [
+   0.02,
+   0.38
+  ],
+  "gamma": 0.9,
+  "spec": 4,
+  "shade": 0.22,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "pearl",
+  "label": "Жемчуг",
+  "mode": "gem",
+  "hue": [
+   42,
+   24
+  ],
+  "sat": [
+   0.16,
+   0.04
+  ],
+  "val": [
+   0.62,
+   1
+  ],
+  "gamma": 0.75,
+  "spec": 5,
+  "shade": 0.35,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "citrine",
+  "label": "Цитрин",
+  "mode": "gem",
+  "hue": [
+   44,
+   56
+  ],
+  "sat": [
+   0.86,
+   0.38
+  ],
+  "val": [
+   0.24,
+   0.98
+  ],
+  "gamma": 0.8,
+  "spec": 8,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "morganite",
+  "label": "Морганит",
+  "mode": "gem",
+  "hue": [
+   352,
+   10
+  ],
+  "sat": [
+   0.34,
+   0.12
+  ],
+  "val": [
+   0.44,
+   1
+  ],
+  "gamma": 0.75,
+  "spec": 7,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "tanzanite",
+  "label": "Танзанит",
+  "mode": "gem",
+  "hue": [
+   258,
+   276
+  ],
+  "sat": [
+   0.8,
+   0.38
+  ],
+  "val": [
+   0.1,
+   0.88
+  ],
+  "gamma": 0.85,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "turquoise",
+  "label": "Бирюза",
+  "mode": "gem",
+  "hue": [
+   182,
+   172
+  ],
+  "sat": [
+   0.52,
+   0.24
+  ],
+  "val": [
+   0.3,
+   0.86
+  ],
+  "gamma": 0.85,
+  "spec": 4,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "opal",
+  "label": "Опал",
+  "mode": "gem",
+  "hue": [
+   330,
+   150
+  ],
+  "sat": [
+   0.3,
+   0.08
+  ],
+  "val": [
+   0.5,
+   1
+  ],
+  "gamma": 0.7,
+  "spec": 6,
+  "shade": 0.4,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "rhodonite",
+  "label": "Родонит",
+  "mode": "gem",
+  "hue": [
+   338,
+   352
+  ],
+  "sat": [
+   0.46,
+   0.2
+  ],
+  "val": [
+   0.2,
+   0.8
+  ],
+  "gamma": 0.85,
+  "spec": 6,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "heliodor",
+  "label": "Гелиодор",
+  "mode": "gem",
+  "hue": [
+   62,
+   74
+  ],
+  "sat": [
+   0.7,
+   0.3
+  ],
+  "val": [
+   0.28,
+   0.96
+  ],
+  "gamma": 0.8,
+  "spec": 8,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "kunzite",
+  "label": "Кунцит",
+  "mode": "gem",
+  "hue": [
+   310,
+   326
+  ],
+  "sat": [
+   0.4,
+   0.16
+  ],
+  "val": [
+   0.4,
+   0.98
+  ],
+  "gamma": 0.75,
+  "spec": 7,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "alexandrite",
+  "label": "Александрит",
+  "mode": "gem",
+  "hue": [
+   162,
+   290
+  ],
+  "sat": [
+   0.62,
+   0.26
+  ],
+  "val": [
+   0.16,
+   0.88
+  ],
+  "gamma": 0.85,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "spinel",
+  "label": "Шпинель",
+  "mode": "gem",
+  "hue": [
+   6,
+   20
+  ],
+  "sat": [
+   0.86,
+   0.4
+  ],
+  "val": [
+   0.14,
+   0.92
+  ],
+  "gamma": 0.82,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "zircon",
+  "label": "Циркон",
+  "mode": "gem",
+  "hue": [
+   200,
+   214
+  ],
+  "sat": [
+   0.48,
+   0.18
+  ],
+  "val": [
+   0.34,
+   1
+  ],
+  "gamma": 0.75,
+  "spec": 7,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "fluorite",
+  "label": "Флюорит",
+  "mode": "gem",
+  "hue": [
+   276,
+   190
+  ],
+  "sat": [
+   0.52,
+   0.2
+  ],
+  "val": [
+   0.22,
+   0.92
+  ],
+  "gamma": 0.8,
+  "spec": 7,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "jasper",
+  "label": "Яшма",
+  "mode": "gem",
+  "hue": [
+   12,
+   26
+  ],
+  "sat": [
+   0.54,
+   0.26
+  ],
+  "val": [
+   0.14,
+   0.62
+  ],
+  "gamma": 0.9,
+  "spec": 4,
+  "shade": 0.75,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "moonstone",
+  "label": "Лунный камень",
+  "mode": "gem",
+  "hue": [
+   224,
+   206
+  ],
+  "sat": [
+   0.2,
+   0.05
+  ],
+  "val": [
+   0.52,
+   1
+  ],
+  "gamma": 0.72,
+  "spec": 5,
+  "shade": 0.4,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "jet",
+  "label": "Гагат",
+  "mode": "gem",
+  "hue": [
+   20,
+   34
+  ],
+  "sat": [
+   0.16,
+   0.05
+  ],
+  "val": [
+   0.02,
+   0.34
+  ],
+  "gamma": 0.92,
+  "spec": 4,
+  "shade": 0.2,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "chrysoprase",
+  "label": "Хризопраз",
+  "mode": "gem",
+  "hue": [
+   104,
+   90
+  ],
+  "sat": [
+   0.62,
+   0.26
+  ],
+  "val": [
+   0.26,
+   0.92
+  ],
+  "gamma": 0.82,
+  "spec": 7,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "hematite",
+  "label": "Гематит",
+  "mode": "gem",
+  "hue": [
+   350,
+   338
+  ],
+  "sat": [
+   0.2,
+   0.06
+  ],
+  "val": [
+   0.1,
+   0.52
+  ],
+  "gamma": 0.9,
+  "spec": 3,
+  "shade": 0.45,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "pyrite",
+  "label": "Пирит",
+  "mode": "gem",
+  "hue": [
+   46,
+   54
+  ],
+  "sat": [
+   0.56,
+   0.2
+  ],
+  "val": [
+   0.2,
+   0.86
+  ],
+  "gamma": 0.85,
+  "spec": 3,
+  "shade": 0.8,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "aqua",
+  "label": "Аквамарин",
+  "mode": "gem",
+  "hue": [
+   192,
+   176
+  ],
+  "sat": [
+   0.72,
+   0.32
+  ],
+  "val": [
+   0.34,
+   0.98
+  ],
+  "gamma": 0.75,
+  "spec": 9,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "diamond",
+  "label": "Алмаз",
+  "mode": "gem",
+  "hue": [
+   212,
+   194
+  ],
+  "sat": [
+   0.16,
+   0.03
+  ],
+  "val": [
+   0.54,
+   1
+  ],
+  "gamma": 0.7,
+  "spec": 6,
+  "shade": 0.45,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "onyx",
+  "label": "Оникс",
+  "mode": "gem",
+  "hue": [
+   272,
+   250
+  ],
+  "sat": [
+   0.38,
+   0.2
+  ],
+  "val": [
+   0.02,
+   0.48
+  ],
+  "gamma": 0.9,
+  "spec": 10,
+  "shade": 0.4,
+  "form": "gem"
+ },
+ {
+  "group": "Камни",
+  "id": "jade",
+  "label": "Нефрит",
+  "mode": "gem",
+  "hue": [
+   130,
+   110
+  ],
+  "sat": [
+   0.42,
+   0.22
+  ],
+  "val": [
+   0.24,
+   0.86
+  ],
+  "gamma": 0.85,
+  "spec": 8,
+  "form": "gem"
+ },
+ {
+  "group": "Металлы",
+  "id": "silver",
+  "label": "Серебро",
+  "mode": "ramp",
+  "hue": [
+   212,
+   212
+  ],
+  "sat": [
+   0.3,
+   0.1
+  ],
+  "val": [
+   0.34,
+   0.96
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "iron",
+  "label": "Железо",
+  "mode": "ramp",
+  "hue": [
+   26,
+   16
+  ],
+  "sat": [
+   0.2,
+   0.07
+  ],
+  "val": [
+   0.1,
+   0.66
+  ],
+  "gamma": 0.9,
+  "shade": 0.55,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "gold",
+  "label": "Золото",
+  "mode": "ramp",
+  "hue": [
+   40,
+   54
+  ],
+  "sat": [
+   0.82,
+   0.3
+  ],
+  "val": [
+   0.28,
+   0.98
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "brass",
+  "label": "Латунь",
+  "mode": "ramp",
+  "hue": [
+   50,
+   62
+  ],
+  "sat": [
+   0.52,
+   0.18
+  ],
+  "val": [
+   0.22,
+   0.9
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "bronze",
+  "label": "Бронза",
+  "mode": "ramp",
+  "hue": [
+   18,
+   30
+  ],
+  "sat": [
+   0.62,
+   0.3
+  ],
+  "val": [
+   0.16,
+   0.78
+  ],
+  "gamma": 0.9,
+  "shade": 0.8,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "copper",
+  "label": "Медь",
+  "mode": "ramp",
+  "hue": [
+   6,
+   20
+  ],
+  "sat": [
+   0.88,
+   0.44
+  ],
+  "val": [
+   0.16,
+   0.92
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "rosegold",
+  "label": "Розовое золото",
+  "mode": "ramp",
+  "hue": [
+   348,
+   14
+  ],
+  "sat": [
+   0.4,
+   0.15
+  ],
+  "val": [
+   0.32,
+   0.98
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "cobalt",
+  "label": "Кобальт",
+  "mode": "ramp",
+  "hue": [
+   238,
+   224
+  ],
+  "sat": [
+   0.62,
+   0.22
+  ],
+  "val": [
+   0.12,
+   0.78
+  ],
+  "gamma": 0.9,
+  "shade": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "mithril",
+  "label": "Мифрил",
+  "mode": "ramp",
+  "hue": [
+   168,
+   155
+  ],
+  "sat": [
+   0.44,
+   0.14
+  ],
+  "val": [
+   0.44,
+   0.96
+  ],
+  "gamma": 0.8,
+  "shade": 0.55,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "steel",
+  "label": "Сталь",
+  "mode": "ramp",
+  "hue": [
+   212,
+   198
+  ],
+  "sat": [
+   0.44,
+   0.16
+  ],
+  "val": [
+   0.14,
+   0.7
+  ],
+  "gamma": 0.9,
+  "shade": 0.4,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "chrome",
+  "label": "Хром",
+  "mode": "ramp",
+  "hue": [
+   204,
+   204
+  ],
+  "sat": [
+   0.24,
+   0.02
+  ],
+  "val": [
+   0.06,
+   1
+  ],
+  "gamma": 0.7,
+  "satGamma": 3.2,
+  "shade": 0.45,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "pewter",
+  "label": "Олово",
+  "mode": "ramp",
+  "hue": [
+   42,
+   30
+  ],
+  "sat": [
+   0.14,
+   0.05
+  ],
+  "val": [
+   0.34,
+   0.8
+  ],
+  "gamma": 0.9,
+  "satGamma": 2.4,
+  "shade": 0.6,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "tungsten",
+  "label": "Вольфрам",
+  "mode": "ramp",
+  "hue": [
+   34,
+   26
+  ],
+  "sat": [
+   0.22,
+   0.09
+  ],
+  "val": [
+   0.08,
+   0.46
+  ],
+  "gamma": 0.95,
+  "shade": 0.45,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "electrum",
+  "label": "Электрум",
+  "mode": "ramp",
+  "hue": [
+   52,
+   62
+  ],
+  "sat": [
+   0.22,
+   0.07
+  ],
+  "val": [
+   0.34,
+   0.98
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "adamantite",
+  "label": "Адамантит",
+  "mode": "ramp",
+  "hue": [
+   168,
+   150
+  ],
+  "sat": [
+   0.45,
+   0.16
+  ],
+  "val": [
+   0.05,
+   0.5
+  ],
+  "gamma": 0.9,
+  "shade": 0.45,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "bloodiron",
+  "label": "Кровавое железо",
+  "mode": "ramp",
+  "hue": [
+   358,
+   10
+  ],
+  "sat": [
+   0.48,
+   0.18
+  ],
+  "val": [
+   0.08,
+   0.56
+  ],
+  "gamma": 0.9,
+  "shade": 0.5,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "platinum",
+  "label": "Платина",
+  "mode": "ramp",
+  "hue": [
+   236,
+   222
+  ],
+  "sat": [
+   0.14,
+   0.04
+  ],
+  "val": [
+   0.42,
+   1
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "palladium",
+  "label": "Палладий",
+  "mode": "ramp",
+  "hue": [
+   48,
+   38
+  ],
+  "sat": [
+   0.1,
+   0.03
+  ],
+  "val": [
+   0.4,
+   0.96
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "rhodium",
+  "label": "Родий",
+  "mode": "ramp",
+  "hue": [
+   196,
+   196
+  ],
+  "sat": [
+   0.08,
+   0.01
+  ],
+  "val": [
+   0.3,
+   1
+  ],
+  "gamma": 0.75,
+  "satGamma": 2.8,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "nickel",
+  "label": "Никель",
+  "mode": "ramp",
+  "hue": [
+   56,
+   44
+  ],
+  "sat": [
+   0.24,
+   0.09
+  ],
+  "val": [
+   0.24,
+   0.84
+  ],
+  "gamma": 0.9,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "zinc",
+  "label": "Цинк",
+  "mode": "ramp",
+  "hue": [
+   196,
+   186
+  ],
+  "sat": [
+   0.2,
+   0.07
+  ],
+  "val": [
+   0.26,
+   0.78
+  ],
+  "gamma": 0.9,
+  "satGamma": 2.4,
+  "shade": 0.75,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "aluminium",
+  "label": "Алюминий",
+  "mode": "ramp",
+  "hue": [
+   210,
+   204
+  ],
+  "sat": [
+   0.1,
+   0.03
+  ],
+  "val": [
+   0.36,
+   0.92
+  ],
+  "gamma": 0.9,
+  "satGamma": 2.6,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "titanium",
+  "label": "Титан",
+  "mode": "ramp",
+  "hue": [
+   292,
+   272
+  ],
+  "sat": [
+   0.24,
+   0.08
+  ],
+  "val": [
+   0.22,
+   0.8
+  ],
+  "gamma": 0.9,
+  "shade": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "bismuth",
+  "label": "Висмут",
+  "mode": "ramp",
+  "hue": [
+   300,
+   120
+  ],
+  "sat": [
+   0.62,
+   0.28
+  ],
+  "val": [
+   0.16,
+   0.86
+  ],
+  "gamma": 0.85,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "antimony",
+  "label": "Сурьма",
+  "mode": "ramp",
+  "hue": [
+   226,
+   214
+  ],
+  "sat": [
+   0.16,
+   0.06
+  ],
+  "val": [
+   0.16,
+   0.6
+  ],
+  "gamma": 0.9,
+  "shade": 0.6,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "molybdenum",
+  "label": "Молибден",
+  "mode": "ramp",
+  "hue": [
+   180,
+   170
+  ],
+  "sat": [
+   0.1,
+   0.04
+  ],
+  "val": [
+   0.14,
+   0.58
+  ],
+  "gamma": 0.92,
+  "shade": 0.55,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "vanadium",
+  "label": "Ванадий",
+  "mode": "ramp",
+  "hue": [
+   148,
+   160
+  ],
+  "sat": [
+   0.22,
+   0.08
+  ],
+  "val": [
+   0.12,
+   0.56
+  ],
+  "gamma": 0.9,
+  "shade": 0.55,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "iridium",
+  "label": "Иридий",
+  "mode": "ramp",
+  "hue": [
+   60,
+   50
+  ],
+  "sat": [
+   0.06,
+   0.01
+  ],
+  "val": [
+   0.44,
+   1
+  ],
+  "gamma": 0.8,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "tantalum",
+  "label": "Тантал",
+  "mode": "ramp",
+  "hue": [
+   224,
+   236
+  ],
+  "sat": [
+   0.3,
+   0.12
+  ],
+  "val": [
+   0.18,
+   0.66
+  ],
+  "gamma": 0.9,
+  "shade": 0.65,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "castiron",
+  "label": "Чугун",
+  "mode": "ramp",
+  "hue": [
+   18,
+   10
+  ],
+  "sat": [
+   0.14,
+   0.06
+  ],
+  "val": [
+   0.06,
+   0.44
+  ],
+  "gamma": 0.95,
+  "shade": 0.35,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "damascus",
+  "label": "Дамаск",
+  "mode": "ramp",
+  "hue": [
+   24,
+   206
+  ],
+  "sat": [
+   0.3,
+   0.1
+  ],
+  "val": [
+   0.1,
+   0.68
+  ],
+  "gamma": 0.9,
+  "shade": 0.5,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "cupronickel",
+  "label": "Мельхиор",
+  "mode": "ramp",
+  "hue": [
+   30,
+   20
+  ],
+  "sat": [
+   0.16,
+   0.05
+  ],
+  "val": [
+   0.32,
+   0.9
+  ],
+  "gamma": 0.88,
+  "form": "ingot"
+ },
+ {
+  "group": "Металлы",
+  "id": "lead",
+  "label": "Свинец",
+  "mode": "ramp",
+  "hue": [
+   264,
+   250
+  ],
+  "sat": [
+   0.28,
+   0.11
+  ],
+  "val": [
+   0.06,
+   0.5
+  ],
+  "gamma": 0.9,
+  "shade": 0.6,
+  "form": "ingot"
+ }
+]

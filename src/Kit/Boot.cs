@@ -1,0 +1,36 @@
+// ЗАПУСК — один для ПК и браузера: данные, материалы, эффекты, окно (холст), шрифт, сцена показа (оповещения и цель).
+// Ключи: --demo — оповещение само раз в 6 с (проверка в OBS без Twitch); проверка на ПК без док-панели: --pos=tl…br — место
+// карточки, --goal=37/100 — цель внизу; снимки — --shot=файл.png [--frames=K] [--size=ШxВ]
+using System;
+using Wcg;
+
+namespace Kit;
+
+public static class Boot
+{
+	// сцена — для моста страницы (настройки и тест из док-панели); до запуска — null
+	public static Stage Stage { get; private set; }
+
+	public static int Start(string[] args)
+	{
+		string Arg(string k) => Array.Find(args, a => a.StartsWith(k))?.Substring(k.Length);
+		string shot = Arg("--shot="); int frames = int.TryParse(Arg("--frames="), out int f) ? f : 50;
+		Data.Load(Paths.Of("data"));
+		if (Data.Get("mats").VariantType == JType.Nil) { Console.WriteLine("данные не прочитались: " + Data.Error); return 1; }
+		Mats.Load(Data.Get("mats"));
+		Vfx.SetPresets(Data.Get("fx"));
+		// без дыма: тёмный дым поверх чужого видео выглядит грязью, светящееся ложится на него сложением
+		Vfx.Bursts["follow"] = new[] { "вспышка", "кольцо", "огонь", "искры" };
+		// оверлей: фон кадра пустой — в OBS под ним видео
+		App.BgR = App.BgG = App.BgB = 0; App.BgA = 0;
+		// размер — как у источника в OBS; --size=ШxВ — свой
+		int w = 1280, h = 720; var size = Arg("--size=")?.Split('x');
+		if (size?.Length == 2 && int.TryParse(size[0], out int sw) && int.TryParse(size[1], out int sh) && sw > 0 && sh > 0) { w = sw; h = sh; }
+		if (!App.Open("Stream Kit — оповещения", w, h, hidden: shot != null)) return 1;
+		Stage = new Stage(new Text(Paths.Of("data", "font")), Array.IndexOf(args, "--demo") >= 0 || shot != null);
+		if (Arg("--pos=") is string pos) Stage.Alerts.Configure(true, pos, null, 4);
+		var goal = Arg("--goal=")?.Split('/');
+		if (goal?.Length == 2 && int.TryParse(goal[0], out int cur) && int.TryParse(goal[1], out int max)) Stage.Goal.Configure(true, "b", null, cur, max);
+		return App.Run(Stage, shot, frames);
+	}
+}

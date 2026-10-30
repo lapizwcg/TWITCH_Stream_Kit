@@ -1,0 +1,7 @@
+{
+ "искры": {"look":"SPARK","sparkLen":3,"mat":"topaz","n":34,"life":22,"lifeJit":40,"speed":230,"speedJit":60,"drag":4,"size0":2,"size1":1,"hueVar":10,"sizeCurve":"FADE","alphaCurve":"FADE","add":true},
+ "вспышка": {"look":"GLOW","lookK":3,"mat":"citrine","n":3,"life":9,"lifeJit":30,"speed":20,"speedJit":50,"drag":8,"size0":6,"size1":2,"sizeCurve":"FADE","alphaCurve":"FADE","add":true},
+ "огонь": {"look":"GLOW","lookK":1.4,"mat":"amber","n":36,"life":26,"lifeJit":45,"speed":95,"speedJit":70,"drag":5,"size0":4,"size1":1,"hueVar":15,"sizeCurve":"FADE","alphaCurve":"FADE","add":true},
+ "кольцо": {"look":"RING","lookK":4,"mat":"c_azure","n":1,"life":22,"lifeJit":0,"speed":0,"speedJit":0,"drag":0,"size0":2,"size1":22,"sizeCurve":"FADE","alphaCurve":"FADE","add":true},
+ "дым": {"look":"PUFF","lookK":2,"mat":"iron","n":16,"life":90,"lifeJit":40,"speed":40,"speedJit":80,"drag":3,"size0":3,"size1":9,"tone":45,"sizeCurve":"FADE","alphaCurve":"FADE","add":false}
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stream Kit — оповещения</title>
+<script type="importmap"></script>
+<style>
+/* оверлей: страница и холст прозрачные — OBS кладёт их поверх видео */
+html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+canvas { display: block; width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<script type="module">
+// ключи — из адреса (?demo → --demo)
+import { boot } from './wcg.js';
+import { loadSettings, createBus } from './kit.js';
+const q = new URLSearchParams(location.search);
+const args = [...q].map(([k, v]) => v === '' ? '--' + k : '--' + k + '=' + v);
+// maxDpr 1: в OBS источник и так рисуется в своём размере (1920×1080), лишние точки — лишняя работа видеокарте
+const { rt } = await boot({ canvas: document.getElementById('game'), maxDpr: 1, args, files: 'game/files.txt', alpha: true });
+
+// настройки — из док-панели (dock.html): сохранённые сразу при запуске, изменения — по мере того, как их двигают.
+// ?pos= в адресе источника важнее панели — на случай, если источников несколько и у каждого своё место
+const B = (await rt.getAssemblyExports('KitWeb.dll')).KitWeb.Bridge;
+const apply = (s) => {
+  if (s.follow) B.Follow(s.follow.on, q.get('pos') || s.follow.pos, s.follow.title, s.follow.seconds);
+  if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target);
+};
+apply(loadSettings());
+const bus = createBus((msg) => {
+  if (msg.type === 'settings') apply(msg.settings);
+  else if (msg.type === 'alert' && msg.kind === 'follow') B.ShowFollow(msg.name);
+  else if (msg.type === 'ping') bus.send('pong', { page: 'alerts' });
+});
+</script>
+</body>
+</html>
