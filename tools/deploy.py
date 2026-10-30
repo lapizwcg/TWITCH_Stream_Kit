@@ -66,6 +66,10 @@ def main():
             fh.write('{ "v": "%s" }\n' % version)
         # без .nojekyll GitHub прогоняет сайт через Jekyll, а он выбрасывает папки с «_» — то есть _framework с .NET
         open(os.path.join(tmp, '.nojekyll'), 'w').close()
+        # файлы — байт в байт как после сборки: страница сверяет скрипты по контрольным суммам (integrity), а git с text=auto
+        # переделывал переводы строк — браузер блокировал wcg.js
+        with open(os.path.join(tmp, '.gitattributes'), 'w') as fh:
+            fh.write('* -text\n')
 
         run('git', 'add', '-A', cwd=tmp)
         run('git', 'commit', '-m', f'Выкладка {version}', cwd=tmp)
