@@ -1,6 +1,7 @@
 // ЗАПУСК — один для ПК и браузера: данные, материалы, эффекты, окно (холст), шрифт, сцена показа (оповещения и цель).
 // Ключи: --demo — оповещение само раз в 6 с (проверка в OBS без Twitch); проверка на ПК без док-панели: --pos=tl…br — место
-// карточки, --goal=37/100 — цель внизу; снимки — --shot=файл.png [--frames=K] [--size=ШxВ]
+// карточки, --goal=37/100 — цель [--goalstyle=ltr|rtl|ttb|btt|radial] [--goalpos=b]; снимки — --shot=файл.png [--frames=K]
+// [--size=ШxВ]
 using System;
 using Wcg;
 
@@ -30,7 +31,7 @@ public static class Boot
 		Stage = new Stage(new Text(Paths.Of("data", "font")), Array.IndexOf(args, "--demo") >= 0 || shot != null);
 		if (Arg("--pos=") is string pos) Stage.Alerts.Configure(true, pos, null, 4);
 		var goal = Arg("--goal=")?.Split('/');
-		if (goal?.Length == 2 && int.TryParse(goal[0], out int cur) && int.TryParse(goal[1], out int max)) Stage.Goal.Configure(true, "b", null, cur, max);
+		if (goal?.Length == 2 && int.TryParse(goal[0], out int cur) && int.TryParse(goal[1], out int max)) Stage.Goal.Configure(true, Arg("--goalpos=") ?? "b", null, cur, max, Arg("--goalstyle="));
 		return App.Run(Stage, shot, frames);
 	}
 }

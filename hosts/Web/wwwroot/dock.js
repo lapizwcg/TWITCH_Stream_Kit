@@ -43,6 +43,7 @@ function render() {
   const g = settings.goal;
   $('goalOn').checked = g.on;
   for (const b of $('goalPos').children) b.classList.toggle('active', b.dataset.pos === g.pos);
+  for (const b of $('goalStyle').children) b.classList.toggle('active', b.dataset.style === g.style);
   // поле, в котором сейчас печатают, не перезаписываем — курсор не прыгает
   for (const [id, v] of [['goalTitle', g.title], ['goalCurrent', g.current], ['goalTarget', g.target]])
     if (document.activeElement !== $(id)) $(id).value = v;
@@ -193,6 +194,14 @@ $('goalPos').onclick = (e) => {
   settings.goal.pos = pos;
   commit();
 };
+$('goalStyle').onclick = (e) => {
+  const style = e.target.dataset?.style;
+  if (!style) return;
+  settings.goal.style = style;
+  commit();
+};
+// тест: заливка на 75% на несколько секунд в показе, сохранённый счёт не меняется
+$('goalTest').onclick = () => bus.send('goalTest', { frac: 0.75 });
 $('goalTitle').oninput = (e) => {
   settings.goal.title = e.target.value;
   commit();

@@ -8,5 +8,6 @@ public static partial class Bridge
 {
 	[JSExport] public static void Follow(bool on, string pos, string title, double seconds) => Kit.Boot.Stage?.Alerts.Configure(on, pos, title, seconds);
 	[JSExport] public static void ShowFollow(string name) => Kit.Boot.Stage?.Alerts.Show(name);
-	[JSExport] public static void Goal(bool on, string pos, string title, int current, int target) => Kit.Boot.Stage?.Goal.Configure(on, pos, title, current, target);
+	[JSExport] public static void Goal(bool on, string pos, string title, int current, int target, string style) => Kit.Boot.Stage?.Goal.Configure(on, pos, title, current, target, style);
+	[JSExport] public static void PreviewGoal(double frac) => Kit.Boot.Stage?.Goal.Preview(frac);
 }

@@ -105,6 +105,18 @@
       </div>
     </div>
 
+    <div class="field">
+      <div class="label">Вид</div>
+      <!-- значки — схема заливки: светлое — заполнено, стрелка не нужна, направление видно по краю -->
+      <div id="goalStyle" class="styles" role="radiogroup" aria-label="Вид цели">
+        <button data-style="ltr" title="Полоса слева направо"><svg viewBox="0 0 40 24"><rect x="3" y="9" width="34" height="6" rx="3" class="tr"/><rect x="3" y="9" width="22" height="6" rx="3" class="fl"/></svg></button>
+        <button data-style="rtl" title="Полоса справа налево"><svg viewBox="0 0 40 24"><rect x="3" y="9" width="34" height="6" rx="3" class="tr"/><rect x="15" y="9" width="22" height="6" rx="3" class="fl"/></svg></button>
+        <button data-style="ttb" title="Столбик сверху вниз"><svg viewBox="0 0 40 24"><rect x="17" y="2" width="6" height="20" rx="3" class="tr"/><rect x="17" y="2" width="6" height="13" rx="3" class="fl"/></svg></button>
+        <button data-style="btt" title="Столбик снизу вверх"><svg viewBox="0 0 40 24"><rect x="17" y="2" width="6" height="20" rx="3" class="tr"/><rect x="17" y="9" width="6" height="13" rx="3" class="fl"/></svg></button>
+        <button data-style="radial" title="Кольцо"><svg viewBox="0 0 40 24"><circle cx="20" cy="12" r="8" class="ring"/><path d="M20 4 A8 8 0 1 1 12.4 14.5" class="arc"/></svg></button>
+      </div>
+    </div>
+
     <label class="field">
       <div class="label">Заголовок</div>
       <input id="goalTitle" type="text" maxlength="40" placeholder="ЦЕЛЬ">
@@ -131,7 +143,10 @@
       <div class="note" id="goalNote"></div>
     </div>
 
-    <button class="btn ghost" id="goalReset">Сбросить счёт</button>
+    <div class="row2">
+      <button class="btn" id="goalTest" title="Заливка на 75% на несколько секунд — настоящий счёт не меняется">Тест: 75%</button>
+      <button class="btn ghost" id="goalReset">Сбросить счёт</button>
+    </div>
   </section>
 </main>
 

@@ -46,12 +46,13 @@ const { rt } = await boot({ canvas: document.getElementById('game'), maxDpr: 1, 
 const B = (await rt.getAssemblyExports('KitWeb.dll')).KitWeb.Bridge;
 const apply = (s) => {
   if (s.follow) B.Follow(s.follow.on, q.get('pos') || s.follow.pos, s.follow.title, s.follow.seconds);
-  if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target);
+  if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
 };
 apply(loadSettings());
 const bus = createBus((msg) => {
   if (msg.type === 'settings') apply(msg.settings);
   else if (msg.type === 'alert' && msg.kind === 'follow') B.ShowFollow(msg.name);
+  else if (msg.type === 'goalTest') B.PreviewGoal(msg.frac);
   else if (msg.type === 'ping') bus.send('pong', { page: 'alerts' });
 });
 </script>

@@ -8,7 +8,8 @@ const BUS = 'kit.bus';
 export const DEFAULTS = {
   follow: { on: true, pos: 'c', title: 'НОВЫЙ ФОЛЛОУЕР', seconds: 4 },
   // source: followers | subs — счёт ведёт Twitch (нужен вход в доке), manual — вручную
-  goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100 },
+  // style: ltr rtl ttb btt radial — вид прогресса
+  goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr' },
 };
 
 export function loadSettings() {
@@ -29,7 +30,7 @@ export function saveSettings(s) {
 }
 
 // сообщения: { type: 'settings', settings } | { type: 'alert', kind, name } — настоящее событие канала или тест из дока |
-// { type: 'ping' } | { type: 'pong', page }
+// { type: 'goalTest', frac } — тест цели | { type: 'ping' } | { type: 'pong', page }
 export function createBus(onMessage) {
   const seen = new Set();
   const deliver = (msg) => {
