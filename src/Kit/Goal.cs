@@ -193,21 +193,23 @@ public sealed class Goal
 		// блик: у полосы — поверху, у столбика — слева
 		if (Vertical) sh.Rect(fx0 + fw * 0.22f, fy0 + r * 0.6f, fw * 0.18f, Math.Max(0, fh - 1.2f * r), Layout.Col("pearl", 0.97, a * 90 / 255), fw * 0.09f);
 		else sh.Rect(fx0 + r * 0.6f, fy0 + fh * 0.2f, Math.Max(0, fw - 1.2f * r), fh * 0.18f, Layout.Col("pearl", 0.97, a * 90 / 255), fh * 0.09f);
-		// блеск бежит по заливке в сторону роста — только в её пределах
-		float s = (t % Sheen) / (float)Sheen * 1.5f - 0.25f, sl = 70 * u;
-		float p0 = style is "ltr" or "ttb" ? s * len : len - s * len - sl;
-		uint shine = Add("pearl", 0.95, 0.35f * a / 255f);
-		if (Vertical)
-		{
-			float a0 = Math.Max(y + p0, fy0 + r * 0.5f), a1 = Math.Min(y + p0 + sl, fy0 + fh - r * 0.5f);
-			if (a1 > a0) sh.Rect(fx0 + pad, a0, fw - 2 * pad, a1 - a0, shine, (fw - 2 * pad) / 2);
-		}
-		else
-		{
-			float a0 = Math.Max(x + p0, fx0 + r * 0.5f), a1 = Math.Min(x + p0 + sl, fx0 + fw - r * 0.5f);
-			if (a1 > a0) sh.Rect(a0, fy0 + pad, a1 - a0, fh - 2 * pad, shine, (fh - 2 * pad) / 2);
-		}
 		sh.Flush(w, h);
+
+		// блеск бежит по заливке в сторону роста — цепочка мягких пятен, как у кольца (сплошной светлой таблеткой он выглядел
+		// посторонним куском). Только в пределах заливки, не на скруглённых концах
+		float s = (t % Sheen) / (float)Sheen * 1.5f - 0.25f, sp = r * 0.9f;
+		float c0 = style is "ltr" or "ttb" ? s * len : len - s * len;
+		float lo = Vertical ? fy0 - y : fx0 - x, hi = lo + (Vertical ? fh : fw);
+		gr.Begin(); gr.Screen();
+		for (int i = -2; i <= 2; i++)
+		{
+			float c = c0 + i * r * 0.6f;
+			if (c < lo + r || c > hi - r) continue;
+			float k = 1 - Math.Abs(i) / 3f;
+			var (px, py) = Vertical ? (x + tw / 2, y + c) : (x + c, y + tl / 2);
+			gr.Spot(px, py, sp, sp, Add("pearl", 0.95, 0.2f * k * a / 255f));
+		}
+		gr.Flush(w, h);
 	}
 
 	void RingBar(float bx, float by, float bw, float bh, float u, int a, float frac, string mat, int w, int h)
@@ -236,9 +238,6 @@ public sealed class Goal
 			float cr = (th - 2 * pad) / 2;
 			sh.Circle(cx + MathF.Cos(a0) * rc, cy + MathF.Sin(a0) * rc, cr, Layout.Col(mat, 0.55, a));
 			sh.Circle(cx + MathF.Cos(a0 + span) * rc, cy + MathF.Sin(a0 + span) * rc, cr, Layout.Col(mat, 0.6, a));
-			// блеск обходит заливку по кругу
-			float sa = (t % Sheen) / (float)Sheen * 1.3f * MathF.Tau, b0 = Math.Max(0, sa - 0.35f), b1 = Math.Min(span, sa);
-			if (b1 > b0) sh.Arc(cx, cy, r - pad, th - 2 * pad, a0 + b0, b1 - b0, Add("pearl", 0.95, 0.3f * a / 255f));
 		}
 		sh.Flush(w, h);
 		if (frac <= 0) return;
@@ -246,6 +245,16 @@ public sealed class Goal
 		float pulse = 0.75f + 0.25f * MathF.Sin(t * 0.08f);
 		gr.Begin(); gr.Screen();
 		gr.Spot(hx, hy, 2.4f * th, 2.4f * th, Add(mat, 0.8, 0.55f * pulse * a / 255f));
+		// блеск обходит заливку по кругу — цепочка мягких пятен вдоль кольца. Дугой он выходил резким куском с обрубленными
+		// концами, нарезка дуги на узкие куски давала полоски на стыках; у пятен краёв нет. Только внутри заливки
+		float sc = (t % Sheen) / (float)Sheen * 1.4f * MathF.Tau - 0.3f, edge = th / rc;
+		for (int i = -2; i <= 2; i++)
+		{
+			float sa = sc + i * 0.09f;
+			if (sa < edge || sa > span - edge) continue;
+			float k = 1 - Math.Abs(i) / 3f;
+			gr.Spot(cx + MathF.Cos(a0 + sa) * rc, cy + MathF.Sin(a0 + sa) * rc, th * 0.7f, th * 0.7f, Add("pearl", 0.95, 0.22f * k * a / 255f));
+		}
 		gr.Flush(w, h);
 	}
 
