@@ -1,7 +1,7 @@
 // ЗАПУСК — один для ПК и браузера: данные, материалы, эффекты, окно (холст), шрифт, сцена показа (оповещения и цель).
 // Ключи: --demo — оповещение само раз в 6 с (проверка в OBS без Twitch); проверка на ПК без док-панели: --pos=tl…br — место
 // карточки, --goal=37/100 — цель [--goalstyle=ltr|rtl|ttb|btt|radial] [--goalpos=b]; снимки — --shot=файл.png [--frames=K]
-// [--size=ШxВ] [--scale=1.5x0.8 — размер показов по X и по Y] [--announce=текст — анонс вверху]
+// [--size=ШxВ] [--scale=1.5x0.8 — размер показов по X и по Y] [--announce=текст — анонс вверху] [--style=JSON] [--frame=JSON — рамка]
 using System;
 using Wcg;
 
@@ -54,6 +54,8 @@ public static class Boot
 			var j = Data.Parse(System.Text.Encoding.UTF8.GetBytes(style));
 			Stage.Alerts.Style.Load(j); Stage.Announce.Style.Load(j); Stage.Goal.Style.Load(j);
 		}
+		// рамка эфира: --frame={JSON как в доке} (Frame.Load)
+		if (Arg("--frame=") is string frame) Stage.Frame.Load(Data.Parse(System.Text.Encoding.UTF8.GetBytes(frame)));
 		return App.Run(Stage, shot, frames);
 	}
 }

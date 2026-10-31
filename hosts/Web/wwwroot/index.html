@@ -80,6 +80,7 @@ const apply = (s) => {
   // оформление: размер частиц в доке — проценты, в показе — доля
   for (const part of ['follow', 'announce', 'goal'])
     if (s[part]?.look) B.Style(part, JSON.stringify({ ...s[part].look, fx: { ...s[part].look.fx, size: (s[part].look.fx?.size ?? 100) / 100 } }));
+  if (s.frame) B.Frame(JSON.stringify(s.frame));
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
 };
 settle(loadSettings());

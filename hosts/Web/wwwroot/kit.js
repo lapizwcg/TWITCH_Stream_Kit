@@ -31,6 +31,13 @@ export const DEFAULTS = {
   },
   // source: followers | subs — счёт ведёт Twitch (нужен вход в доке), manual — вручную
   // style: ltr rtl ttb btt radial — вид прогресса
+  // рамка эфира: толщина, отступ от края, непрозрачность фона (%), линия по краю выреза и её свечение; внутренние углы
+  // (round bevel rect scoop notch) и их размер; край выреза (line wave zigzag scallop crenel), его высота и шаг — точки при 1080
+  frame: {
+    on: false, width: 28, margin: 0, opacity: 92, line: 3, glow: 18,
+    corners: ['round', 'round', 'round', 'round'], corner: 40, edge: 'line', amp: 8, period: 80,
+    look: { bg: 'obsidian@0.12', border: 'c_azure@0.7' },
+  },
   goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr', pad: 50, sx: 100, sy: 100, inner: 1, look: style() },
 };
 

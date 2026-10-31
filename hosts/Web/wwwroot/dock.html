@@ -54,6 +54,7 @@
   <button class="tab active" data-tab="follow">Фолловеры</button>
   <button class="tab" data-tab="goals">Цели</button>
   <button class="tab" data-tab="announce">Анонсы</button>
+  <button class="tab" data-tab="frame">Рамка</button>
 </nav>
 
 <main>
@@ -235,6 +236,14 @@
       <summary>Оформление</summary>
       <div class="look-body"></div>
     </details>
+  </section>
+  <!-- рамка эфира: полоса по краям кадра, все окошки — внутри неё; собирается в dock.js (buildFrame) -->
+  <section id="tab-frame" class="pane" hidden>
+    <label class="row switch">
+      <input type="checkbox" id="frameOn">
+      <span>Показывать рамку</span>
+    </label>
+    <div class="frame-body look-body"></div>
   </section>
 </main>
 

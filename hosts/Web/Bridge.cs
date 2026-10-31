@@ -22,5 +22,7 @@ public static partial class Bridge
 		var st = widget switch { "follow" => Kit.Boot.Stage?.Alerts.Style, "announce" => Kit.Boot.Stage?.Announce.Style, "goal" => Kit.Boot.Stage?.Goal.Style, _ => null };
 		st?.Load(Wcg.Data.Parse(System.Text.Encoding.UTF8.GetBytes(json)));
 	}
+	// рамка эфира: JSON как в доке (Frame.Load)
+	[JSExport] public static void Frame(string json) { if (Kit.Boot.Stage != null) Kit.Boot.Stage.Frame.Load(Wcg.Data.Parse(System.Text.Encoding.UTF8.GetBytes(json))); }
 	[JSExport] public static void GoalSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Goal.Size(pad, sx, sy, inner);
 }

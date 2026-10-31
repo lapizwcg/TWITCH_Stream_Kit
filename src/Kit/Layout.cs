@@ -14,9 +14,16 @@ public static class Layout
 		return (pos.Contains('l') ? 0 : pos.Contains('r') ? 1 : 0.5f, pos.Contains('t') ? 0 : pos.Contains('b') ? 1 : 0.5f);
 	}
 
-	// середина блока cw×ch на месте (ax, ay) в кадре w×h с полем mx, my от краёв
-	public static (float cx, float cy) Place(float ax, float ay, int w, int h, float cw, float ch, float mx, float my) =>
-		(mx + cw / 2 + ax * (w - 2 * mx - cw), my + ch / 2 + ay * (h - 2 * my - ch));
+	// поле рамки эфира (Frame) от края экрана — точки при высоте 1080; окошки ставятся внутри неё
+	public static float Inset;
+
+	// середина блока cw×ch на месте (ax, ay) в кадре w×h с полем mx, my от краёв (плюс поле рамки)
+	public static (float cx, float cy) Place(float ax, float ay, int w, int h, float cw, float ch, float mx, float my)
+	{
+		float f = Inset * h / 1080f;
+		mx += f; my += f;
+		return (mx + cw / 2 + ax * (w - 2 * mx - cw), my + ch / 2 + ay * (h - 2 * my - ch));
+	}
 
 	// цвет с умноженной прозрачностью
 	public static uint Col(string mat, double tone, int a = 255)

@@ -10,6 +10,8 @@ public sealed class Stage : IScreen
 	// фолловер — ник крупно одной строкой; анонс — своё сообщение помельче, с переносом по словам
 	public readonly Alerts Alerts, Announce;
 	public readonly Goal Goal;
+	// рамка эфира — под всеми окошками
+	public readonly Frame Frame = new();
 
 	public Stage(bool demo)
 	{
@@ -20,8 +22,8 @@ public sealed class Stage : IScreen
 
 	public void Step() { Goal.Step(); Announce.Step(); Alerts.Step(); }
 
-	// оповещения — поверх цели, фолловер — поверх анонса
-	public void Draw(int w, int h, double alpha) { Goal.Draw(w, h); Announce.Draw(w, h); Alerts.Draw(w, h); }
+	// рамка — снизу, оповещения — поверх цели, фолловер — поверх анонса
+	public void Draw(int w, int h, double alpha) { Frame.Draw(w, h); Goal.Draw(w, h); Announce.Draw(w, h); Alerts.Draw(w, h); }
 
 	// щелчок по странице (вне OBS) — тестовое оповещение
 	public void Pointer(int id, int kind, float x, float y) { if (kind == 0) Alerts.ShowDemo(); }

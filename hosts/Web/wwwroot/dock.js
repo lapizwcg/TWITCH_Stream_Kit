@@ -41,6 +41,8 @@ function render() {
   $('followSecondsVal').textContent = `${f.seconds} с`;
   renderSize('follow', f);
 
+  renderFrame();
+
   const g = settings.goal;
   $('goalOn').checked = g.on;
   for (const b of $('goalPos').children) b.classList.toggle('active', b.dataset.pos === g.pos);
@@ -592,6 +594,86 @@ document.addEventListener('mousedown', (e) => {
 });
 
 for (const part of LOOK_PARTS) buildLook(part);
+
+// ---------- рамка эфира ----------
+
+const FRAME_CORNERS = [['round', 'Скругление'], ['bevel', 'Срез'], ['rect', 'Прямой'], ['scoop', 'Вогнутый'], ['notch', 'Ступенька']];
+const FRAME_EDGES = [['line', 'Прямая'], ['wave', 'Волна'], ['zigzag', 'Зигзаг'], ['scallop', 'Дуги'], ['crenel', 'Зубцы']];
+// ползунки: ключ, подпись, мин, макс, шаг, единица
+const FRAME_RANGES = {
+  width: ['Толщина', 0, 120, 1, 'px'], margin: ['Отступ от края экрана', 0, 100, 1, 'px'], opacity: ['Непрозрачность фона', 0, 100, 1, '%'],
+  line: ['Толщина линии', 0, 12, 0.5, 'px'], glow: ['Свечение линии', 0, 60, 1, 'px'], corner: ['Размер углов', 0, 200, 1, 'px'],
+  amp: ['Высота формы', 0, 40, 1, 'px'], period: ['Шаг формы', 20, 300, 5, 'px'],
+};
+function buildFrame() {
+  const box = document.querySelector('#tab-frame .frame-body');
+  const opts = (list) => list.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+  const range = (k) => `<label class="field"><span class="label">${FRAME_RANGES[k][0]}: <b data-val="${k}"></b></span><input type="range" data-range="${k}" min="${FRAME_RANGES[k][1]}" max="${FRAME_RANGES[k][2]}" step="${FRAME_RANGES[k][3]}"></label>`;
+  box.innerHTML = `
+    <h4>Полоса</h4>
+    ${range('width')}${range('margin')}${range('opacity')}
+    <div class="mp-row"><span class="label">Фон рамки</span><button class="mp" data-key="bg" type="button"><i></i><span></span></button></div>
+    <h4>Линия по краю</h4>
+    <div class="mp-row"><span class="label">Цвет линии</span><button class="mp" data-key="border" type="button"><i></i><span></span></button></div>
+    ${range('line')}${range('glow')}
+    <h4>Внутренние углы</h4>
+    <div class="corners">${CORNER_CELLS.map(([i, a]) => `<select data-corner="${i}" title="угол ${a}">${opts(FRAME_CORNERS.map(([v, t]) => [v, `${a} ${t}`]))}</select>`).join('')}</div>
+    <div class="chips">${FRAME_CORNERS.map(([v, t]) => `<button class="btn ghost small" data-all="${v}" type="button">Все: ${t.toLowerCase()}</button>`).join('')}</div>
+    ${range('corner')}
+    <h4>Форма края</h4>
+    <label class="field"><span class="label">Край</span><select data-edge>${opts(FRAME_EDGES)}</select></label>
+    ${range('amp')}${range('period')}
+    <button class="btn ghost small" data-reset type="button">Сбросить рамку</button>`;
+  const fr = () => settings.frame;
+  $('frameOn').onchange = (e) => {
+    fr().on = e.target.checked;
+    commit();
+  };
+  box.onclick = (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.key) openPop(t, 'frame', t.dataset.key);
+    else if (t.dataset.all) {
+      fr().corners = [0, 1, 2, 3].map(() => t.dataset.all);
+      commit();
+    } else if (t.hasAttribute('data-reset')) {
+      settings.frame = { ...structuredClone(DEFAULTS.frame), on: fr().on };
+      commit();
+    }
+  };
+  box.onchange = (e) => {
+    const el = e.target;
+    if (el.dataset.corner !== undefined) fr().corners[+el.dataset.corner] = el.value;
+    else if (el.hasAttribute('data-edge')) fr().edge = el.value;
+    else return;
+    commit();
+  };
+  box.oninput = (e) => {
+    const r = e.target.dataset.range;
+    if (!r) return;
+    fr()[r] = +e.target.value;
+    commit();
+  };
+}
+function renderFrame() {
+  const box = document.querySelector('#tab-frame .frame-body');
+  if (!box.firstElementChild) return;
+  const fr = settings.frame;
+  fr.look ??= structuredClone(DEFAULTS.frame.look);
+  $('frameOn').checked = fr.on;
+  for (const k of Object.keys(FRAME_RANGES)) {
+    box.querySelector(`[data-range="${k}"]`).value = fr[k];
+    box.querySelector(`[data-val="${k}"]`).textContent = `${fr[k]} ${FRAME_RANGES[k][4]}`;
+  }
+  for (const b of box.querySelectorAll('.mp')) {
+    const { mat, tone } = parseMt(fr.look[b.dataset.key]);
+    b.querySelector('i').style.background = swatch(mat, tone);
+    b.querySelector('span').textContent = `${matOf(mat)?.label || mat} · ${Math.round(tone * 100)}%`;
+  }
+  for (const sel of box.querySelectorAll('[data-corner]')) sel.value = fr.corners[+sel.dataset.corner];
+  box.querySelector('[data-edge]').value = fr.edge;
+}
+buildFrame();
 
 render();
 startTwitch();
