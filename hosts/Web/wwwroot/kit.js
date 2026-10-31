@@ -10,6 +10,8 @@ const BUS = 'kit.bus';
 export const STYLE = {
   accent: 'citrine@0.85', text: 'pearl@0.95', bg: 'obsidian@0.12', border: 'c_azure@0.7', fill: 'c_azure@0.6',
   corners: ['round', 'round', 'round', 'round'], corner: 16,
+  // шрифты заголовка и текста — id из data/fonts.json
+  head: 'noto', font: 'noto',
   fx: { at: ['l+r'], set: 'boom', size: 100, mat: '' },
 };
 const style = () => structuredClone(STYLE);

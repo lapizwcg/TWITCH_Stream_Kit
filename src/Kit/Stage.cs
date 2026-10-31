@@ -11,11 +11,11 @@ public sealed class Stage : IScreen
 	public readonly Alerts Alerts, Announce;
 	public readonly Goal Goal;
 
-	public Stage(Text tx, bool demo)
+	public Stage(bool demo)
 	{
-		Alerts = new Alerts(tx, demo, "НОВЫЙ ФОЛЛОУЕР", 64, 0);
-		Announce = new Alerts(tx, false, "АНОНС", 40, 900);
-		Goal = new Goal(tx);
+		Alerts = new Alerts(demo, "НОВЫЙ ФОЛЛОУЕР", 64, 0);
+		Announce = new Alerts(false, "АНОНС", 40, 900);
+		Goal = new Goal();
 	}
 
 	public void Step() { Goal.Step(); Announce.Step(); Alerts.Step(); }

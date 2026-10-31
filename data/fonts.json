@@ -1,0 +1,25 @@
+{
+  "fonts": [
+    { "id": "noto", "label": "Noto Sans", "kind": "обычный", "group": "Без засечек" },
+    { "id": "montserrat", "label": "Montserrat", "kind": "геометрический", "group": "Без засечек" },
+    { "id": "rubik", "label": "Rubik", "kind": "мягкий", "group": "Без засечек" },
+    { "id": "exo2", "label": "Exo 2", "kind": "техно", "group": "Без засечек" },
+    { "id": "jura", "label": "Jura", "kind": "футуристичный", "group": "Без засечек" },
+    { "id": "comfortaa", "label": "Comfortaa", "kind": "округлый", "group": "Без засечек" },
+    { "id": "oswald", "label": "Oswald", "kind": "узкий", "group": "Заголовочные" },
+    { "id": "russo", "label": "Russo One", "kind": "плотный", "group": "Заголовочные" },
+    { "id": "unbounded", "label": "Unbounded", "kind": "широкий", "group": "Заголовочные" },
+    { "id": "philosopher", "label": "Philosopher", "kind": "фэнтези", "group": "Заголовочные" },
+    { "id": "ruslan", "label": "Ruslan Display", "kind": "старорусский", "group": "Заголовочные" },
+    { "id": "ptserif", "label": "PT Serif", "kind": "классический", "group": "С засечками" },
+    { "id": "playfair", "label": "Playfair Display", "kind": "изящный", "group": "С засечками" },
+    { "id": "forum", "label": "Forum", "kind": "античный", "group": "С засечками" },
+    { "id": "yeseva", "label": "Yeseva One", "kind": "витринный", "group": "С засечками" },
+    { "id": "caveat", "label": "Caveat", "kind": "рукописный", "group": "Рукописные" },
+    { "id": "lobster", "label": "Lobster", "kind": "каллиграфия", "group": "Рукописные" },
+    { "id": "marck", "label": "Marck Script", "kind": "прописи", "group": "Рукописные" },
+    { "id": "amatic", "label": "Amatic SC", "kind": "рисованный", "group": "Рукописные" },
+    { "id": "pixel", "label": "Press Start 2P", "kind": "пиксельный", "group": "Особые" },
+    { "id": "jetbrains", "label": "JetBrains Mono", "kind": "моноширинный", "group": "Особые" }
+  ]
+}

@@ -18,11 +18,16 @@
     <GameFile Include="../../wcg.root" Dest="wcg.root" />
     <GameFile Include="../../data/*.json" Dest="data/%(Filename)%(Extension)" />
     <GameFile Include="../../data/font/font.bin;../../data/font/font.png" Dest="data/font/%(Filename)%(Extension)" />
+    <!-- шрифты на выбор — рядом, но не в списке запуска: страница качает только выбранные (index.html), док — образцы TTF -->
+    <FontFile Include="../../data/fonts/**/font.bin;../../data/fonts/**/font.png" Dest="data/fonts/%(RecursiveDir)%(Filename)%(Extension)" />
+    <FontFile Include="../../fonts/**/font.ttf" Dest="ttf/%(RecursiveDir)%(Filename)%(Extension)" />
+    <FontFile Include="../../../WCGEngine/fonts/NotoSans.ttf" Dest="ttf/noto/font.ttf" />
   </ItemGroup>
   <!-- мост движка и файлы — рядом со страницей (копии при сборке, в git не хранятся: источник один) -->
   <Target Name="CopyGameFiles" BeforeTargets="BeforeBuild">
     <Copy SourceFiles="../../../WCGEngine/src/WcgEngine/Web/wcg.js" DestinationFolder="wwwroot" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(GameFile)" DestinationFiles="@(GameFile->'wwwroot/game/%(Dest)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(FontFile)" DestinationFiles="@(FontFile->'wwwroot/game/%(Dest)')" SkipUnchangedFiles="true" />
     <WriteLinesToFile File="wwwroot/game/files.txt" Lines="@(GameFile->'%(Dest)')" Overwrite="true" WriteOnlyWhenDifferent="true" />
   </Target>
 </Project>

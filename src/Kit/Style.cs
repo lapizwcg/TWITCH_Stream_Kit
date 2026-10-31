@@ -1,7 +1,8 @@
 // ОФОРМЛЕНИЕ ОКОШКА (оповещение, анонс, цель) — задаёт док-панель:
 // - цвета: акцент (заголовок, полоска), текст, фон, рамка, заливка (у цели) — только материалы с тоном («материал@тон»), без HEX;
 // - углы: у каждого свой вид — round (скругление), bevel (срез), rect (прямой), и общая сила скругления/среза;
-// - эффект появления: места (l+r, tl+br, bl+tr, t+b, center, circle — по контуру рамки), набор частиц, размер, материал частиц.
+// - эффект появления: места (l+r, tl+br, bl+tr, t+b, center, circle — по контуру рамки), набор частиц, размер, материал частиц;
+// - шрифты заголовка и текста (Fonts.cs).
 // Plate рисует плашку многоугольником: заливка переливом сверху вниз, рамка кольцом, край сглажен
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,12 @@ public sealed class Style
 	public float FxSize = 1;
 	// материал частиц; null — свой у каждого пресета
 	public string FxMat;
+	// шрифты заголовка и текста — id из data/fonts.json (Fonts.cs)
+	public string Head = Fonts.MainId, Font = Fonts.MainId;
 
 	public uint Col((string mat, double tone) c, int a, double toneAdd = 0) => Layout.Col(c.mat, Math.Clamp(c.tone + toneAdd, 0, 1), a);
 
-	// из JSON дока: { accent: "citrine@0.85", text, bg, border, fill, corners: [..4], corner, fx: { at: [..], set, size, mat } }
+	// из JSON дока: { accent: "citrine@0.85", text, bg, border, fill, corners: [..4], corner, head, font, fx: { at: [..], set, size, mat } }
 	public void Load(JVal j)
 	{
 		var d = j.Dict();
@@ -42,6 +45,8 @@ public sealed class Style
 		var cs = d["corners"].Arr();
 		for (int i = 0; i < 4 && i < cs.Count; i++) Corners[i] = cs[i].AsString() is "bevel" or "rect" ? cs[i].AsString() : "round";
 		if (d.ContainsKey("corner")) Corner = (float)Math.Clamp(d["corner"].AsDouble(), 0, 80);
+		if (d.ContainsKey("head")) Head = d["head"].AsString() ?? Fonts.MainId;
+		if (d.ContainsKey("font")) Font = d["font"].AsString() ?? Fonts.MainId;
 		var fx = d["fx"].Dict();
 		if (fx.ContainsKey("at")) { FxAt.Clear(); foreach (var a in fx["at"].Arr()) FxAt.Add(a.AsString()); }
 		if (fx.ContainsKey("set")) FxSet = Vfx.Bursts.ContainsKey(fx["set"].AsString()) ? fx["set"].AsString() : "boom";

@@ -383,6 +383,29 @@ const LOOK_PARTS = ['follow', 'goal', 'announce'];
 const COLORS = [['accent', 'Акцент (заголовок)'], ['text', 'Текст'], ['bg', 'Фон'], ['border', 'Рамка'], ['fill', 'Заливка']];
 const FX_AT = [['l+r', 'слева и справа'], ['tl+br', '↖ и ↘'], ['bl+tr', '↙ и ↗'], ['t+b', 'сверху и снизу'], ['center', 'в центре'], ['circle', 'по контуру']];
 const FX_SET = [['boom', 'Взрыв'], ['sparks', 'Искры'], ['ring', 'Кольцо'], ['fire', 'Огонь'], ['none', 'Без частиц']];
+// шрифты — список из движка (data/fonts.json); образец в доке — сам TTF через @font-face (грузится, только когда показан)
+let fonts = [];
+fetch('game/data/fonts.json')
+  .then((r) => r.json())
+  .then((j) => {
+    fonts = j.fonts;
+    for (const f of fonts) {
+      const st = document.createElement('style');
+      st.textContent = `@font-face { font-family: 'kit-${f.id}'; src: url('game/ttf/${f.id}/font.ttf'); }`;
+      document.head.append(st);
+    }
+    for (const part of LOOK_PARTS) fillFonts(part);
+    render();
+  })
+  .catch(() => {});
+const fontFamily = (id) => `'kit-${id || 'noto'}', 'Segoe UI', sans-serif`;
+function fillFonts(part) {
+  const groups = [...new Set(fonts.map((f) => f.group))];
+  for (const sel of document.querySelectorAll(`[data-look="${part}"] [data-font]`))
+    sel.innerHTML = groups
+      .map((g) => `<optgroup label="${g}">${fonts.filter((f) => f.group === g).map((f) => `<option value="${f.id}" style="font-family:${fontFamily(f.id).replace(/"/g, '&quot;')}">${f.label} · ${f.kind}</option>`).join('')}</optgroup>`)
+      .join('');
+}
 const CORNER_KINDS = [['round', 'Скругление'], ['bevel', 'Срез'], ['rect', 'Прямой']];
 // порядок углов в настройках — по часовой (tl tr br bl), на экране — сетка 2×2 (tl tr / bl br)
 const CORNER_CELLS = [[0, '↖'], [1, '↗'], [3, '↙'], [2, '↘']];
@@ -392,6 +415,11 @@ function buildLook(part) {
   const colors = COLORS.filter(([k]) => k !== 'fill' || part === 'goal');
   const opts = (list) => list.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
   box.innerHTML = `
+    <h4>Шрифт</h4>
+    <label class="field"><span class="label">Заголовок</span><select data-font="head"></select></label>
+    <div class="font-sample" data-sample="head"></div>
+    <label class="field"><span class="label">Текст</span><select data-font="font"></select></label>
+    <div class="font-sample" data-sample="font"></div>
     <h4>Цвета</h4>
     ${colors.map(([k, t]) => `<div class="mp-row"><span class="label">${t}</span><button class="mp" data-key="${k}" type="button"><i></i><span></span></button></div>`).join('')}
     <h4>Углы</h4>
@@ -426,6 +454,7 @@ function buildLook(part) {
       el.checked ? at.add(el.dataset.at) : at.delete(el.dataset.at);
       look().fx.at = [...at];
     } else if (el.hasAttribute('data-set')) look().fx.set = el.value;
+    else if (el.dataset.font) look()[el.dataset.font] = el.value;
     else return;
     commit();
   };
@@ -457,6 +486,16 @@ function renderLook(part) {
   box.querySelector('[data-val="corner"]').textContent = `${lk.corner} px`;
   for (const c of box.querySelectorAll('[data-at]')) c.checked = lk.fx.at.includes(c.dataset.at);
   box.querySelector('[data-set]').value = lk.fx.set;
+  // образцы: заголовок — заголовком окошка, текст — ником или первым анонсом
+  const sample = { head: settings[part].title || 'ЗАГОЛОВОК', font: part === 'announce' ? (settings.announce.messages || '').split('\n')[0] || 'Текст анонса' : part === 'goal' ? '63/100' : 'LapizWCG' };
+  for (const k of ['head', 'font']) {
+    const id = lk[k] || 'noto';
+    const sel = box.querySelector(`[data-font="${k}"]`);
+    if (sel.options.length) sel.value = id;
+    const s = box.querySelector(`[data-sample="${k}"]`);
+    s.style.fontFamily = fontFamily(id);
+    s.textContent = sample[k];
+  }
   box.querySelector('[data-range="size"]').value = lk.fx.size;
   box.querySelector('[data-val="size"]').textContent = `${lk.fx.size}%`;
 }

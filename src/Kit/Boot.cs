@@ -34,7 +34,8 @@ public static class Boot
 		int w = 1280, h = 720; var size = Arg("--size=")?.Split('x');
 		if (size?.Length == 2 && int.TryParse(size[0], out int sw) && int.TryParse(size[1], out int sh) && sw > 0 && sh > 0) { w = sw; h = sh; }
 		if (!App.Open("Stream Kit — оповещения", w, h, hidden: shot != null)) return 1;
-		Stage = new Stage(new Text(Paths.Of("data", "font")), Array.IndexOf(args, "--demo") >= 0 || shot != null);
+		Fonts.Init();
+		Stage = new Stage(Array.IndexOf(args, "--demo") >= 0 || shot != null);
 		if (Arg("--pos=") is string pos) Stage.Alerts.Configure(true, pos, null, 4);
 		// анонс для проверки: --announce="текст" — показ сразу, вверху по центру
 		if (Arg("--announce=") is string ann) { Stage.Announce.Configure(true, "t", null, 8); Stage.Announce.Show(ann); }

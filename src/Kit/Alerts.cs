@@ -18,10 +18,13 @@ public sealed class Alerts
 	const int In = 20, Out = 30, Gap = 30, Every = 360;
 	static readonly string[] DemoNames = { "LapizWCG", "котик_в_тапках", "Neformalization_Official", "xXSlayerXx", "Gamer2007" };
 
-	readonly Shapes sh = new(64); readonly Polys poly = new(1024); readonly Text tx; readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
+	readonly Shapes sh = new(64); readonly Polys poly = new(1024); readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
 	readonly bool demo;
 	// оформление: цвета, углы, эффект появления (Style.cs)
 	public readonly Style Style = new();
+	// шрифты заголовка и текста — из оформления (Fonts.cs)
+	Text Head => Fonts.Get(Style.Head);
+	Text Body => Fonts.Get(Style.Font);
 	readonly Queue<string> queue = new();
 	// заголовок по умолчанию; размер текста (точки при высоте 1080); ширина, за которой текст переносится (0 — одной строкой)
 	readonly string defaultTitle;
@@ -36,9 +39,9 @@ public sealed class Alerts
 	bool enabled = true;
 	List<string> lines = new() { "" };
 
-	public Alerts(Text tx, bool demo, string defaultTitle, float textPx, float wrap)
+	public Alerts(bool demo, string defaultTitle, float textPx, float wrap)
 	{
-		this.tx = tx; this.demo = demo; this.defaultTitle = title = defaultTitle; this.textPx = textPx; this.wrap = wrap;
+		this.demo = demo; this.defaultTitle = title = defaultTitle; this.textPx = textPx; this.wrap = wrap;
 	}
 
 	public void Configure(bool on, string pos, string head, double seconds)
@@ -79,7 +82,7 @@ public sealed class Alerts
 		foreach (var word in s.Split(' ', StringSplitOptions.RemoveEmptyEntries))
 		{
 			string next = cur.Length == 0 ? word : cur + " " + word;
-			if (cur.Length > 0 && tx.Width(next, textPx) > wrap) { res.Add(cur); cur = word; }
+			if (cur.Length > 0 && Body.Width(next, textPx) > wrap) { res.Add(cur); cur = word; }
 			else cur = next;
 		}
 		res.Add(cur);
@@ -89,7 +92,7 @@ public sealed class Alerts
 	float TextWidth(float px)
 	{
 		float m = 0;
-		foreach (var l in lines) m = Math.Max(m, tx.Width(l, px));
+		foreach (var l in lines) m = Math.Max(m, Body.Width(l, px));
 		return m;
 	}
 
@@ -100,7 +103,7 @@ public sealed class Alerts
 	(float cx, float cy, float cw, float ch) Place(int w, int h)
 	{
 		float c = C(h), U = h / 1080f;
-		float cw = Width(c, tx.Width(title, MathF.Round(26 * c)), TextWidth(MathF.Round(textPx * c))), ch = (Content + 2 * P(1)) * U * sy;
+		float cw = Width(c, Head.Width(title, MathF.Round(26 * c)), TextWidth(MathF.Round(textPx * c))), ch = (Content + 2 * P(1)) * U * sy;
 		var (cx, cy) = Layout.Place(ax, ay, w, h, cw, ch, pad * U + 40 * c, pad * U);
 		return (cx, cy, cw, ch);
 	}
@@ -138,7 +141,7 @@ public sealed class Alerts
 		int a = (int)(255 * Math.Clamp(fade, 0, 1));
 		float tp = MathF.Round(26 * u * k), np = MathF.Round(textPx * u * k);
 		if (tp < 2 || np < 2) return;
-		float tw = tx.Width(title, tp);
+		float tw = Head.Width(title, tp);
 		var (cx, cy, _, ch0) = Place(w, h);
 		float cw = Width(u * k, tw, TextWidth(np)), ch = ch0 * k;
 		// содержимое — посередине карточки по высоте (размер по Y больше — поля сверху и снизу)
@@ -152,10 +155,13 @@ public sealed class Alerts
 		sh.Rect(cx - tw / 2, y + 38 * u * k, tw, 4 * u * k, Style.Col(Style.Accent, a, -0.05), 2 * u * k);
 		sh.Flush(w, h);
 
-		tx.Begin();
-		tx.Draw(title, cx - tw / 2, y, tp, Style.Col(Style.Accent, a));
+		var hf = Head; var bf = Body;
+		hf.Begin();
+		hf.Draw(title, cx - tw / 2, y, tp, Style.Col(Style.Accent, a));
+		hf.Flush(w, h);
+		bf.Begin();
 		for (int i = 0; i < lines.Count; i++)
-			tx.Draw(lines[i], cx - tx.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Style.Col(Style.Text, a), 2 * u);
-		tx.Flush(w, h);
+			bf.Draw(lines[i], cx - bf.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Style.Col(Style.Text, a), 2 * u);
+		bf.Flush(w, h);
 	}
 }

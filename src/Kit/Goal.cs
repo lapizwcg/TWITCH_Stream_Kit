@@ -13,7 +13,7 @@ public sealed class Goal
 	// шаги (60 в секунду): проявление/скрытие, праздник цели, период блеска, длина теста
 	const int FadeSteps = 20, Party = 300, Sheen = 200, PreviewSteps = 300;
 
-	readonly Shapes sh = new(128); readonly Grads gr = new(64); readonly Polys poly = new(1024); readonly Text tx; readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
+	readonly Shapes sh = new(128); readonly Grads gr = new(64); readonly Polys poly = new(1024); readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
 	// оформление: цвета, углы плашки, частицы (Style.cs); заливка — материал Fill, после достижения цели — материал акцента
 	public readonly Style Style = new();
 	float ax = 0.5f, ay = 1, shown, vis;
@@ -23,8 +23,6 @@ public sealed class Goal
 	string title = "ЦЕЛЬ: ФОЛЛОВЕРЫ", style = "ltr";
 	int current, target = 100, t, party = -1, preview = -1, previewValue;
 	bool on, configured;
-
-	public Goal(Text tx) { this.tx = tx; }
 
 	int Value => preview >= 0 ? previewValue : current;
 
@@ -294,28 +292,36 @@ public sealed class Goal
 		string count = $"{(int)MathF.Round(shown)}/{target}";
 		float pulse = cheer ? 1 + 0.06f * MathF.Sin(t * 0.2f) : 1, p = P(u);
 		// надпись не шире своего места: длинная — мельче
-		float Fit(string s, float px, float room) => MathF.Round(Math.Min(px, px * room / Math.Max(1, tx.Width(s, px))));
-		void Center(string s, float cx, float y, float px, uint col, float outline = 0) => tx.Draw(s, cx - tx.Width(s, px) / 2, y, px, col, outline);
+		// заголовок — шрифтом заголовка, счёт — шрифтом текста (Fonts.cs); каждый своим пакетом
+		Text hf = Fonts.Get(Style.Head), bf = Fonts.Get(Style.Font);
+		float Fit(Text f, string s, float px, float room) => MathF.Round(Math.Min(px, px * room / Math.Max(1, f.Width(s, px))));
+		void Center(Text f, string s, float cx, float y, float px, uint col, float outline = 0) => f.Draw(s, cx - f.Width(s, px) / 2, y, px, col, outline);
+		// сначала место и кегли (размеры — по ширине строк), потом вывод: заголовок, затем счёт
+		float hx, hy, hp, cx2, cy2, cp2; bool hc;
 
-		tx.Begin();
 		if (Ring)
 		{
 			var (cx, cy, r, th) = RingOf(bx, by, bw, bh, u);
-			float cp = Fit(count, 60 * u, 2 * (r - th) - 30 * u);
-			Center(head, bx + bw / 2, by + OffY(bh, u) + p, Fit(head, 30 * u * pulse, bw - 2 * p), headCol);
-			Center(count, cx, cy - cp * 0.62f, cp, countCol, 1.5f * u);
+			cp2 = Fit(bf, count, 60 * u, 2 * (r - th) - 30 * u);
+			hc = true; hx = bx + bw / 2; hy = by + OffY(bh, u) + p; hp = Fit(hf, head, 30 * u * pulse, bw - 2 * p);
+			cx2 = cx - bf.Width(count, cp2) / 2; cy2 = cy - cp2 * 0.62f;
 		}
 		else if (Vertical)
 		{
-			Center(head, bx + bw / 2, by + p, Fit(head, 26 * u * pulse, bw - 2 * p), headCol);
-			Center(count, bx + bw / 2, by + bh - p - 32 * u, Fit(count, 26 * u, bw - 2 * p), countCol, 1.5f * u);
+			hc = true; hx = bx + bw / 2; hy = by + p; hp = Fit(hf, head, 26 * u * pulse, bw - 2 * p);
+			cp2 = Fit(bf, count, 26 * u, bw - 2 * p); cx2 = bx + bw / 2 - bf.Width(count, cp2) / 2; cy2 = by + bh - p - 32 * u;
 		}
 		else
 		{
-			float cp = 30 * u, cw = tx.Width(count, cp), ty = by + OffY(bh, u) + p;
-			tx.Draw(head, bx + p, ty, Fit(head, 30 * u * pulse, bw - 2 * p - cw - 20 * u), headCol);
-			tx.Draw(count, bx + bw - p - cw, ty, cp, countCol, 1.5f * u);
+			cp2 = 30 * u; float cw = bf.Width(count, cp2), ty = by + OffY(bh, u) + p;
+			hc = false; hx = bx + p; hy = ty; hp = Fit(hf, head, 30 * u * pulse, bw - 2 * p - cw - 20 * u);
+			cx2 = bx + bw - p - cw; cy2 = ty;
 		}
-		tx.Flush(w, h);
+		hf.Begin();
+		if (hc) Center(hf, head, hx, hy, hp, headCol); else hf.Draw(head, hx, hy, hp, headCol);
+		hf.Flush(w, h);
+		bf.Begin();
+		bf.Draw(count, cx2, cy2, cp2, countCol, 1.5f * u);
+		bf.Flush(w, h);
 	}
 }
