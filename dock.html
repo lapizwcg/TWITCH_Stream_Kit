@@ -6,26 +6,26 @@
 <title>Stream Kit — пульт</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.34lq6bu8m2.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.8n1nrglcg3.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.4no92y46if.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./dock.js": "./dock.x20fgwjrj7.js",
-    "./kit.js": "./kit.tklukxdg0m.js",
+    "./dock.js": "./dock.vfz1wsef8r.js",
+    "./kit.js": "./kit.eet99eb7ff.js",
     "./twitch.js": "./twitch.2p4xr7kxbh.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.34lq6bu8m2.js": "sha256-Y5/F4vuZSgBB7ZDMYz77v7GmiRx0uIm0vmKDIkwbJb8=",
-    "./_framework/dotnet.js": "sha256-Y5/F4vuZSgBB7ZDMYz77v7GmiRx0uIm0vmKDIkwbJb8=",
+    "./_framework/dotnet.8n1nrglcg3.js": "sha256-FPPBML04TPs8TJ2VPQ0I4x1jQqxTHJ9Zy/e0MzZQ5Uk=",
+    "./_framework/dotnet.js": "sha256-FPPBML04TPs8TJ2VPQ0I4x1jQqxTHJ9Zy/e0MzZQ5Uk=",
     "./_framework/dotnet.native.4no92y46if.js": "sha256-AFH8pmS6Sia9LUbH+74FRyiEqsurofmYV1PO4kgE7I8=",
     "./_framework/dotnet.native.js": "sha256-AFH8pmS6Sia9LUbH+74FRyiEqsurofmYV1PO4kgE7I8=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./dock.js": "sha256-19F4o9pkAI3Uelk+B9T/NGi0QEByBs5W4qQhqC8YVC8=",
-    "./dock.x20fgwjrj7.js": "sha256-19F4o9pkAI3Uelk+B9T/NGi0QEByBs5W4qQhqC8YVC8=",
-    "./kit.js": "sha256-Q6/aA7Xgxs+LziTy3+5kj8hHdxpnjHTTOEq/r9Myrd8=",
-    "./kit.tklukxdg0m.js": "sha256-Q6/aA7Xgxs+LziTy3+5kj8hHdxpnjHTTOEq/r9Myrd8=",
+    "./dock.js": "sha256-qxmMubP7yhZ6BxOjfAlTqSdq2IqvfpmOokWJg8+4Aak=",
+    "./dock.vfz1wsef8r.js": "sha256-qxmMubP7yhZ6BxOjfAlTqSdq2IqvfpmOokWJg8+4Aak=",
+    "./kit.eet99eb7ff.js": "sha256-Fg5321Lvfuss8/KMNRxeVDEFKw5/ug6zHt1DdfawTy0=",
+    "./kit.js": "sha256-Fg5321Lvfuss8/KMNRxeVDEFKw5/ug6zHt1DdfawTy0=",
     "./twitch.2p4xr7kxbh.js": "sha256-+nJn8qk3+rrTrKZhHkW242fIFx0EwoKGiI/rPcPkn2U=",
     "./twitch.js": "sha256-+nJn8qk3+rrTrKZhHkW242fIFx0EwoKGiI/rPcPkn2U=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261031-022658-52cf4d0';
+  var CURRENT = '20261031-023754-3c46ca5';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -98,6 +98,13 @@
       </div>
     </div>
 
+    <div class="field sizes">
+      <label><span class="label">Отступ от края: <b id="followPadVal"></b></span><input id="followPad" type="range" min="0" max="300" step="5"></label>
+      <label><span class="label">Размер по X: <b id="followSxVal"></b></span><input id="followSx" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Размер по Y: <b id="followSyVal"></b></span><input id="followSy" type="range" min="30" max="300" step="5"></label>
+      <button class="btn ghost small" id="followSizeReset" type="button">Сбросить размер</button>
+    </div>
+
     <label class="field">
       <div class="label">Заголовок</div>
       <input id="followTitle" type="text" maxlength="40" placeholder="НОВЫЙ ФОЛЛОУЕР">
@@ -130,6 +137,13 @@
         <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
         <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
       </div>
+    </div>
+
+    <div class="field sizes">
+      <label><span class="label">Отступ от края: <b id="goalPadVal"></b></span><input id="goalPad" type="range" min="0" max="300" step="5"></label>
+      <label><span class="label">Размер по X: <b id="goalSxVal"></b></span><input id="goalSx" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Размер по Y: <b id="goalSyVal"></b></span><input id="goalSy" type="range" min="30" max="300" step="5"></label>
+      <button class="btn ghost small" id="goalSizeReset" type="button">Сбросить размер</button>
     </div>
 
     <div class="field">

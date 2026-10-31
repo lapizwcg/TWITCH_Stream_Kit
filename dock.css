@@ -74,6 +74,9 @@ select { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-ra
 .styles .ring { fill: none; stroke: #3a3d46; stroke-width: 3; }
 .styles .arc { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
 .row2 { display: flex; gap: 6px; }
+/* отступ и размер: три ползунка и сброс */
+.sizes label { display: flex; flex-direction: column; gap: 2px; }
+.sizes .btn { align-self: flex-start; }
 .row2 .btn { flex: 1; }
 
 .btn.ghost { background: var(--panel); border: 1px solid var(--line); color: var(--text); font-weight: 500; }
