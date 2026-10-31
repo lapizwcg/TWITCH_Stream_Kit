@@ -159,21 +159,21 @@ $('logout').onclick = async () => {
 
 // отступ и размер — одинаковые ползунки у каждого показа
 function renderSize(pre, part) {
-  for (const [key, unit] of [['pad', ' px'], ['sx', '%'], ['sy', '%']]) {
+  for (const [key, unit] of [['pad', ' px'], ['sx', '%'], ['sy', '%'], ['inner', '%']]) {
     const id = pre + key[0].toUpperCase() + key.slice(1);
     $(id).value = part[key];
     $(id + 'Val').textContent = part[key] + unit;
   }
 }
 for (const pre of ['follow', 'goal']) {
-  for (const key of ['pad', 'sx', 'sy'])
+  for (const key of ['pad', 'sx', 'sy', 'inner'])
     $(pre + key[0].toUpperCase() + key.slice(1)).oninput = (e) => {
       settings[pre][key] = +e.target.value;
       commit();
     };
   $(pre + 'SizeReset').onclick = () => {
     const def = DEFAULTS[pre];
-    Object.assign(settings[pre], { pad: def.pad, sx: def.sx, sy: def.sy });
+    Object.assign(settings[pre], { pad: def.pad, sx: def.sx, sy: def.sy, inner: def.inner });
     commit();
   };
 }

@@ -6,9 +6,9 @@
 <title>Stream Kit — оповещения</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.8n1nrglcg3.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.4no92y46if.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.zrhns0o1in.js",
     "./dock.js": "./dock.vfz1wsef8r.js",
     "./kit.js": "./kit.eet99eb7ff.js",
     "./twitch.js": "./twitch.2p4xr7kxbh.js",
@@ -16,12 +16,12 @@
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.8n1nrglcg3.js": "sha256-FPPBML04TPs8TJ2VPQ0I4x1jQqxTHJ9Zy/e0MzZQ5Uk=",
-    "./_framework/dotnet.js": "sha256-FPPBML04TPs8TJ2VPQ0I4x1jQqxTHJ9Zy/e0MzZQ5Uk=",
+    "./_framework/dotnet.js": "sha256-QeqbIcqahW6A6GwcFeK/e2Fr61PggCWl7it7EPzio34=",
     "./_framework/dotnet.native.4no92y46if.js": "sha256-AFH8pmS6Sia9LUbH+74FRyiEqsurofmYV1PO4kgE7I8=",
     "./_framework/dotnet.native.js": "sha256-AFH8pmS6Sia9LUbH+74FRyiEqsurofmYV1PO4kgE7I8=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
+    "./_framework/dotnet.zrhns0o1in.js": "sha256-QeqbIcqahW6A6GwcFeK/e2Fr61PggCWl7it7EPzio34=",
     "./dock.js": "sha256-qxmMubP7yhZ6BxOjfAlTqSdq2IqvfpmOokWJg8+4Aak=",
     "./dock.vfz1wsef8r.js": "sha256-qxmMubP7yhZ6BxOjfAlTqSdq2IqvfpmOokWJg8+4Aak=",
     "./kit.eet99eb7ff.js": "sha256-Fg5321Lvfuss8/KMNRxeVDEFKw5/ug6zHt1DdfawTy0=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261031-023754-3c46ca5';
+  var CURRENT = '20261031-024635-acbbc80';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -73,8 +73,8 @@ const { rt } = await boot({ canvas: document.getElementById('game'), maxDpr: 1, 
 const B = (await rt.getAssemblyExports('KitWeb.dll')).KitWeb.Bridge;
 const apply = (s) => {
   if (s.follow) B.Follow(s.follow.on, q.get('pos') || s.follow.pos, s.follow.title, s.follow.seconds);
-  if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100);
-  if (s.goal) B.GoalSize(s.goal.pad ?? 50, (s.goal.sx ?? 100) / 100, (s.goal.sy ?? 100) / 100);
+  if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100, s.follow.inner ?? 1);
+  if (s.goal) B.GoalSize(s.goal.pad ?? 50, (s.goal.sx ?? 100) / 100, (s.goal.sy ?? 100) / 100, s.goal.inner ?? 1);
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
 };
 apply(loadSettings());
