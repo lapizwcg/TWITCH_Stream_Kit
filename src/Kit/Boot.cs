@@ -37,7 +37,7 @@ public static class Boot
 		var inv = System.Globalization.CultureInfo.InvariantCulture;
 		if (scale?.Length == 2 && double.TryParse(scale[0], System.Globalization.NumberStyles.Float, inv, out double kx) && double.TryParse(scale[1], System.Globalization.NumberStyles.Float, inv, out double ky))
 		{
-			Stage.Goal.Size(50, kx, ky); Stage.Alerts.Size(70, kx, ky);
+			Stage.Goal.Size(50, kx, ky, 1); Stage.Alerts.Size(70, kx, ky, 1);
 		}
 		return App.Run(Stage, shot, frames);
 	}

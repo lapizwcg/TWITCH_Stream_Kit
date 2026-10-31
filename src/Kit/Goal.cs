@@ -17,7 +17,7 @@ public sealed class Goal
 	float ax = 0.5f, ay = 1, shown, vis;
 	// отступ от края экрана (точки при высоте 1080) и размер по X/Y (доли): плашка — своей ширины и высоты, содержимое — по меньшему
 	// из размеров (буквы не растягиваются), лишнее место — поля вокруг, полоса растёт вдоль своей оси
-	float pad = 50, sx = 1, sy = 1;
+	float pad = 50, sx = 1, sy = 1, inner = 1;
 	string title = "ЦЕЛЬ: ФОЛЛОВЕРЫ", style = "ltr";
 	int current, target = 100, t, party = -1, preview = -1, previewValue;
 	bool on, configured;
@@ -43,10 +43,12 @@ public sealed class Goal
 		if (cur < goal && preview < 0) party = -1;
 	}
 
-	public void Size(double margin, double width, double height)
+	// inside — внутренний отступ в процентах высоты кадра
+	public void Size(double margin, double width, double height, double inside)
 	{
 		pad = (float)Math.Clamp(margin, 0, 400);
 		sx = (float)Math.Clamp(width, 0.3, 3); sy = (float)Math.Clamp(height, 0.3, 3);
+		inner = (float)Math.Clamp(inside, 0, 10);
 	}
 
 	// масштаб содержимого: высота кадра и меньший из размеров
@@ -68,8 +70,8 @@ public sealed class Goal
 	bool Vertical => style is "ttb" or "btt";
 	bool Ring => style == "radial";
 
-	// внутренний отступ плашки — 1% высоты кадра (при масштабе содержимого u)
-	static float P(float u) => 10.8f * u;
+	// внутренний отступ плашки — inner процентов высоты кадра (при масштабе содержимого u)
+	float P(float u) => 10.8f * inner * u;
 
 	// размер плашки в покое (точки при высоте 1080): по содержимому плюс внутренний отступ со всех сторон.
 	// Полоса: строка заголовка 36 + зазор 10 + дорожка 38; столбик: заголовок и счёт по 32 с зазорами 10; кольцо: строка 36 +

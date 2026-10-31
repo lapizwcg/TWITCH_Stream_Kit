@@ -10,7 +10,7 @@ public static partial class Bridge
 	[JSExport] public static void ShowFollow(string name) => Kit.Boot.Stage?.Alerts.Show(name);
 	[JSExport] public static void Goal(bool on, string pos, string title, int current, int target, string style) => Kit.Boot.Stage?.Goal.Configure(on, pos, title, current, target, style);
 	[JSExport] public static void PreviewGoal(double frac) => Kit.Boot.Stage?.Goal.Preview(frac);
-	// отступ от края (точки при высоте 1080) и размер по X/Y (доли)
-	[JSExport] public static void FollowSize(double pad, double sx, double sy) => Kit.Boot.Stage?.Alerts.Size(pad, sx, sy);
-	[JSExport] public static void GoalSize(double pad, double sx, double sy) => Kit.Boot.Stage?.Goal.Size(pad, sx, sy);
+	// отступ от края (точки при высоте 1080), размер по X/Y (доли), внутренний отступ (проценты высоты кадра)
+	[JSExport] public static void FollowSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Alerts.Size(pad, sx, sy, inner);
+	[JSExport] public static void GoalSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Goal.Size(pad, sx, sy, inner);
 }

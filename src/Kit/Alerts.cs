@@ -23,7 +23,7 @@ public sealed class Alerts
 	float ax = 0.5f, ay = 0.5f;
 	// отступ от края экрана (точки при высоте 1080) и размер по X/Y (доли); содержимое — по меньшему из размеров, чтобы буквы не
 	// растягивались, а лишнее место по другой оси — поля вокруг
-	float pad = 70, sx = 1, sy = 1;
+	float pad = 70, sx = 1, sy = 1, inner = 1;
 	string title = "НОВЫЙ ФОЛЛОУЕР";
 	int hold = 240, t, age = -1, wait, demoN;
 	bool enabled = true;
@@ -39,10 +39,12 @@ public sealed class Alerts
 		if (!on) queue.Clear();
 	}
 
-	public void Size(double margin, double width, double height)
+	// inside — внутренний отступ в процентах высоты кадра
+	public void Size(double margin, double width, double height, double inside)
 	{
 		pad = (float)Math.Clamp(margin, 0, 400);
 		sx = (float)Math.Clamp(width, 0.3, 3); sy = (float)Math.Clamp(height, 0.3, 3);
+		inner = (float)Math.Clamp(inside, 0, 10);
 	}
 
 	// масштаб содержимого: высота кадра и меньший из размеров
@@ -52,8 +54,9 @@ public sealed class Alerts
 	public void Show(string who) { if (enabled && !string.IsNullOrWhiteSpace(who)) queue.Enqueue(who.Trim()); }
 	public void ShowDemo() => Show(DemoNames[demoN++ % DemoNames.Length]);
 
-	// внутренний отступ карточки — 1% высоты кадра (при масштабе содержимого c); высота содержимого: заголовок, полоска, ник с хвостами букв (у, р)
-	static float P(float c) => 10.8f * c;
+	// внутренний отступ карточки — inner процентов высоты кадра (при масштабе содержимого c); высота содержимого: заголовок, полоска,
+	// ник с хвостами букв (у, р)
+	float P(float c) => 10.8f * inner * c;
 	const float Content = 132;
 
 	// ширина карточки: по тексту и внутреннему отступу при масштабе содержимого c, растянутая, если размер по X больше размера по Y
