@@ -1,6 +1,7 @@
 // ЗАПЕКАНИЕ ШРИФТОВ НА ВЫБОР (только ПК): fonts/<id>/font.ttf (OFL, Google Fonts) → data/fonts/<id>/font.png, font.bin — атлас
-// знаков MTSDF движка (Bake.FontBake). Список — data/fonts.json; noto — основной шрифт (data/font), его не печём. Знаков, которых
-// в шрифте нет, берутся из Noto Sans движка — строка не теряет букв
+// знаков MTSDF движка (Bake.FontBake). Список — data/fonts.json. Знаков, которых
+// в шрифте нет, берутся из Noto Sans движка — строка не теряет букв. Основной (noto) — из Noto Sans движка в data/font. Запас поля —
+// Range точек атласа: обводка и свечение текста (Text.Ink) не шире его половины в долях кегля
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,7 @@ namespace Kit.Desktop;
 
 public static class FontsBake
 {
+	const int Size = 48, Range = 32;
 	// латиница, кириллица, знаки препинания, тире и кавычки, №
 	const string Chars = "[0x20, 0x7e], [0xa0, 0xbf], 0xd7, 0x401, [0x410, 0x44f], 0x451, [0x2010, 0x2026], 0x2116";
 
@@ -32,18 +34,18 @@ public static class FontsBake
 		foreach (var f in Data.Get("fonts").Dict()["fonts"].Arr())
 		{
 			string id = f.Dict()["id"].AsString();
-			if (id == "noto") continue;
-			string ttf = Paths.Of("fonts", id, "font.ttf"), outDir = Paths.Of("data", "fonts", id);
+			bool main = id == "noto";
+			string ttf = main ? noto : Paths.Of("fonts", id, "font.ttf"), outDir = main ? Paths.Of("data", "font") : Paths.Of("data", "fonts", id);
 			Console.Write(id + ": ");
-			if (!Bake.FontBake(outDir, new[] { (ttf, Chars) })) { bad++; continue; }
+			if (!Bake.FontBake(outDir, new[] { (ttf, Chars) }, Size, Range)) { bad++; continue; }
 			// чего в шрифте нет — допечь из Noto Sans только эти знаки (весь набор Noto раздул бы атлас вдвое)
 			var has = new HashSet<int>();
 			foreach (var g in Data.Parse(File.ReadAllBytes(Path.Combine(outDir, "font.json"))).Dict()["glyphs"].Arr()) has.Add(g.Dict()["unicode"].AsInt32());
 			var miss = Wanted().Where(c => !has.Contains(c)).ToList();
-			if (miss.Count > 0)
+			if (miss.Count > 0 && !main)
 			{
 				Console.Write($"из Noto {miss.Count} знаков; ");
-				if (!Bake.FontBake(outDir, new[] { (ttf, Chars), (noto, string.Join(", ", miss.Select(c => "0x" + c.ToString("x")))) })) { bad++; continue; }
+				if (!Bake.FontBake(outDir, new[] { (ttf, Chars), (noto, string.Join(", ", miss.Select(c => "0x" + c.ToString("x")))) }, Size, Range)) { bad++; continue; }
 			}
 			File.Delete(Path.Combine(outDir, "font.json"));
 		}

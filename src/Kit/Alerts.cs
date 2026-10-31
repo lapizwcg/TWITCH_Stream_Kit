@@ -157,11 +157,11 @@ public sealed class Alerts
 
 		var hf = Head; var bf = Body;
 		hf.Begin();
-		hf.Draw(title, cx - tw / 2, y, tp, Style.Col(Style.Accent, a));
+		Style.Ink(hf, title, cx - tw / 2, y, tp, Style.Col(Style.Accent, a), a, u * k, true);
 		hf.Flush(w, h);
 		bf.Begin();
 		for (int i = 0; i < lines.Count; i++)
-			bf.Draw(lines[i], cx - bf.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Style.Col(Style.Text, a), 2 * u);
+			Style.Ink(bf, lines[i], cx - bf.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Style.Col(Style.Text, a), a, u * k, false);
 		bf.Flush(w, h);
 	}
 }

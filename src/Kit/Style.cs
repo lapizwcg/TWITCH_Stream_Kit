@@ -2,7 +2,8 @@
 // - цвета: акцент (заголовок, полоска), текст, фон, рамка, заливка (у цели) — только материалы с тоном («материал@тон»), без HEX;
 // - углы: у каждого свой вид — round (скругление), bevel (срез), rect (прямой), и общая сила скругления/среза;
 // - эффект появления: места (l+r, tl+br, bl+tr, t+b, center, circle — по контуру рамки), набор частиц, размер, материал частиц;
-// - шрифты заголовка и текста (Fonts.cs).
+// - шрифты заголовка и текста (Fonts.cs);
+// - обводка текста: стиль (обводка, мягкая, неон, тень, двойная, объём), материал, толщина, к заголовку и/или к тексту.
 // Plate рисует плашку многоугольником: заливка переливом сверху вниз, рамка кольцом, край сглажен
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,12 @@ public sealed class Style
 	public string FxMat;
 	// шрифты заголовка и текста — id из data/fonts.json (Fonts.cs)
 	public string Head = Fonts.MainId, Font = Fonts.MainId;
+	// обводка текста: стиль, материал, толщина (точки при высоте 1080), к заголовку и к тексту
+	public string Stroke = "solid";
+	public (string mat, double tone) StrokeCol = ("obsidian", 0.05);
+	public float StrokeW = 2;
+	public bool StrokeHead, StrokeText = true;
+	static readonly HashSet<string> Strokes = new() { "none", "solid", "soft", "neon", "shadow", "double", "extrude" };
 
 	public uint Col((string mat, double tone) c, int a, double toneAdd = 0) => Layout.Col(c.mat, Math.Clamp(c.tone + toneAdd, 0, 1), a);
 
@@ -31,9 +38,9 @@ public sealed class Style
 	public void Load(JVal j)
 	{
 		var d = j.Dict();
-		(string, double) M(string k, (string, double) def)
+		(string, double) M(string k, (string, double) def) => Mt(d[k].AsString(), def);
+		static (string, double) Mt(string s, (string, double) def)
 		{
-			var s = d[k].AsString();
 			if (string.IsNullOrEmpty(s)) return def;
 			int at = s.IndexOf('@');
 			string id = at < 0 ? s : s[..at];
@@ -47,11 +54,66 @@ public sealed class Style
 		if (d.ContainsKey("corner")) Corner = (float)Math.Clamp(d["corner"].AsDouble(), 0, 80);
 		if (d.ContainsKey("head")) Head = d["head"].AsString() ?? Fonts.MainId;
 		if (d.ContainsKey("font")) Font = d["font"].AsString() ?? Fonts.MainId;
+		var st = d["stroke"].Dict();
+		if (st.ContainsKey("style")) Stroke = Strokes.Contains(st["style"].AsString()) ? st["style"].AsString() : "solid";
+		if (st.ContainsKey("color")) StrokeCol = Mt(st["color"].AsString(), StrokeCol);
+		if (st.ContainsKey("width")) StrokeW = (float)Math.Clamp(st["width"].AsDouble(), 0, 12);
+		if (st.ContainsKey("head")) StrokeHead = st["head"].AsBool();
+		if (st.ContainsKey("text")) StrokeText = st["text"].AsBool();
 		var fx = d["fx"].Dict();
 		if (fx.ContainsKey("at")) { FxAt.Clear(); foreach (var a in fx["at"].Arr()) FxAt.Add(a.AsString()); }
 		if (fx.ContainsKey("set")) FxSet = Vfx.Bursts.ContainsKey(fx["set"].AsString()) ? fx["set"].AsString() : "boom";
 		if (fx.ContainsKey("size")) FxSize = (float)Math.Clamp(fx["size"].AsDouble(), 0.2, 4);
 		if (fx.ContainsKey("mat")) FxMat = Mats.Get(fx["mat"].AsString()) != null ? fx["mat"].AsString() : null;
+	}
+
+	// ---------- обводка текста ----------
+
+	// строка с обводкой окошка; head — заголовок (иначе текст), u — масштаб (точки при высоте 1080), a — прозрачность окошка.
+	// Обводка, мягкая, неон — шейдером знаков (Text.Ink); тень, двойная, объём — ещё копии строки под ней в том же пакете
+	public void Ink(Text f, string s, float x, float y, float px, uint col, int a, float u, bool head)
+	{
+		if (!(head ? StrokeHead : StrokeText) || Stroke == "none" || StrokeW <= 0) { f.Draw(s, x, y, px, col); return; }
+		float w = StrokeW * u;
+		uint lc = Col(StrokeCol, a);
+		switch (Stroke)
+		{
+			case "soft":
+				f.Draw(s, x, y, px, col, new Text.Ink { Line = w * 0.4f, Glow = w * 1.6f, GlowA = 1, LineRgba = lc });
+				break;
+			case "neon":
+				// свечение сложением: светится поверх видео, а не закрывает его
+				f.Draw(s, x, y, px, col, new Text.Ink { Line = w * 0.35f, Glow = w * 3, GlowA = 0.3f, LineRgba = Col(StrokeCol, a, 0.1) });
+				break;
+			case "shadow":
+				f.Draw(s, x + w * 0.9f, y + w * 0.9f, px, lc, new Text.Ink { Blur = w * 0.8f });
+				f.Draw(s, x, y, px, col);
+				break;
+			case "double":
+			{
+				// внешняя — противоположного тона: у тёмной обводки светлая, у светлой тёмная
+				uint outer = Col(StrokeCol, a, StrokeCol.tone > 0.5 ? -0.65 : 0.65);
+				f.Draw(s, x, y, px, outer, new Text.Ink { Line = w * 2, LineRgba = outer });
+				f.Draw(s, x, y, px, col, new Text.Ink { Line = w, LineRgba = lc });
+				break;
+			}
+			case "extrude":
+			{
+				// объём: слои вниз и чуть вправо, дальние — темнее; сверху — строка с тонкой обводкой того же цвета
+				int n = Math.Clamp((int)MathF.Round(StrokeW * 1.5f), 2, 14);
+				float step = w / n * 1.6f;
+				for (int i = n; i >= 1; i--)
+				{
+					uint c = Col(StrokeCol, a, -0.03 * i);
+					f.Draw(s, x + i * step * 0.45f, y + i * step, px, c, new Text.Ink { Line = 0.6f * u, LineRgba = c });
+				}
+				f.Draw(s, x, y, px, col, new Text.Ink { Line = 0.8f * u, LineRgba = lc });
+				break;
+			}
+			default:
+				f.Draw(s, x, y, px, col, new Text.Ink { Line = w, LineRgba = lc });
+				break;
+		}
 	}
 
 	// ---------- плашка ----------

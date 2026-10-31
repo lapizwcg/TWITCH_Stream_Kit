@@ -406,6 +406,7 @@ function fillFonts(part) {
       .map((g) => `<optgroup label="${g}">${fonts.filter((f) => f.group === g).map((f) => `<option value="${f.id}" style="font-family:${fontFamily(f.id).replace(/"/g, '&quot;')}">${f.label} · ${f.kind}</option>`).join('')}</optgroup>`)
       .join('');
 }
+const STROKES = [['none', 'Без обводки'], ['solid', 'Обводка'], ['soft', 'Мягкая'], ['neon', 'Неон'], ['shadow', 'Тень'], ['double', 'Двойная'], ['extrude', 'Объём']];
 const CORNER_KINDS = [['round', 'Скругление'], ['bevel', 'Срез'], ['rect', 'Прямой']];
 // порядок углов в настройках — по часовой (tl tr br bl), на экране — сетка 2×2 (tl tr / bl br)
 const CORNER_CELLS = [[0, '↖'], [1, '↗'], [3, '↙'], [2, '↘']];
@@ -420,6 +421,11 @@ function buildLook(part) {
     <div class="font-sample" data-sample="head"></div>
     <label class="field"><span class="label">Текст</span><select data-font="font"></select></label>
     <div class="font-sample" data-sample="font"></div>
+    <h4>Обводка текста</h4>
+    <label class="field"><span class="label">Стиль</span><select data-stroke-style></select></label>
+    <div class="mp-row"><span class="label">Цвет обводки</span><button class="mp" data-key="stroke.color" type="button"><i></i><span></span></button></div>
+    <label class="field"><span class="label">Толщина: <b data-val="stroke"></b></span><input type="range" data-range="stroke" min="0" max="12" step="0.5"></label>
+    <div class="chips"><label><input type="checkbox" data-stroke-on="head">к заголовку</label><label><input type="checkbox" data-stroke-on="text">к тексту</label></div>
     <h4>Цвета</h4>
     ${colors.map(([k, t]) => `<div class="mp-row"><span class="label">${t}</span><button class="mp" data-key="${k}" type="button"><i></i><span></span></button></div>`).join('')}
     <h4>Углы</h4>
@@ -455,6 +461,8 @@ function buildLook(part) {
       look().fx.at = [...at];
     } else if (el.hasAttribute('data-set')) look().fx.set = el.value;
     else if (el.dataset.font) look()[el.dataset.font] = el.value;
+    else if (el.hasAttribute('data-stroke-style')) look().stroke.style = el.value;
+    else if (el.dataset.strokeOn) look().stroke[el.dataset.strokeOn] = el.checked;
     else return;
     commit();
   };
@@ -462,6 +470,7 @@ function buildLook(part) {
     const r = e.target.dataset.range;
     if (!r) return;
     if (r === 'corner') look().corner = +e.target.value;
+    else if (r === 'stroke') look().stroke.width = +e.target.value;
     else look().fx.size = +e.target.value;
     commit();
   };
@@ -470,13 +479,21 @@ function buildLook(part) {
 function renderLook(part) {
   const box = document.querySelector(`[data-look="${part}"] .look-body`);
   const lk = settings[part].look;
+  // оформление, сохранённое до появления обводки, — с обводкой по умолчанию
+  lk.stroke ??= structuredClone(STYLE.stroke);
+  const sts = box.querySelector('[data-stroke-style]');
+  if (!sts.options.length) sts.innerHTML = STROKES.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+  sts.value = lk.stroke.style;
+  box.querySelector('[data-range="stroke"]').value = lk.stroke.width;
+  box.querySelector('[data-val="stroke"]').textContent = `${lk.stroke.width} px`;
+  for (const c of box.querySelectorAll('[data-stroke-on]')) c.checked = !!lk.stroke[c.dataset.strokeOn];
   for (const b of box.querySelectorAll('.mp')) {
     const key = b.dataset.key;
     if (key === 'fx.mat') {
       b.querySelector('i').style.background = lk.fx.mat ? swatch(lk.fx.mat, 0.75) : 'linear-gradient(135deg,#f6c94a,#e8572a)';
       b.querySelector('span').textContent = lk.fx.mat ? matOf(lk.fx.mat)?.label || lk.fx.mat : 'свой у набора';
     } else {
-      const { mat, tone } = parseMt(lk[key]);
+      const { mat, tone } = parseMt(key === 'stroke.color' ? lk.stroke.color : lk[key]);
       b.querySelector('i').style.background = swatch(mat, tone);
       b.querySelector('span').textContent = `${matOf(mat)?.label || mat} · ${Math.round(tone * 100)}%`;
     }
@@ -524,11 +541,13 @@ function closePop() {
 }
 function popValue() {
   const lk = settings[pop.part].look;
+  if (pop.key === 'stroke.color') return parseMt(lk.stroke.color);
   return pop.key === 'fx.mat' ? { mat: lk.fx.mat, tone: 0.75 } : parseMt(lk[pop.key]);
 }
 function setPopValue(mat, tone) {
   const lk = settings[pop.part].look;
   if (pop.key === 'fx.mat') lk.fx.mat = mat;
+  else if (pop.key === 'stroke.color') lk.stroke.color = `${mat}@${tone}`;
   else lk[pop.key] = `${mat}@${tone}`;
   commit();
   renderPop();

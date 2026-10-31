@@ -12,6 +12,8 @@ export const STYLE = {
   corners: ['round', 'round', 'round', 'round'], corner: 16,
   // шрифты заголовка и текста — id из data/fonts.json
   head: 'noto', font: 'noto',
+  // обводка текста: style none | solid | soft | neon | shadow | double | extrude, материал, толщина (точки при 1080), к заголовку / к тексту
+  stroke: { style: 'solid', color: 'obsidian@0.05', width: 2, head: false, text: true },
   fx: { at: ['l+r'], set: 'boom', size: 100, mat: '' },
 };
 const style = () => structuredClone(STYLE);

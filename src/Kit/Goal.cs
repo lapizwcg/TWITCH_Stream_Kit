@@ -295,7 +295,6 @@ public sealed class Goal
 		// заголовок — шрифтом заголовка, счёт — шрифтом текста (Fonts.cs); каждый своим пакетом
 		Text hf = Fonts.Get(Style.Head), bf = Fonts.Get(Style.Font);
 		float Fit(Text f, string s, float px, float room) => MathF.Round(Math.Min(px, px * room / Math.Max(1, f.Width(s, px))));
-		void Center(Text f, string s, float cx, float y, float px, uint col, float outline = 0) => f.Draw(s, cx - f.Width(s, px) / 2, y, px, col, outline);
 		// сначала место и кегли (размеры — по ширине строк), потом вывод: заголовок, затем счёт
 		float hx, hy, hp, cx2, cy2, cp2; bool hc;
 
@@ -318,10 +317,10 @@ public sealed class Goal
 			cx2 = bx + bw - p - cw; cy2 = ty;
 		}
 		hf.Begin();
-		if (hc) Center(hf, head, hx, hy, hp, headCol); else hf.Draw(head, hx, hy, hp, headCol);
+		Style.Ink(hf, head, hc ? hx - hf.Width(head, hp) / 2 : hx, hy, hp, headCol, a, u, true);
 		hf.Flush(w, h);
 		bf.Begin();
-		bf.Draw(count, cx2, cy2, cp2, countCol, 1.5f * u);
+		Style.Ink(bf, count, cx2, cy2, cp2, countCol, a, u, false);
 		bf.Flush(w, h);
 	}
 }
