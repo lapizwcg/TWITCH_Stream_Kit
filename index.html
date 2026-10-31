@@ -6,26 +6,26 @@
 <title>Stream Kit — оповещения</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.gvjsxu7629.js",
-    "./_framework/dotnet.native.js": "./_framework/dotnet.native.4no92y46if.js",
+    "./_framework/dotnet.native.js": "./_framework/dotnet.native.ck80no22pj.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./dock.js": "./dock.oheg3n37pv.js",
-    "./kit.js": "./kit.l69rvh4tj2.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.vp8io9eq1u.js",
+    "./dock.js": "./dock.976yzxb0ng.js",
+    "./kit.js": "./kit.8y3e7dytwi.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.gvjsxu7629.js": "sha256-nDwGeGIakY1QjqprnVnI8li+lFtIAsP2V8rkblYjLBc=",
-    "./_framework/dotnet.js": "sha256-nDwGeGIakY1QjqprnVnI8li+lFtIAsP2V8rkblYjLBc=",
-    "./_framework/dotnet.native.4no92y46if.js": "sha256-AFH8pmS6Sia9LUbH+74FRyiEqsurofmYV1PO4kgE7I8=",
-    "./_framework/dotnet.native.js": "sha256-AFH8pmS6Sia9LUbH+74FRyiEqsurofmYV1PO4kgE7I8=",
+    "./_framework/dotnet.js": "sha256-Xcc97iDdSqmt7nyE9jMLwmtwv4b6ZqU9qzl0MFP5dLs=",
+    "./_framework/dotnet.native.ck80no22pj.js": "sha256-pF3jIHBLF0ON83jERnhIflAEYd8Cf4FqVcYq6HpfOgg=",
+    "./_framework/dotnet.native.js": "sha256-pF3jIHBLF0ON83jERnhIflAEYd8Cf4FqVcYq6HpfOgg=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./dock.js": "sha256-pMPMFNKJHvbTslSjvjg4THQtSkEXBdhOJXbphw71xSU=",
-    "./dock.oheg3n37pv.js": "sha256-pMPMFNKJHvbTslSjvjg4THQtSkEXBdhOJXbphw71xSU=",
-    "./kit.js": "sha256-w7V4jImJWU/Ao0QTWjpXcAVEw6R1JbKbLoHYbjZ0K14=",
-    "./kit.l69rvh4tj2.js": "sha256-w7V4jImJWU/Ao0QTWjpXcAVEw6R1JbKbLoHYbjZ0K14=",
+    "./_framework/dotnet.vp8io9eq1u.js": "sha256-Xcc97iDdSqmt7nyE9jMLwmtwv4b6ZqU9qzl0MFP5dLs=",
+    "./dock.976yzxb0ng.js": "sha256-5SoV/eVZkwFguQMMp/PwDBvy1sBSyQtRt6vy5g/RyAs=",
+    "./dock.js": "sha256-5SoV/eVZkwFguQMMp/PwDBvy1sBSyQtRt6vy5g/RyAs=",
+    "./kit.8y3e7dytwi.js": "sha256-gNlCzDW2YO/RXTKkeZ+UoF7J5qpAHXa7xc+Wqa4aj6k=",
+    "./kit.js": "sha256-gNlCzDW2YO/RXTKkeZ+UoF7J5qpAHXa7xc+Wqa4aj6k=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261031-035615-5000018';
+  var CURRENT = '20261031-122515-bb6065f';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -80,6 +80,9 @@ const apply = (s) => {
     B.Announce(s.announce.output !== 'chat', s.announce.pos, s.announce.title, s.announce.seconds);
     B.AnnounceSize(s.announce.pad ?? 70, (s.announce.sx ?? 100) / 100, (s.announce.sy ?? 100) / 100, s.announce.inner ?? 1);
   }
+  // оформление: размер частиц в доке — проценты, в показе — доля
+  for (const part of ['follow', 'announce', 'goal'])
+    if (s[part]?.look) B.Style(part, JSON.stringify({ ...s[part].look, fx: { ...s[part].look.fx, size: (s[part].look.fx?.size ?? 100) / 100 } }));
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
 };
 apply(loadSettings());
