@@ -21,6 +21,9 @@ public sealed class Alerts
 	readonly Queue<string> queue = new();
 	// место карточки в кадре: доли свободного места по X и Y (0 — у левого/верхнего края, 1 — у правого/нижнего)
 	float ax = 0.5f, ay = 0.5f;
+	// отступ от края экрана (точки при высоте 1080) и размер по X/Y (доли); содержимое — по меньшему из размеров, чтобы буквы не
+	// растягивались, а лишнее место по другой оси — поля вокруг
+	float pad = 70, sx = 1, sy = 1;
 	string title = "НОВЫЙ ФОЛЛОУЕР";
 	int hold = 240, t, age = -1, wait, demoN;
 	bool enabled = true;
@@ -36,16 +39,28 @@ public sealed class Alerts
 		if (!on) queue.Clear();
 	}
 
+	public void Size(double margin, double width, double height)
+	{
+		pad = (float)Math.Clamp(margin, 0, 400);
+		sx = (float)Math.Clamp(width, 0.3, 3); sy = (float)Math.Clamp(height, 0.3, 3);
+	}
+
+	// масштаб содержимого: высота кадра и меньший из размеров
+	float C(int h) => h / 1080f * Math.Min(sx, sy);
+
 	// в очередь; показ — в Step, когда освободится место
 	public void Show(string who) { if (enabled && !string.IsNullOrWhiteSpace(who)) queue.Enqueue(who.Trim()); }
 	public void ShowDemo() => Show(DemoNames[demoN++ % DemoNames.Length]);
 
-	// размер карточки в покое (без отскока) и её середина по месту; поле от края — с запасом под вспышки у боков
+	// ширина карточки: по тексту при масштабе содержимого c, растянутая, если размер по X больше размера по Y
+	float Width(float c, float tw, float nw) => (Math.Max(tw, nw) + 120 * c) * sx / Math.Min(sx, sy);
+
+	// размер карточки в покое (без отскока) и её середина по месту; поле от края — отступ плюс запас под вспышки у боков
 	(float cx, float cy, float cw, float ch) Place(int w, int h)
 	{
-		float u = h / 1080f;
-		float cw = Math.Max(tx.Width(title, MathF.Round(26 * u)), tx.Width(name, MathF.Round(64 * u))) + 120 * u, ch = 190 * u;
-		var (cx, cy) = Layout.Place(ax, ay, w, h, cw, ch, 110 * u, 70 * u);
+		float c = C(h), U = h / 1080f;
+		float cw = Width(c, tx.Width(title, MathF.Round(26 * c)), tx.Width(name, MathF.Round(64 * c))), ch = 190 * U * sy;
+		var (cx, cy) = Layout.Place(ax, ay, w, h, cw, ch, pad * U + 40 * c, pad * U);
 		return (cx, cy, cw, ch);
 	}
 
@@ -54,9 +69,9 @@ public sealed class Alerts
 		name = who; age = 0;
 		// вспышки — у краёв карточки, не поверх ника; пресеты сделаны под окно в 540 точек высотой — крупнее по размеру кадра
 		var (cx, cy, cw, _) = Place(App.W, App.H);
-		float u = App.H / 1080f;
+		float c = C(App.H);
 		foreach (float x in new[] { cx - cw / 2, cx + cw / 2 })
-			foreach (var n in Vfx.Bursts["follow"]) fx.Burst(n, x, cy, scale: 2.2f * u);
+			foreach (var n in Vfx.Bursts["follow"]) fx.Burst(n, x, cy, scale: 2.2f * c);
 	}
 
 	public void Step()
@@ -77,7 +92,7 @@ public sealed class Alerts
 
 	void Card(int w, int h)
 	{
-		float u = h / 1080f;
+		float u = C(h);
 		// появление — с перелётом (easeOutBack), исчезание — прозрачностью
 		float p = Math.Min(1f, age / (float)In), k = 1 + 2.7f * MathF.Pow(p - 1, 3) + 1.7f * MathF.Pow(p - 1, 2);
 		float fade = age > In + hold ? 1 - (age - In - hold) / (float)Out : 1;
@@ -85,12 +100,13 @@ public sealed class Alerts
 		float tp = MathF.Round(26 * u * k), np = MathF.Round(64 * u * k);
 		if (tp < 2 || np < 2) return;
 		float tw = tx.Width(title, tp), nw = tx.Width(name, np);
-		float cw = Math.Max(tw, nw) + 120 * u * k, ch = 190 * u * k;
-		var (cx, cy, _, _) = Place(w, h);
-		float x = cx - cw / 2, y = cy - ch / 2;
+		var (cx, cy, _, ch0) = Place(w, h);
+		float cw = Width(u * k, tw, nw), ch = ch0 * k;
+		// содержимое — посередине карточки по высоте (размер по Y больше — поля сверху и снизу)
+		float x = cx - cw / 2, y = cy - ch / 2 + (ch - 190 * u * k) / 2;
 
 		sh.Begin(); sh.Screen();
-		sh.Rect(x, y, cw, ch, Layout.Col("obsidian", 0.12, a * 225 / 255), 26 * u * k, 4 * u * k, Layout.Col("c_azure", 0.7, a));
+		sh.Rect(x, cy - ch / 2, cw, ch, Layout.Col("obsidian", 0.12, a * 225 / 255), 26 * u * k, 4 * u * k, Layout.Col("c_azure", 0.7, a));
 		// полоска-акцент под заголовком
 		sh.Rect(cx - tw / 2, y + 70 * u * k, tw, 4 * u * k, Layout.Col("citrine", 0.8, a), 2 * u * k);
 		sh.Flush(w, h);

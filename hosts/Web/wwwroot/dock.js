@@ -1,6 +1,6 @@
 // ДОК-ПАНЕЛЬ: поля ↔ настройки. Каждое изменение сразу сохраняется и уходит в открытые оверлеи — в OBS видно без перезагрузки.
 // Здесь же — связь с Twitch: вход, события канала (новые фолловеры → оповещение в показ), счёт цели по фолловерам или сабам
-import { loadSettings, saveSettings, createBus } from './kit.js';
+import { DEFAULTS, loadSettings, saveSettings, createBus } from './kit.js';
 import * as Twitch from './twitch.js';
 
 const $ = (id) => document.getElementById(id);
@@ -39,6 +39,7 @@ function render() {
   if (document.activeElement !== $('followTitle')) $('followTitle').value = f.title;
   $('followSeconds').value = f.seconds;
   $('followSecondsVal').textContent = `${f.seconds} с`;
+  renderSize('follow', f);
 
   const g = settings.goal;
   $('goalOn').checked = g.on;
@@ -48,6 +49,7 @@ function render() {
   for (const [id, v] of [['goalTitle', g.title], ['goalCurrent', g.current], ['goalTarget', g.target]])
     if (document.activeElement !== $(id)) $(id).value = v;
   $('goalSource').value = g.source;
+  renderSize('goal', g);
   // счёт по Twitch ведётся сам — руками его не трогаем
   const auto = g.source !== 'manual';
   for (const id of ['goalCurrent', 'goalPlus', 'goalMinus', 'goalReset']) $(id).disabled = auto;
@@ -154,6 +156,27 @@ $('logout').onclick = async () => {
   await Twitch.logout(session);
   location.reload();
 };
+
+// отступ и размер — одинаковые ползунки у каждого показа
+function renderSize(pre, part) {
+  for (const [key, unit] of [['pad', ' px'], ['sx', '%'], ['sy', '%']]) {
+    const id = pre + key[0].toUpperCase() + key.slice(1);
+    $(id).value = part[key];
+    $(id + 'Val').textContent = part[key] + unit;
+  }
+}
+for (const pre of ['follow', 'goal']) {
+  for (const key of ['pad', 'sx', 'sy'])
+    $(pre + key[0].toUpperCase() + key.slice(1)).oninput = (e) => {
+      settings[pre][key] = +e.target.value;
+      commit();
+    };
+  $(pre + 'SizeReset').onclick = () => {
+    const def = DEFAULTS[pre];
+    Object.assign(settings[pre], { pad: def.pad, sx: def.sx, sy: def.sy });
+    commit();
+  };
+}
 
 // вкладки
 for (const t of document.querySelectorAll('.tab')) {
