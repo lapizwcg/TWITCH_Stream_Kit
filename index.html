@@ -7,25 +7,25 @@
 <script type="importmap">{
   "imports": {
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.ck80no22pj.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.r960afja6a.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.vp8io9eq1u.js",
-    "./dock.js": "./dock.976yzxb0ng.js",
-    "./kit.js": "./kit.8y3e7dytwi.js",
+    "./dock.js": "./dock.b4p1k8b2gg.js",
+    "./kit.js": "./kit.05g2c59cq2.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.js": "sha256-Xcc97iDdSqmt7nyE9jMLwmtwv4b6ZqU9qzl0MFP5dLs=",
+    "./_framework/dotnet.js": "sha256-v7U69nHZMa1uNKqoVruK12VDfzmh5/SdlOftxV8+Bzo=",
     "./_framework/dotnet.native.ck80no22pj.js": "sha256-pF3jIHBLF0ON83jERnhIflAEYd8Cf4FqVcYq6HpfOgg=",
     "./_framework/dotnet.native.js": "sha256-pF3jIHBLF0ON83jERnhIflAEYd8Cf4FqVcYq6HpfOgg=",
+    "./_framework/dotnet.r960afja6a.js": "sha256-v7U69nHZMa1uNKqoVruK12VDfzmh5/SdlOftxV8+Bzo=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./_framework/dotnet.vp8io9eq1u.js": "sha256-Xcc97iDdSqmt7nyE9jMLwmtwv4b6ZqU9qzl0MFP5dLs=",
-    "./dock.976yzxb0ng.js": "sha256-5SoV/eVZkwFguQMMp/PwDBvy1sBSyQtRt6vy5g/RyAs=",
-    "./dock.js": "sha256-5SoV/eVZkwFguQMMp/PwDBvy1sBSyQtRt6vy5g/RyAs=",
-    "./kit.8y3e7dytwi.js": "sha256-gNlCzDW2YO/RXTKkeZ+UoF7J5qpAHXa7xc+Wqa4aj6k=",
-    "./kit.js": "sha256-gNlCzDW2YO/RXTKkeZ+UoF7J5qpAHXa7xc+Wqa4aj6k=",
+    "./dock.b4p1k8b2gg.js": "sha256-axmpK/rWiBhpNT8wuoSWZzi/fH6BK3t4c1rEuw4SbNk=",
+    "./dock.js": "sha256-axmpK/rWiBhpNT8wuoSWZzi/fH6BK3t4c1rEuw4SbNk=",
+    "./kit.05g2c59cq2.js": "sha256-NA6PgSb2K5g7UNkGEKD7RaVjPzt1C0p7mCg5ZmN3YcI=",
+    "./kit.js": "sha256-NA6PgSb2K5g7UNkGEKD7RaVjPzt1C0p7mCg5ZmN3YcI=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261031-122515-bb6065f';
+  var CURRENT = '20261031-141836-253d9de';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -71,6 +71,30 @@ const { rt } = await boot({ canvas: document.getElementById('game'), maxDpr: 1, 
 // настройки — из док-панели (dock.html): сохранённые сразу при запуске, изменения — по мере того, как их двигают.
 // ?pos= в адресе источника важнее панели — на случай, если источников несколько и у каждого своё место
 const B = (await rt.getAssemblyExports('KitWeb.dll')).KitWeb.Bridge;
+// шрифты на выбор — не в списке запуска: файлы выбранных докладываются в файловую систему .NET перед настройками (Fonts.cs берёт
+// их оттуда при первом обращении); основной (noto) — уже там
+const fontsIn = new Set(['noto']);
+async function ensureFonts(s) {
+  const ids = new Set();
+  for (const part of ['follow', 'announce', 'goal']) for (const k of ['head', 'font']) if (s[part]?.look?.[k]) ids.add(s[part].look[k]);
+  await Promise.all([...ids].filter((id) => !fontsIn.has(id) && /^[a-z0-9_-]+$/.test(id)).map(async (id) => {
+    try {
+      const got = await Promise.all(['font.bin', 'font.png'].map(async (f) => {
+        const r = await fetch(`game/data/fonts/${id}/${f}`, { cache: 'no-cache' });
+        if (!r.ok) throw new Error(r.status);
+        return new Uint8Array(await r.arrayBuffer());
+      }));
+      rt.Module.FS_createPath('/', `data/fonts/${id}`, true, true);
+      ['font.bin', 'font.png'].forEach((f, i) => rt.Module.FS_createDataFile(`/data/fonts/${id}`, f, got[i], true, true, true));
+      fontsIn.add(id);
+    } catch (e) {
+      console.warn('шрифт не загрузился:', id, e);
+    }
+  }));
+}
+// настройки — по очереди: пока качается шрифт, следующие ждут, чтобы старые не легли поверх новых
+let chain = Promise.resolve();
+const settle = (s) => (chain = chain.then(() => ensureFonts(s)).then(() => apply(s)));
 const apply = (s) => {
   if (s.follow) B.Follow(s.follow.on, q.get('pos') || s.follow.pos, s.follow.title, s.follow.seconds);
   if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100, s.follow.inner ?? 1);
@@ -85,9 +109,9 @@ const apply = (s) => {
     if (s[part]?.look) B.Style(part, JSON.stringify({ ...s[part].look, fx: { ...s[part].look.fx, size: (s[part].look.fx?.size ?? 100) / 100 } }));
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
 };
-apply(loadSettings());
+settle(loadSettings());
 const bus = createBus((msg) => {
-  if (msg.type === 'settings') apply(msg.settings);
+  if (msg.type === 'settings') settle(msg.settings);
   else if (msg.type === 'alert' && msg.kind === 'follow') B.ShowFollow(msg.name);
   else if (msg.type === 'alert' && msg.kind === 'announce') B.ShowAnnounce(msg.name);
   else if (msg.type === 'goalTest') B.PreviewGoal(msg.frac);

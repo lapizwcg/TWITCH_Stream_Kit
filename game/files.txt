@@ -1,4 +1,5 @@
 wcg.root
+data/fonts.json
 data/fx.json
 data/mats.json
 data/font/font.bin
