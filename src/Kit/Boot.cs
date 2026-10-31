@@ -19,9 +19,15 @@ public static class Boot
 		Data.Load(Paths.Of("data"));
 		if (Data.Get("mats").VariantType == JType.Nil) { Console.WriteLine("данные не прочитались: " + Data.Error); return 1; }
 		Mats.Load(Data.Get("mats"));
+		if (Arg("--palette=") is string palette) { Palette.Write(palette); Console.WriteLine("палитра: " + palette); return 0; }
 		Vfx.SetPresets(Data.Get("fx"));
-		// без дыма: тёмный дым поверх чужого видео выглядит грязью, светящееся ложится на него сложением
-		Vfx.Bursts["follow"] = new[] { "вспышка", "кольцо", "огонь", "искры" };
+		// наборы частиц для оформления окошек (выбор в доке). Без дыма: тёмный дым поверх чужого видео выглядит грязью, светящееся
+		// ложится на него сложением
+		Vfx.Bursts["boom"] = new[] { "вспышка", "кольцо", "огонь", "искры" };
+		Vfx.Bursts["sparks"] = new[] { "искры", "вспышка" };
+		Vfx.Bursts["ring"] = new[] { "кольцо", "вспышка" };
+		Vfx.Bursts["fire"] = new[] { "огонь", "вспышка" };
+		Vfx.Bursts["none"] = Array.Empty<string>();
 		// оверлей: фон кадра пустой — в OBS под ним видео
 		App.BgR = App.BgG = App.BgB = 0; App.BgA = 0;
 		// размер — как у источника в OBS; --size=ШxВ — свой
@@ -40,6 +46,12 @@ public static class Boot
 		if (scale?.Length == 2 && double.TryParse(scale[0], System.Globalization.NumberStyles.Float, inv, out double kx) && double.TryParse(scale[1], System.Globalization.NumberStyles.Float, inv, out double ky))
 		{
 			Stage.Goal.Size(50, kx, ky, 1); Stage.Alerts.Size(70, kx, ky, 1);
+		}
+		// оформление всем окошкам: --style={JSON как в доке} (Style.Load)
+		if (Arg("--style=") is string style)
+		{
+			var j = Data.Parse(System.Text.Encoding.UTF8.GetBytes(style));
+			Stage.Alerts.Style.Load(j); Stage.Announce.Style.Load(j); Stage.Goal.Style.Load(j);
 		}
 		return App.Run(Stage, shot, frames);
 	}

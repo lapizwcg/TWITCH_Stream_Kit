@@ -53,6 +53,9 @@ const apply = (s) => {
     B.Announce(s.announce.output !== 'chat', s.announce.pos, s.announce.title, s.announce.seconds);
     B.AnnounceSize(s.announce.pad ?? 70, (s.announce.sx ?? 100) / 100, (s.announce.sy ?? 100) / 100, s.announce.inner ?? 1);
   }
+  // оформление: размер частиц в доке — проценты, в показе — доля
+  for (const part of ['follow', 'announce', 'goal'])
+    if (s[part]?.look) B.Style(part, JSON.stringify({ ...s[part].look, fx: { ...s[part].look.fx, size: (s[part].look.fx?.size ?? 100) / 100 } }));
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
 };
 apply(loadSettings());

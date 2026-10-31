@@ -97,6 +97,10 @@
         <button class="btn">Показать</button>
       </form>
     </div>
+      <details class="look" data-look="follow">
+      <summary>Оформление</summary>
+      <div class="look-body"></div>
+    </details>
   </section>
 
   <section id="tab-goals" class="pane" hidden>
@@ -164,6 +168,10 @@
       <button class="btn" id="goalTest" title="Заливка на 75% на несколько секунд — настоящий счёт не меняется">Тест: 75%</button>
       <button class="btn ghost" id="goalReset">Сбросить счёт</button>
     </div>
+      <details class="look" data-look="goal">
+      <summary>Оформление</summary>
+      <div class="look-body"></div>
+    </details>
   </section>
 
   <!-- анонсы: свои сообщения по таймеру — в оверлей (карточкой), в чат или туда и туда -->
@@ -223,8 +231,14 @@
       <label><span class="label">Внутренний отступ: <b id="announceInnerVal"></b></span><input id="announceInner" type="range" min="0" max="6" step="0.25"></label>
       <button class="btn ghost small" id="announceSizeReset" type="button">Сбросить размер</button>
     </div>
+      <details class="look" data-look="announce" data-overlay>
+      <summary>Оформление</summary>
+      <div class="look-body"></div>
+    </details>
   </section>
 </main>
+
+<div id="matPop" class="pop" hidden></div>
 
 <footer class="help">
   <div class="label">Показы в OBS</div>

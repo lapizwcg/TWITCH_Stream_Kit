@@ -13,7 +13,9 @@ public sealed class Goal
 	// шаги (60 в секунду): проявление/скрытие, праздник цели, период блеска, длина теста
 	const int FadeSteps = 20, Party = 300, Sheen = 200, PreviewSteps = 300;
 
-	readonly Shapes sh = new(128); readonly Grads gr = new(64); readonly Text tx; readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
+	readonly Shapes sh = new(128); readonly Grads gr = new(64); readonly Polys poly = new(1024); readonly Text tx; readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
+	// оформление: цвета, углы плашки, частицы (Style.cs); заливка — материал Fill, после достижения цели — материал акцента
+	public readonly Style Style = new();
 	float ax = 0.5f, ay = 1, shown, vis;
 	// отступ от края экрана (точки при высоте 1080) и размер по X/Y (доли): плашка — своей ширины и высоты, содержимое — по меньшему
 	// из размеров (буквы не растягиваются), лишнее место — поля вокруг, полоса растёт вдоль своей оси
@@ -63,7 +65,14 @@ public sealed class Goal
 		Spark(previewValue / (float)target, false);
 	}
 
-	void Celebrate() { party = 0; for (int i = 0; i <= 6; i++) Spark(i / 6f, true); }
+	// цель достигнута: вспышки вдоль заливки и эффект появления по выбранным местам плашки
+	void Celebrate()
+	{
+		party = 0;
+		for (int i = 0; i <= 6; i++) Spark(i / 6f, true);
+		var (bx, by, bw, bh) = Box(App.W, App.H);
+		Style.Appear(fx, bx, by, bw, bh, C(App.H));
+	}
 
 	// ---------- раскладка: размер плашки по виду, место, дорожка ----------
 
@@ -119,11 +128,9 @@ public sealed class Goal
 
 	void Spark(float frac, bool big)
 	{
+		// набор частиц, размер и материал — из оформления; у края заливки — мельче, чем у карточек
 		var (px, py) = Head(frac, App.W, App.H);
-		float u = C(App.H);
-		fx.Burst("искры", px, py, scale: (big ? 2.4f : 1.6f) * u);
-		fx.Burst("вспышка", px, py, scale: (big ? 2.4f : 1.4f) * u);
-		if (big) fx.Burst("кольцо", px, py, scale: 1.6f * u);
+		Style.Burst(fx, new() { (px, py) }, C(App.H) * (big ? 1.1f : 0.7f));
 	}
 
 	public void Step()
@@ -160,16 +167,12 @@ public sealed class Goal
 		var (bx, by, bw, bh) = Box(w, h);
 		bool done = Value >= target;
 		float frac = Math.Clamp(shown / target, 0, 1);
-		string mat = done ? "gold" : "c_azure";
+		string mat = done ? Style.Accent.mat : Style.Fill.mat;
 
-		// плашка — тёмное стекло с переливом сверху вниз, тонкой кромкой и светлой линией по верху
-		gr.Begin(); gr.Screen();
-		gr.Linear(bx, by, bw, bh, Layout.Col("obsidian", 0.2, a * 235 / 255), Layout.Col("obsidian", 0.06, a * 235 / 255), 16 * u, soft: 1.5f);
-		gr.Flush(w, h);
-		sh.Begin(); sh.Screen();
-		sh.Rect(bx, by, bw, bh, 0, 16 * u, 2.5f * u, Layout.Col(mat, 0.62, a * 200 / 255));
-		sh.Rect(bx + 16 * u, by + 1.5f * u, bw - 32 * u, 1.5f * u, Layout.Col("pearl", 0.95, a * 40 / 255));
-		sh.Flush(w, h);
+		// плашка — по оформлению: углы, фон переливом, рамка (после достижения цели — цветом акцента)
+		poly.Begin();
+		Style.Plate(poly, bx, by, bw, bh, u, 2.5f * u, a, done ? Style.Accent : null);
+		poly.Flush(w, h);
 
 		if (Ring) RingBar(bx, by, bw, bh, u, a, frac, mat, w, h);
 		else LineBar(bx, by, bw, bh, u, a, frac, mat, w, h);
@@ -287,7 +290,7 @@ public sealed class Goal
 	{
 		bool cheer = party >= 0 && party < Party;
 		string head = cheer ? "ЦЕЛЬ ДОСТИГНУТА!" : title;
-		uint headCol = Layout.Col(cheer || done ? "gold" : "citrine", 0.85, a), countCol = Layout.Col("pearl", 0.95, a);
+		uint headCol = Style.Col(Style.Accent, a), countCol = Style.Col(Style.Text, a);
 		string count = $"{(int)MathF.Round(shown)}/{target}";
 		float pulse = cheer ? 1 + 0.06f * MathF.Sin(t * 0.2f) : 1, p = P(u);
 		// надпись не шире своего места: длинная — мельче

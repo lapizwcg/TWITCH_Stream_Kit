@@ -5,18 +5,27 @@
 const KEY = 'kit.settings';
 const BUS = 'kit.bus';
 
+// оформление окошка по умолчанию: цвета — материал@тон (только материалы движка), углы по часовой tl tr br bl (round | bevel |
+// rect) и сила, эффект появления: места (l+r tl+br bl+tr t+b center circle), набор частиц, размер (%), материал частиц ('' — свой)
+export const STYLE = {
+  accent: 'citrine@0.85', text: 'pearl@0.95', bg: 'obsidian@0.12', border: 'c_azure@0.7', fill: 'c_azure@0.6',
+  corners: ['round', 'round', 'round', 'round'], corner: 16,
+  fx: { at: ['l+r'], set: 'boom', size: 100, mat: '' },
+};
+const style = () => structuredClone(STYLE);
+
 export const DEFAULTS = {
   // pad — отступ от края экрана (точки при высоте 1080), sx/sy — размер по X и по Y (проценты), inner — внутренний отступ
   // (проценты высоты кадра); то же у цели
-  follow: { on: true, pos: 'c', title: 'НОВЫЙ ФОЛЛОУЕР', seconds: 4, pad: 70, sx: 100, sy: 100, inner: 1 },
+  follow: { on: true, pos: 'c', title: 'НОВЫЙ ФОЛЛОУЕР', seconds: 4, pad: 70, sx: 100, sy: 100, inner: 1, look: style() },
   // анонсы: on — по таймеру раз в every минут; output — overlay | chat | both; messages — по одному на строку, по очереди
   announce: {
     on: false, output: 'overlay', messages: 'Подписывайтесь на канал!', every: 15,
-    title: 'АНОНС', seconds: 8, pos: 't', pad: 70, sx: 100, sy: 100, inner: 1,
+    title: 'АНОНС', seconds: 8, pos: 't', pad: 70, sx: 100, sy: 100, inner: 1, look: style(),
   },
   // source: followers | subs — счёт ведёт Twitch (нужен вход в доке), manual — вручную
   // style: ltr rtl ttb btt radial — вид прогресса
-  goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr', pad: 50, sx: 100, sy: 100, inner: 1 },
+  goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr', pad: 50, sx: 100, sy: 100, inner: 1, look: style() },
 };
 
 export function loadSettings() {

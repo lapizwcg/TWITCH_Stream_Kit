@@ -1,6 +1,6 @@
 // ДОК-ПАНЕЛЬ: поля ↔ настройки. Каждое изменение сразу сохраняется и уходит в открытые оверлеи — в OBS видно без перезагрузки.
 // Здесь же — связь с Twitch: вход, события канала (новые фолловеры → оповещение в показ), счёт цели по фолловерам или сабам
-import { DEFAULTS, loadSettings, saveSettings, createBus } from './kit.js';
+import { DEFAULTS, STYLE, loadSettings, saveSettings, createBus } from './kit.js';
 import * as Twitch from './twitch.js';
 
 const $ = (id) => document.getElementById(id);
@@ -64,6 +64,8 @@ function render() {
   for (const el of document.querySelectorAll('#tab-announce [data-overlay]')) el.hidden = an.output === 'chat';
   renderSize('announce', an);
   renderAnnounceNote();
+  // оформление — после того как разделы собраны (buildLook)
+  if (document.querySelector('[data-look] .mp')) for (const part of LOOK_PARTS) renderLook(part);
   // счёт по Twitch ведётся сам — руками его не трогаем
   const auto = g.source !== 'manual';
   for (const id of ['goalCurrent', 'goalPlus', 'goalMinus', 'goalReset']) $(id).disabled = auto;
@@ -358,6 +360,168 @@ $('copyUrl').onclick = () => {
     () => getSelection().selectAllChildren($('overlayUrl')),
   );
 };
+
+// ---------- оформление окошек: цвета (только материалы движка), углы, эффект появления ----------
+
+// палитра — цвета материалов по тонам, собрана из движка (KitDesktop --palette); в настройках хранится «материал@тон», не цвет
+let palette = [];
+fetch('palette.json')
+  .then((r) => r.json())
+  .then((p) => {
+    palette = p;
+    render();
+  })
+  .catch(() => {});
+const matOf = (id) => palette.find((m) => m.id === id);
+const swatch = (id, tone) => matOf(id)?.rgb[Math.round(Math.min(1, Math.max(0, tone)) * 10)] || '#444';
+const parseMt = (v) => {
+  const [mat, t] = String(v || '').split('@');
+  return { mat, tone: t === undefined ? 0.6 : +t };
+};
+
+const LOOK_PARTS = ['follow', 'goal', 'announce'];
+const COLORS = [['accent', 'Акцент (заголовок)'], ['text', 'Текст'], ['bg', 'Фон'], ['border', 'Рамка'], ['fill', 'Заливка']];
+const FX_AT = [['l+r', 'слева и справа'], ['tl+br', '↖ и ↘'], ['bl+tr', '↙ и ↗'], ['t+b', 'сверху и снизу'], ['center', 'в центре'], ['circle', 'по контуру']];
+const FX_SET = [['boom', 'Взрыв'], ['sparks', 'Искры'], ['ring', 'Кольцо'], ['fire', 'Огонь'], ['none', 'Без частиц']];
+const CORNER_KINDS = [['round', 'Скругление'], ['bevel', 'Срез'], ['rect', 'Прямой']];
+// порядок углов в настройках — по часовой (tl tr br bl), на экране — сетка 2×2 (tl tr / bl br)
+const CORNER_CELLS = [[0, '↖'], [1, '↗'], [3, '↙'], [2, '↘']];
+
+function buildLook(part) {
+  const box = document.querySelector(`[data-look="${part}"] .look-body`);
+  const colors = COLORS.filter(([k]) => k !== 'fill' || part === 'goal');
+  const opts = (list) => list.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+  box.innerHTML = `
+    <h4>Цвета</h4>
+    ${colors.map(([k, t]) => `<div class="mp-row"><span class="label">${t}</span><button class="mp" data-key="${k}" type="button"><i></i><span></span></button></div>`).join('')}
+    <h4>Углы</h4>
+    <div class="corners">${CORNER_CELLS.map(([i, a]) => `<select data-corner="${i}" title="угол ${a}">${opts(CORNER_KINDS.map(([v, t]) => [v, `${a} ${t}`]))}</select>`).join('')}</div>
+    <div class="chips">${CORNER_KINDS.map(([v, t]) => `<button class="btn ghost small" data-all="${v}" type="button">Все: ${t.toLowerCase()}</button>`).join('')}</div>
+    <label class="field"><span class="label">Сила скругления / среза: <b data-val="corner"></b></span><input type="range" data-range="corner" min="0" max="80" step="1"></label>
+    <h4>Эффект появления</h4>
+    <div class="chips">${FX_AT.map(([v, t]) => `<label><input type="checkbox" data-at="${v}">${t}</label>`).join('')}</div>
+    <label class="field"><span class="label">Частицы</span><select data-set>${opts(FX_SET)}</select></label>
+    <label class="field"><span class="label">Размер частиц: <b data-val="size"></b></span><input type="range" data-range="size" min="20" max="300" step="5"></label>
+    <div class="mp-row"><span class="label">Цвет частиц</span><button class="mp" data-key="fx.mat" type="button"><i></i><span></span></button></div>
+    <button class="btn ghost small" data-reset type="button">Сбросить оформление</button>`;
+
+  const look = () => settings[part].look;
+  box.onclick = (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.key) openPop(t, part, t.dataset.key);
+    else if (t.dataset.all) {
+      look().corners = [0, 1, 2, 3].map(() => t.dataset.all);
+      commit();
+    } else if (t.hasAttribute('data-reset')) {
+      settings[part].look = structuredClone(STYLE);
+      commit();
+    }
+  };
+  box.onchange = (e) => {
+    const el = e.target;
+    if (el.dataset.corner !== undefined) look().corners[+el.dataset.corner] = el.value;
+    else if (el.dataset.at) {
+      const at = new Set(look().fx.at);
+      el.checked ? at.add(el.dataset.at) : at.delete(el.dataset.at);
+      look().fx.at = [...at];
+    } else if (el.hasAttribute('data-set')) look().fx.set = el.value;
+    else return;
+    commit();
+  };
+  box.oninput = (e) => {
+    const r = e.target.dataset.range;
+    if (!r) return;
+    if (r === 'corner') look().corner = +e.target.value;
+    else look().fx.size = +e.target.value;
+    commit();
+  };
+}
+
+function renderLook(part) {
+  const box = document.querySelector(`[data-look="${part}"] .look-body`);
+  const lk = settings[part].look;
+  for (const b of box.querySelectorAll('.mp')) {
+    const key = b.dataset.key;
+    if (key === 'fx.mat') {
+      b.querySelector('i').style.background = lk.fx.mat ? swatch(lk.fx.mat, 0.75) : 'linear-gradient(135deg,#f6c94a,#e8572a)';
+      b.querySelector('span').textContent = lk.fx.mat ? matOf(lk.fx.mat)?.label || lk.fx.mat : 'свой у набора';
+    } else {
+      const { mat, tone } = parseMt(lk[key]);
+      b.querySelector('i').style.background = swatch(mat, tone);
+      b.querySelector('span').textContent = `${matOf(mat)?.label || mat} · ${Math.round(tone * 100)}%`;
+    }
+  }
+  for (const sel of box.querySelectorAll('[data-corner]')) sel.value = lk.corners[+sel.dataset.corner];
+  box.querySelector('[data-range="corner"]').value = lk.corner;
+  box.querySelector('[data-val="corner"]').textContent = `${lk.corner} px`;
+  for (const c of box.querySelectorAll('[data-at]')) c.checked = lk.fx.at.includes(c.dataset.at);
+  box.querySelector('[data-set]').value = lk.fx.set;
+  box.querySelector('[data-range="size"]').value = lk.fx.size;
+  box.querySelector('[data-val="size"]').textContent = `${lk.fx.size}%`;
+}
+
+// окно выбора материала: сетка всех материалов движка в текущем тоне и ползунок тона (у заливки и частиц тон задаёт сам рисунок)
+let pop = null;
+function openPop(btn, part, key) {
+  const el = $('matPop');
+  if (pop && pop.btn === btn) return closePop();
+  pop = { btn, part, key };
+  const withTone = key !== 'fill' && key !== 'fx.mat';
+  el.innerHTML = `
+    ${key === 'fx.mat' ? '<button class="btn ghost small" data-own type="button">Свой у набора частиц</button>' : ''}
+    <div class="grid"></div>
+    ${withTone ? '<label class="field"><span class="label">Тон: <b data-tone-val></b></span><input type="range" data-tone min="0" max="1" step="0.05"></label>' : ''}
+    <div class="name"></div>`;
+  const r = btn.getBoundingClientRect();
+  el.style.left = `${Math.max(6, Math.min(innerWidth - 270, r.right - 264 + scrollX))}px`;
+  el.style.top = `${r.bottom + 4 + scrollY}px`;
+  el.hidden = false;
+  renderPop();
+}
+function closePop() {
+  pop = null;
+  $('matPop').hidden = true;
+}
+function popValue() {
+  const lk = settings[pop.part].look;
+  return pop.key === 'fx.mat' ? { mat: lk.fx.mat, tone: 0.75 } : parseMt(lk[pop.key]);
+}
+function setPopValue(mat, tone) {
+  const lk = settings[pop.part].look;
+  if (pop.key === 'fx.mat') lk.fx.mat = mat;
+  else lk[pop.key] = `${mat}@${tone}`;
+  commit();
+  renderPop();
+}
+function renderPop() {
+  if (!pop) return;
+  const el = $('matPop');
+  const { mat, tone } = popValue();
+  el.querySelector('.grid').innerHTML = palette
+    .map((m) => `<button type="button" data-mat="${m.id}" title="${m.label}" class="${m.id === mat ? 'active' : ''}" style="background:${swatch(m.id, pop.key === 'fx.mat' || pop.key === 'fill' ? 0.75 : tone)}"></button>`)
+    .join('');
+  const t = el.querySelector('[data-tone]');
+  if (t) {
+    t.value = tone;
+    el.querySelector('[data-tone-val]').textContent = `${Math.round(tone * 100)}%`;
+  }
+  el.querySelector('.name').textContent = mat ? matOf(mat)?.label || mat : 'свой у набора частиц';
+}
+$('matPop').onclick = (e) => {
+  const b = e.target.closest('button');
+  if (!b || !pop) return;
+  if (b.dataset.mat) setPopValue(b.dataset.mat, popValue().tone);
+  else if (b.hasAttribute('data-own')) setPopValue('', 0.75);
+};
+$('matPop').oninput = (e) => {
+  if (e.target.dataset.tone !== undefined && pop) setPopValue(popValue().mat, +e.target.value);
+};
+document.addEventListener('mousedown', (e) => {
+  if (pop && !$('matPop').contains(e.target) && !pop.btn.contains(e.target)) closePop();
+});
+
+for (const part of LOOK_PARTS) buildLook(part);
 
 render();
 startTwitch();

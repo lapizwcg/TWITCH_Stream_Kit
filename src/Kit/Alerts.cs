@@ -18,8 +18,10 @@ public sealed class Alerts
 	const int In = 20, Out = 30, Gap = 30, Every = 360;
 	static readonly string[] DemoNames = { "LapizWCG", "котик_в_тапках", "Neformalization_Official", "xXSlayerXx", "Gamer2007" };
 
-	readonly Shapes sh = new(64); readonly Text tx; readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
+	readonly Shapes sh = new(64); readonly Polys poly = new(1024); readonly Text tx; readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
 	readonly bool demo;
+	// оформление: цвета, углы, эффект появления (Style.cs)
+	public readonly Style Style = new();
 	readonly Queue<string> queue = new();
 	// заголовок по умолчанию; размер текста (точки при высоте 1080); ширина, за которой текст переносится (0 — одной строкой)
 	readonly string defaultTitle;
@@ -107,10 +109,8 @@ public sealed class Alerts
 	{
 		lines = Wrap(s); age = 0;
 		// вспышки — у краёв карточки, не поверх текста; пресеты сделаны под окно в 540 точек высотой — крупнее по размеру кадра
-		var (cx, cy, cw, _) = Place(App.W, App.H);
-		float c = C(App.H);
-		foreach (float x in new[] { cx - cw / 2, cx + cw / 2 })
-			foreach (var n in Vfx.Bursts["follow"]) fx.Burst(n, x, cy, scale: 2.2f * c);
+		var (cx, cy, cw, ch) = Place(App.W, App.H);
+		Style.Appear(fx, cx - cw / 2, cy - ch / 2, cw, ch, C(App.H));
 	}
 
 	public void Step()
@@ -144,16 +144,18 @@ public sealed class Alerts
 		// содержимое — посередине карточки по высоте (размер по Y больше — поля сверху и снизу)
 		float x = cx - cw / 2, y = cy - ch / 2 + (ch - Content * u * k) / 2;
 
+		poly.Begin();
+		Style.Plate(poly, x, cy - ch / 2, cw, ch, u * k, 4 * u * k, a);
+		poly.Flush(w, h);
 		sh.Begin(); sh.Screen();
-		sh.Rect(x, cy - ch / 2, cw, ch, Layout.Col("obsidian", 0.12, a * 225 / 255), 16 * u * k, 4 * u * k, Layout.Col("c_azure", 0.7, a));
 		// полоска-акцент под заголовком
-		sh.Rect(cx - tw / 2, y + 38 * u * k, tw, 4 * u * k, Layout.Col("citrine", 0.8, a), 2 * u * k);
+		sh.Rect(cx - tw / 2, y + 38 * u * k, tw, 4 * u * k, Style.Col(Style.Accent, a, -0.05), 2 * u * k);
 		sh.Flush(w, h);
 
 		tx.Begin();
-		tx.Draw(title, cx - tw / 2, y, tp, Layout.Col("citrine", 0.85, a));
+		tx.Draw(title, cx - tw / 2, y, tp, Style.Col(Style.Accent, a));
 		for (int i = 0; i < lines.Count; i++)
-			tx.Draw(lines[i], cx - tx.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Layout.Col("pearl", 0.95, a), 2 * u);
+			tx.Draw(lines[i], cx - tx.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Style.Col(Style.Text, a), 2 * u);
 		tx.Flush(w, h);
 	}
 }
