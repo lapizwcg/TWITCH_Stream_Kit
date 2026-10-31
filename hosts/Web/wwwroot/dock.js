@@ -419,8 +419,10 @@ function buildLook(part) {
     <h4>Шрифт</h4>
     <label class="field"><span class="label">Заголовок</span><select data-font="head"></select></label>
     <div class="font-sample" data-sample="head"></div>
+    <div class="row2 type"><label class="field"><span class="label">Размер: <b data-val="headSize"></b></span><input type="range" data-range="headSize" min="50" max="250" step="5"></label><label class="field"><span class="label">Между буквами: <b data-val="headTrack"></b></span><input type="range" data-range="headTrack" min="-10" max="60" step="1"></label></div>
     <label class="field"><span class="label">Текст</span><select data-font="font"></select></label>
     <div class="font-sample" data-sample="font"></div>
+    <div class="row2 type"><label class="field"><span class="label">Размер: <b data-val="textSize"></b></span><input type="range" data-range="textSize" min="50" max="250" step="5"></label><label class="field"><span class="label">Между буквами: <b data-val="textTrack"></b></span><input type="range" data-range="textTrack" min="-10" max="60" step="1"></label></div>
     <h4>Обводка текста</h4>
     <label class="field"><span class="label">Стиль</span><select data-stroke-style></select></label>
     <div class="mp-row"><span class="label">Цвет обводки</span><button class="mp" data-key="stroke.color" type="button"><i></i><span></span></button></div>
@@ -470,6 +472,7 @@ function buildLook(part) {
     const r = e.target.dataset.range;
     if (!r) return;
     if (r === 'corner') look().corner = +e.target.value;
+    else if (/^(head|text)(Size|Track)$/.test(r)) look()[r] = +e.target.value;
     else if (r === 'stroke') look().stroke.width = +e.target.value;
     else look().fx.size = +e.target.value;
     commit();
@@ -512,6 +515,15 @@ function renderLook(part) {
     const s = box.querySelector(`[data-sample="${k}"]`);
     s.style.fontFamily = fontFamily(id);
     s.textContent = sample[k];
+    // размер и разрядка — в образце тоже: кегль от 20 точек, разрядка — в долях кегля, как в показе
+    const t = k === 'head' ? 'head' : 'text';
+    const size = lk[`${t}Size`] ?? 100, track = lk[`${t}Track`] ?? 0;
+    s.style.fontSize = `${Math.round(20 * size / 100)}px`;
+    s.style.letterSpacing = `${track / 100}em`;
+    box.querySelector(`[data-range="${t}Size"]`).value = size;
+    box.querySelector(`[data-val="${t}Size"]`).textContent = `${size}%`;
+    box.querySelector(`[data-range="${t}Track"]`).value = track;
+    box.querySelector(`[data-val="${t}Track"]`).textContent = `${track}%`;
   }
   box.querySelector('[data-range="size"]').value = lk.fx.size;
   box.querySelector('[data-val="size"]').textContent = `${lk.fx.size}%`;

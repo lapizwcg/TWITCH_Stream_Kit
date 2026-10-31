@@ -69,9 +69,13 @@ public sealed class Alerts
 
 	// внутренний отступ карточки — inner процентов высоты кадра (при масштабе содержимого c)
 	float P(float c) => 10.8f * inner * c;
-	// высота строки текста с хвостами букв (у, р); содержимое: заголовок с полоской (48) и строки текста
-	float Line => textPx * 1.3125f;
-	float Content => 48 + lines.Count * Line;
+	// размеры из оформления: заголовок 26 и текст textPx — умноженные на свой размер
+	float HP => 26 * Style.HeadSize;
+	float NP => textPx * Style.TextSize;
+	// высота строки текста с хвостами букв (у, р); содержимое: заголовок с полоской (48 при обычном размере) и строки текста
+	float Line => NP * 1.3125f;
+	float Top => 48 * Style.HeadSize;
+	float Content => Top + lines.Count * Line;
 
 	// перенос по словам: строка не шире wrap (точки при высоте 1080); слово длиннее строки остаётся целым
 	List<string> Wrap(string s)
@@ -82,7 +86,7 @@ public sealed class Alerts
 		foreach (var word in s.Split(' ', StringSplitOptions.RemoveEmptyEntries))
 		{
 			string next = cur.Length == 0 ? word : cur + " " + word;
-			if (cur.Length > 0 && Body.Width(next, textPx) > wrap) { res.Add(cur); cur = word; }
+			if (cur.Length > 0 && Style.W(Body, next, NP, false) > wrap) { res.Add(cur); cur = word; }
 			else cur = next;
 		}
 		res.Add(cur);
@@ -92,7 +96,7 @@ public sealed class Alerts
 	float TextWidth(float px)
 	{
 		float m = 0;
-		foreach (var l in lines) m = Math.Max(m, Body.Width(l, px));
+		foreach (var l in lines) m = Math.Max(m, Style.W(Body, l, px, false));
 		return m;
 	}
 
@@ -103,7 +107,7 @@ public sealed class Alerts
 	(float cx, float cy, float cw, float ch) Place(int w, int h)
 	{
 		float c = C(h), U = h / 1080f;
-		float cw = Width(c, Head.Width(title, MathF.Round(26 * c)), TextWidth(MathF.Round(textPx * c))), ch = (Content + 2 * P(1)) * U * sy;
+		float cw = Width(c, Style.W(Head, title, MathF.Round(HP * c), true), TextWidth(MathF.Round(NP * c))), ch = (Content + 2 * P(1)) * U * sy;
 		var (cx, cy) = Layout.Place(ax, ay, w, h, cw, ch, pad * U + 40 * c, pad * U);
 		return (cx, cy, cw, ch);
 	}
@@ -139,9 +143,9 @@ public sealed class Alerts
 		float p = Math.Min(1f, age / (float)In), k = 1 + 2.7f * MathF.Pow(p - 1, 3) + 1.7f * MathF.Pow(p - 1, 2);
 		float fade = age > In + hold ? 1 - (age - In - hold) / (float)Out : 1;
 		int a = (int)(255 * Math.Clamp(fade, 0, 1));
-		float tp = MathF.Round(26 * u * k), np = MathF.Round(textPx * u * k);
+		float tp = MathF.Round(HP * u * k), np = MathF.Round(NP * u * k);
 		if (tp < 2 || np < 2) return;
-		float tw = Head.Width(title, tp);
+		float tw = Style.W(Head, title, tp, true);
 		var (cx, cy, _, ch0) = Place(w, h);
 		float cw = Width(u * k, tw, TextWidth(np)), ch = ch0 * k;
 		// содержимое — посередине карточки по высоте (размер по Y больше — поля сверху и снизу)
@@ -152,7 +156,7 @@ public sealed class Alerts
 		poly.Flush(w, h);
 		sh.Begin(); sh.Screen();
 		// полоска-акцент под заголовком
-		sh.Rect(cx - tw / 2, y + 38 * u * k, tw, 4 * u * k, Style.Col(Style.Accent, a, -0.05), 2 * u * k);
+		sh.Rect(cx - tw / 2, y + 38 * Style.HeadSize * u * k, tw, 4 * u * k, Style.Col(Style.Accent, a, -0.05), 2 * u * k);
 		sh.Flush(w, h);
 
 		var hf = Head; var bf = Body;
@@ -161,7 +165,7 @@ public sealed class Alerts
 		hf.Flush(w, h);
 		bf.Begin();
 		for (int i = 0; i < lines.Count; i++)
-			Style.Ink(bf, lines[i], cx - bf.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Style.Col(Style.Text, a), a, u * k, false);
+			Style.Ink(bf, lines[i], cx - Style.W(bf, lines[i], np, false) / 2, y + (Top + i * Line) * u * k, np, Style.Col(Style.Text, a), a, u * k, false);
 		bf.Flush(w, h);
 	}
 }

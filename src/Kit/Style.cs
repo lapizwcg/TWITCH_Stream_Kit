@@ -2,7 +2,7 @@
 // - цвета: акцент (заголовок, полоска), текст, фон, рамка, заливка (у цели) — только материалы с тоном («материал@тон»), без HEX;
 // - углы: у каждого свой вид — round (скругление), bevel (срез), rect (прямой), и общая сила скругления/среза;
 // - эффект появления: места (l+r, tl+br, bl+tr, t+b, center, circle — по контуру рамки), набор частиц, размер, материал частиц;
-// - шрифты заголовка и текста (Fonts.cs);
+// - шрифты заголовка и текста (Fonts.cs), их размер и разрядка (расстояние между буквами);
 // - обводка текста: стиль (обводка, мягкая, неон, тень, двойная, объём), материал, толщина, к заголовку и/или к тексту.
 // Plate рисует плашку многоугольником: заливка переливом сверху вниз, рамка кольцом, край сглажен
 using System;
@@ -25,6 +25,8 @@ public sealed class Style
 	public string FxMat;
 	// шрифты заголовка и текста — id из data/fonts.json (Fonts.cs)
 	public string Head = Fonts.MainId, Font = Fonts.MainId;
+	// размер заголовка и текста (доли обычного) и разрядка (прибавка между буквами в долях кегля)
+	public float HeadSize = 1, TextSize = 1, HeadTrack, TextTrack;
 	// обводка текста: стиль, материал, толщина (точки при высоте 1080), к заголовку и к тексту
 	public string Stroke = "solid";
 	public (string mat, double tone) StrokeCol = ("obsidian", 0.05);
@@ -54,6 +56,10 @@ public sealed class Style
 		if (d.ContainsKey("corner")) Corner = (float)Math.Clamp(d["corner"].AsDouble(), 0, 80);
 		if (d.ContainsKey("head")) Head = d["head"].AsString() ?? Fonts.MainId;
 		if (d.ContainsKey("font")) Font = d["font"].AsString() ?? Fonts.MainId;
+		if (d.ContainsKey("headSize")) HeadSize = (float)Math.Clamp(d["headSize"].AsDouble() / 100, 0.5, 2.5);
+		if (d.ContainsKey("textSize")) TextSize = (float)Math.Clamp(d["textSize"].AsDouble() / 100, 0.5, 2.5);
+		if (d.ContainsKey("headTrack")) HeadTrack = (float)Math.Clamp(d["headTrack"].AsDouble() / 100, -0.1, 0.6);
+		if (d.ContainsKey("textTrack")) TextTrack = (float)Math.Clamp(d["textTrack"].AsDouble() / 100, -0.1, 0.6);
 		var st = d["stroke"].Dict();
 		if (st.ContainsKey("style")) Stroke = Strokes.Contains(st["style"].AsString()) ? st["style"].AsString() : "solid";
 		if (st.ContainsKey("color")) StrokeCol = Mt(st["color"].AsString(), StrokeCol);
@@ -73,28 +79,29 @@ public sealed class Style
 	// Обводка, мягкая, неон — шейдером знаков (Text.Ink); тень, двойная, объём — ещё копии строки под ней в том же пакете
 	public void Ink(Text f, string s, float x, float y, float px, uint col, int a, float u, bool head)
 	{
-		if (!(head ? StrokeHead : StrokeText) || Stroke == "none" || StrokeW <= 0) { f.Draw(s, x, y, px, col); return; }
+		float tr = head ? HeadTrack : TextTrack;
+		if (!(head ? StrokeHead : StrokeText) || Stroke == "none" || StrokeW <= 0) { f.Draw(s, x, y, px, col, new Text.Ink { Track = tr }); return; }
 		float w = StrokeW * u;
 		uint lc = Col(StrokeCol, a);
 		switch (Stroke)
 		{
 			case "soft":
-				f.Draw(s, x, y, px, col, new Text.Ink { Line = w * 0.4f, Glow = w * 1.6f, GlowA = 1, LineRgba = lc });
+				f.Draw(s, x, y, px, col, new Text.Ink { Track = tr, Line = w * 0.4f, Glow = w * 1.6f, GlowA = 1, LineRgba = lc });
 				break;
 			case "neon":
 				// свечение сложением: светится поверх видео, а не закрывает его
-				f.Draw(s, x, y, px, col, new Text.Ink { Line = w * 0.35f, Glow = w * 3, GlowA = 0.3f, LineRgba = Col(StrokeCol, a, 0.1) });
+				f.Draw(s, x, y, px, col, new Text.Ink { Track = tr, Line = w * 0.35f, Glow = w * 3, GlowA = 0.3f, LineRgba = Col(StrokeCol, a, 0.1) });
 				break;
 			case "shadow":
-				f.Draw(s, x + w * 0.9f, y + w * 0.9f, px, lc, new Text.Ink { Blur = w * 0.8f });
-				f.Draw(s, x, y, px, col);
+				f.Draw(s, x + w * 0.9f, y + w * 0.9f, px, lc, new Text.Ink { Track = tr, Blur = w * 0.8f });
+				f.Draw(s, x, y, px, col, new Text.Ink { Track = tr });
 				break;
 			case "double":
 			{
 				// внешняя — противоположного тона: у тёмной обводки светлая, у светлой тёмная
 				uint outer = Col(StrokeCol, a, StrokeCol.tone > 0.5 ? -0.65 : 0.65);
-				f.Draw(s, x, y, px, outer, new Text.Ink { Line = w * 2, LineRgba = outer });
-				f.Draw(s, x, y, px, col, new Text.Ink { Line = w, LineRgba = lc });
+				f.Draw(s, x, y, px, outer, new Text.Ink { Track = tr, Line = w * 2, LineRgba = outer });
+				f.Draw(s, x, y, px, col, new Text.Ink { Track = tr, Line = w, LineRgba = lc });
 				break;
 			}
 			case "extrude":
@@ -105,16 +112,19 @@ public sealed class Style
 				for (int i = n; i >= 1; i--)
 				{
 					uint c = Col(StrokeCol, a, -0.03 * i);
-					f.Draw(s, x + i * step * 0.45f, y + i * step, px, c, new Text.Ink { Line = 0.6f * u, LineRgba = c });
+					f.Draw(s, x + i * step * 0.45f, y + i * step, px, c, new Text.Ink { Track = tr, Line = 0.6f * u, LineRgba = c });
 				}
-				f.Draw(s, x, y, px, col, new Text.Ink { Line = 0.8f * u, LineRgba = lc });
+				f.Draw(s, x, y, px, col, new Text.Ink { Track = tr, Line = 0.8f * u, LineRgba = lc });
 				break;
 			}
 			default:
-				f.Draw(s, x, y, px, col, new Text.Ink { Line = w, LineRgba = lc });
+				f.Draw(s, x, y, px, col, new Text.Ink { Track = tr, Line = w, LineRgba = lc });
 				break;
 		}
 	}
+
+	// ширина строки с разрядкой заголовка (head) или текста
+	public float W(Text f, string s, float px, bool head) => f.Width(s, px, head ? HeadTrack : TextTrack);
 
 	// ---------- плашка ----------
 

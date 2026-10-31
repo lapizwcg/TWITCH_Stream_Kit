@@ -82,8 +82,10 @@ public sealed class Goal
 
 	// размер плашки в покое (точки при высоте 1080): по содержимому плюс внутренний отступ со всех сторон.
 	// Полоса: строка заголовка 36 + зазор 10 + дорожка 38; столбик: заголовок и счёт по 32 с зазорами 10; кольцо: строка 36 +
-	// зазор 10 + круг 256
-	(float w, float h) Base => Ring ? (256 + 2 * P(1), 36 + 10 + 256 + 2 * P(1)) : Vertical ? (120, 560) : (700, 36 + 10 + 38 + 2 * P(1));
+	// зазор 10 + круг 256. Строки — по размеру заголовка и текста из оформления
+	float HS => Style.HeadSize;
+	float TS => Style.TextSize;
+	(float w, float h) Base => Ring ? (256 + 2 * P(1), 36 * HS + 10 + 256 + 2 * P(1)) : Vertical ? (120, 560) : (700, 36 * Math.Max(HS, TS) + 10 + 38 + 2 * P(1));
 
 	(float x, float y, float w, float h) Box(int w, int h)
 	{
@@ -97,11 +99,11 @@ public sealed class Goal
 
 	// дорожка полосы или столбика: вдоль оси — во всю плашку, поперёк — по масштабу содержимого
 	(float x, float y, float w, float h) Track(float bx, float by, float bw, float bh, float u) => Vertical
-		? (bx + bw / 2 - 22 * u, by + P(u) + 42 * u, 44 * u, bh - 2 * P(u) - 84 * u)
+		? (bx + bw / 2 - 22 * u, by + P(u) + (32 * HS + 10) * u, 44 * u, bh - 2 * P(u) - (32 * (HS + TS) + 20) * u)
 		: (bx + P(u), by + OffY(bh, u) + Base.h * u - P(u) - 38 * u, bw - 2 * P(u), 38 * u);
 
 	// кольцо: середина, внешний радиус, толщина
-	(float cx, float cy, float r, float th) RingOf(float bx, float by, float bw, float bh, float u) => (bx + bw / 2, by + OffY(bh, u) + P(u) + 46 * u + 128 * u, 128 * u, 30 * u);
+	(float cx, float cy, float r, float th) RingOf(float bx, float by, float bw, float bh, float u) => (bx + bw / 2, by + OffY(bh, u) + P(u) + (36 * HS + 10) * u + 128 * u, 128 * u, 30 * u);
 
 	// точка края заливки при доле frac — для искр и свечения
 	(float x, float y) Head(float frac, int w, int h)
@@ -294,30 +296,32 @@ public sealed class Goal
 		// надпись не шире своего места: длинная — мельче
 		// заголовок — шрифтом заголовка, счёт — шрифтом текста (Fonts.cs); каждый своим пакетом
 		Text hf = Fonts.Get(Style.Head), bf = Fonts.Get(Style.Font);
-		float Fit(Text f, string s, float px, float room) => MathF.Round(Math.Min(px, px * room / Math.Max(1, f.Width(s, px))));
+		float Fit(Text f, string s, float px, float room, bool hd) => MathF.Round(Math.Min(px, px * room / Math.Max(1, Style.W(f, s, px, hd))));
 		// сначала место и кегли (размеры — по ширине строк), потом вывод: заголовок, затем счёт
 		float hx, hy, hp, cx2, cy2, cp2; bool hc;
 
 		if (Ring)
 		{
 			var (cx, cy, r, th) = RingOf(bx, by, bw, bh, u);
-			cp2 = Fit(bf, count, 60 * u, 2 * (r - th) - 30 * u);
-			hc = true; hx = bx + bw / 2; hy = by + OffY(bh, u) + p; hp = Fit(hf, head, 30 * u * pulse, bw - 2 * p);
-			cx2 = cx - bf.Width(count, cp2) / 2; cy2 = cy - cp2 * 0.62f;
+			cp2 = Fit(bf, count, 60 * u * TS, 2 * (r - th) - 30 * u, false);
+			hc = true; hx = bx + bw / 2; hy = by + OffY(bh, u) + p; hp = Fit(hf, head, 30 * u * pulse * HS, bw - 2 * p, true);
+			cx2 = cx - Style.W(bf, count, cp2, false) / 2; cy2 = cy - cp2 * 0.62f;
 		}
 		else if (Vertical)
 		{
-			hc = true; hx = bx + bw / 2; hy = by + p; hp = Fit(hf, head, 26 * u * pulse, bw - 2 * p);
-			cp2 = Fit(bf, count, 26 * u, bw - 2 * p); cx2 = bx + bw / 2 - bf.Width(count, cp2) / 2; cy2 = by + bh - p - 32 * u;
+			hc = true; hx = bx + bw / 2; hy = by + p; hp = Fit(hf, head, 26 * u * pulse * HS, bw - 2 * p, true);
+			cp2 = Fit(bf, count, 26 * u * TS, bw - 2 * p, false); cx2 = bx + bw / 2 - Style.W(bf, count, cp2, false) / 2; cy2 = by + bh - p - 32 * TS * u;
 		}
 		else
 		{
-			cp2 = 30 * u; float cw = bf.Width(count, cp2), ty = by + OffY(bh, u) + p;
-			hc = false; hx = bx + p; hy = ty; hp = Fit(hf, head, 30 * u * pulse, bw - 2 * p - cw - 20 * u);
-			cx2 = bx + bw - p - cw; cy2 = ty;
+			// заголовок и счёт разного размера — по одной нижней линии строки
+			float row = 30 * u * Math.Max(HS, TS);
+			cp2 = 30 * u * TS; float cw = Style.W(bf, count, cp2, false), ty = by + OffY(bh, u) + p;
+			hc = false; hx = bx + p; hp = Fit(hf, head, 30 * u * pulse * HS, bw - 2 * p - cw - 20 * u, true); hy = ty + (row - hp) * 0.8f;
+			cx2 = bx + bw - p - cw; cy2 = ty + (row - cp2) * 0.8f;
 		}
 		hf.Begin();
-		Style.Ink(hf, head, hc ? hx - hf.Width(head, hp) / 2 : hx, hy, hp, headCol, a, u, true);
+		Style.Ink(hf, head, hc ? hx - Style.W(hf, head, hp, true) / 2 : hx, hy, hp, headCol, a, u, true);
 		hf.Flush(w, h);
 		bf.Begin();
 		Style.Ink(bf, count, cx2, cy2, cp2, countCol, a, u, false);
