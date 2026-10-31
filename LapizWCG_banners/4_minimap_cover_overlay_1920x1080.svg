@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1920"
+   height="1080"
+   viewBox="0 0 1920 1080"
+   version="1.1"
+   id="svg157"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs33">
+    <linearGradient
+       id="gold"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#ffe6a8"
+         id="stop1" />
+      <stop
+         offset="0.5"
+         stop-color="#f0c46a"
+         id="stop2" />
+      <stop
+         offset="1"
+         stop-color="#9a6a24"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="goldH"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0">
+      <stop
+         offset="0"
+         stop-color="#f0c46a"
+         stop-opacity="0"
+         id="stop4" />
+      <stop
+         offset="0.5"
+         stop-color="#ffe6a8"
+         id="stop5" />
+      <stop
+         offset="1"
+         stop-color="#f0c46a"
+         stop-opacity="0"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="steel"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0">
+      <stop
+         offset="0"
+         stop-color="#7f97c4"
+         id="stop7" />
+      <stop
+         offset="0.48"
+         stop-color="#eef6ff"
+         id="stop8" />
+      <stop
+         offset="0.52"
+         stop-color="#9fb4dc"
+         id="stop9" />
+      <stop
+         offset="1"
+         stop-color="#5a6f9c"
+         id="stop10" />
+    </linearGradient>
+    <radialGradient
+       id="gemGlow"
+       cx="0.5"
+       cy="0.5"
+       r="0.5">
+      <stop
+         offset="0"
+         stop-color="#6fb8ff"
+         stop-opacity="0.75"
+         id="stop11" />
+      <stop
+         offset="0.45"
+         stop-color="#3d7bff"
+         stop-opacity="0.25"
+         id="stop12" />
+      <stop
+         offset="1"
+         stop-color="#3d7bff"
+         stop-opacity="0"
+         id="stop13" />
+    </radialGradient>
+    <radialGradient
+       id="discFill"
+       cx="0.5"
+       cy="0.4"
+       r="0.6">
+      <stop
+         offset="0"
+         stop-color="#14306e"
+         id="stop14" />
+      <stop
+         offset="1"
+         stop-color="#050b22"
+         id="stop15" />
+    </radialGradient>
+    <filter
+       id="glow"
+       x="-0.4"
+       y="-0.4"
+       width="1.8"
+       height="1.8">
+      <feGaussianBlur
+         stdDeviation="3"
+         result="b"
+         id="feGaussianBlur15" />
+      <feMerge
+         id="feMerge16">
+        <feMergeNode
+           in="b"
+           id="feMergeNode15" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode16" />
+      </feMerge>
+    </filter>
+    <filter
+       id="glowBig"
+       x="-50%"
+       y="-50%"
+       width="200%"
+       height="200%">
+      <feGaussianBlur
+         stdDeviation="9"
+         result="b"
+         id="feGaussianBlur16" />
+      <feMerge
+         id="feMerge18">
+        <feMergeNode
+           in="b"
+           id="feMergeNode17" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode18" />
+      </feMerge>
+    </filter>
+    <filter
+       id="blur2"
+       x="-20%"
+       y="-20%"
+       width="140%"
+       height="140%">
+      <feGaussianBlur
+         stdDeviation="2.2"
+         id="feGaussianBlur18" />
+    </filter>
+    <filter
+       id="blur6"
+       x="-50%"
+       y="-50%"
+       width="200%"
+       height="200%">
+      <feGaussianBlur
+         stdDeviation="6"
+         id="feGaussianBlur19" />
+    </filter>
+    <filter
+       id="blur20"
+       x="-0.12631579"
+       y="-0.18461538"
+       width="1.2526316"
+       height="1.3692308">
+      <feGaussianBlur
+         stdDeviation="20"
+         id="feGaussianBlur20" />
+    </filter>
+    <filter
+       id="blur50"
+       x="-50%"
+       y="-50%"
+       width="200%"
+       height="200%">
+      <feGaussianBlur
+         stdDeviation="50"
+         id="feGaussianBlur21" />
+    </filter>
+    <filter
+       id="shadow"
+       x="-0.046486014"
+       y="-0.41069516"
+       width="1.0929726"
+       height="1.9582887">
+      <feGaussianBlur
+         in="SourceAlpha"
+         stdDeviation="6"
+         id="feGaussianBlur22" />
+      <feOffset
+         dy="5"
+         result="s"
+         id="feOffset22" />
+      <feFlood
+         flood-color="#00030c"
+         flood-opacity="0.85"
+         id="feFlood22" />
+      <feComposite
+         in2="s"
+         operator="in"
+         result="sh"
+         id="feComposite22" />
+      <feMerge
+         id="feMerge23">
+        <feMergeNode
+           in="sh"
+           id="feMergeNode22" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode23" />
+      </feMerge>
+    </filter>
+    <linearGradient
+       id="plq"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#132a6e"
+         id="stop23" />
+      <stop
+         offset="0.55"
+         stop-color="#0a1740"
+         id="stop24" />
+      <stop
+         offset="1"
+         stop-color="#050b22"
+         id="stop25" />
+    </linearGradient>
+    <linearGradient
+       id="plqShine"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0">
+      <stop
+         offset="0"
+         stop-color="#6fb8ff"
+         stop-opacity="0.25"
+         id="stop26" />
+      <stop
+         offset="0.6"
+         stop-color="#6fb8ff"
+         stop-opacity="0"
+         id="stop27" />
+    </linearGradient>
+    <linearGradient
+       id="cvIce"
+       gradientUnits="userSpaceOnUse"
+       x1="0"
+       y1="958"
+       x2="0"
+       y2="994">
+      <stop
+         offset="0"
+         stop-color="#ffffff"
+         id="stop28" />
+      <stop
+         offset="0.55"
+         stop-color="#e8f4ff"
+         id="stop29" />
+      <stop
+         offset="1"
+         stop-color="#8fc4ff"
+         id="stop30" />
+    </linearGradient>
+    <linearGradient
+       id="cvGold"
+       gradientUnits="userSpaceOnUse"
+       x1="0"
+       y1="958"
+       x2="0"
+       y2="994">
+      <stop
+         offset="0"
+         stop-color="#ffe6a8"
+         id="stop31" />
+      <stop
+         offset="0.55"
+         stop-color="#f0c46a"
+         id="stop32" />
+      <stop
+         offset="1"
+         stop-color="#c58a32"
+         id="stop33" />
+    </linearGradient>
+  </defs>
+  <clipPath
+     id="cvClip">
+    <path
+       d="M1532 702 H1888 L1910 724 V1050 L1888 1072 H1532 L1510 1050 V724 Z"
+       id="path33" />
+  </clipPath>
+  <path
+     d="M1532 702 H1888 L1910 724 V1050 L1888 1072 H1532 L1510 1050 V724 Z"
+     fill="url(#plq)"
+     filter="url(#shadow)"
+     id="path34" />
+  <g
+     clip-path="url(#cvClip)"
+     id="g99">
+    <g
+       fill="none"
+       stroke="#5fa8ff"
+       stroke-width="1"
+       opacity="0.12"
+       id="g98">
+      <path
+         transform="translate(1550 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path35" />
+      <path
+         transform="translate(1602 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path36" />
+      <path
+         transform="translate(1654 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path37" />
+      <path
+         transform="translate(1706 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path38" />
+      <path
+         transform="translate(1758 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path39" />
+      <path
+         transform="translate(1810 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path40" />
+      <path
+         transform="translate(1862 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path41" />
+      <path
+         transform="translate(1914 742)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path42" />
+      <path
+         transform="translate(1576 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path43" />
+      <path
+         transform="translate(1628 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path44" />
+      <path
+         transform="translate(1680 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path45" />
+      <path
+         transform="translate(1732 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path46" />
+      <path
+         transform="translate(1784 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path47" />
+      <path
+         transform="translate(1836 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path48" />
+      <path
+         transform="translate(1888 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path49" />
+      <path
+         transform="translate(1940 787)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path50" />
+      <path
+         transform="translate(1550 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path51" />
+      <path
+         transform="translate(1602 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path52" />
+      <path
+         transform="translate(1654 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path53" />
+      <path
+         transform="translate(1706 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path54" />
+      <path
+         transform="translate(1758 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path55" />
+      <path
+         transform="translate(1810 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path56" />
+      <path
+         transform="translate(1862 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path57" />
+      <path
+         transform="translate(1914 832)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path58" />
+      <path
+         transform="translate(1576 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path59" />
+      <path
+         transform="translate(1628 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path60" />
+      <path
+         transform="translate(1680 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path61" />
+      <path
+         transform="translate(1732 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path62" />
+      <path
+         transform="translate(1784 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path63" />
+      <path
+         transform="translate(1836 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path64" />
+      <path
+         transform="translate(1888 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path65" />
+      <path
+         transform="translate(1940 877)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path66" />
+      <path
+         transform="translate(1550 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path67" />
+      <path
+         transform="translate(1602 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path68" />
+      <path
+         transform="translate(1654 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path69" />
+      <path
+         transform="translate(1706 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path70" />
+      <path
+         transform="translate(1758 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path71" />
+      <path
+         transform="translate(1810 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path72" />
+      <path
+         transform="translate(1862 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path73" />
+      <path
+         transform="translate(1914 922)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path74" />
+      <path
+         transform="translate(1576 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path75" />
+      <path
+         transform="translate(1628 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path76" />
+      <path
+         transform="translate(1680 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path77" />
+      <path
+         transform="translate(1732 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path78" />
+      <path
+         transform="translate(1784 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path79" />
+      <path
+         transform="translate(1836 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path80" />
+      <path
+         transform="translate(1888 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path81" />
+      <path
+         transform="translate(1940 967)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path82" />
+      <path
+         transform="translate(1550 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path83" />
+      <path
+         transform="translate(1602 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path84" />
+      <path
+         transform="translate(1654 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path85" />
+      <path
+         transform="translate(1706 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path86" />
+      <path
+         transform="translate(1758 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path87" />
+      <path
+         transform="translate(1810 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path88" />
+      <path
+         transform="translate(1862 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path89" />
+      <path
+         transform="translate(1914 1012)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path90" />
+      <path
+         transform="translate(1576 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path91" />
+      <path
+         transform="translate(1628 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path92" />
+      <path
+         transform="translate(1680 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path93" />
+      <path
+         transform="translate(1732 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path94" />
+      <path
+         transform="translate(1784 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path95" />
+      <path
+         transform="translate(1836 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path96" />
+      <path
+         transform="translate(1888 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path97" />
+      <path
+         transform="translate(1940 1057)"
+         d="M0 -26 L22.5 -13 V13 L0 26 L-22.5 13 V-13 Z"
+         id="path98" />
+    </g>
+    <ellipse
+       cx="1710"
+       cy="832"
+       rx="190"
+       ry="130"
+       fill="#3d7bff"
+       opacity="0.22"
+       filter="url(#blur20)"
+       id="ellipse98" />
+  </g>
+  <path
+     d="M1532 702 H1888 L1910 724 V1050 L1888 1072 H1532 L1510 1050 V724 Z"
+     fill="none"
+     stroke="url(#gold)"
+     stroke-width="4"
+     stroke-linejoin="round"
+     id="path99" />
+  <path
+     d="M1536 711 H1884 L1901 728 V1046 L1884 1063 H1536 L1519 1046 V728 Z"
+     fill="none"
+     stroke="#a9d4ff"
+     stroke-width="1"
+     opacity="0.4"
+     id="path100" />
+  <g
+     transform="translate(1710 834) scale(0.56)"
+     id="g153">
+    <circle
+       r="150"
+       fill="url(#gemGlow)"
+       opacity="0.6"
+       id="circle100" />
+    <g
+       transform="rotate(-42)"
+       id="g104">
+      <path
+         d="M0 -178 L9 -160 L9 118 L-9 118 L-9 -160 Z"
+         fill="url(#steel)"
+         stroke="#1a2a55"
+         stroke-width="1.5"
+         id="path101" />
+      <path
+         d="M0 -170 V114"
+         stroke="#ffffff"
+         stroke-opacity="0.55"
+         stroke-width="1"
+         id="path102" />
+      <path
+         d="M-38 118 Q-20 112 0 116 Q20 112 38 118 L40 128 Q20 124 0 128 Q-20 124 -40 128 Z"
+         fill="url(#gold)"
+         stroke="#4a3212"
+         stroke-width="1.2"
+         id="path103" />
+      <rect
+         x="-5.5"
+         y="128"
+         width="11"
+         height="40"
+         rx="3"
+         fill="#2a1c3a"
+         stroke="#4a3212"
+         stroke-width="1"
+         id="rect103" />
+      <path
+         d="M-5.5 136 H5.5 M-5.5 146 H5.5 M-5.5 156 H5.5"
+         stroke="#f0c46a"
+         stroke-width="1.4"
+         opacity="0.8"
+         id="path104" />
+      <circle
+         cy="174"
+         r="8"
+         fill="url(#gold)"
+         stroke="#4a3212"
+         stroke-width="1.2"
+         id="circle104" />
+    </g>
+    <g
+       transform="rotate(42)"
+       id="g108">
+      <path
+         d="M0 -178 L9 -160 L9 118 L-9 118 L-9 -160 Z"
+         fill="url(#steel)"
+         stroke="#1a2a55"
+         stroke-width="1.5"
+         id="path105" />
+      <path
+         d="M0 -170 V114"
+         stroke="#ffffff"
+         stroke-opacity="0.55"
+         stroke-width="1"
+         id="path106" />
+      <path
+         d="M-38 118 Q-20 112 0 116 Q20 112 38 118 L40 128 Q20 124 0 128 Q-20 124 -40 128 Z"
+         fill="url(#gold)"
+         stroke="#4a3212"
+         stroke-width="1.2"
+         id="path107" />
+      <rect
+         x="-5.5"
+         y="128"
+         width="11"
+         height="40"
+         rx="3"
+         fill="#2a1c3a"
+         stroke="#4a3212"
+         stroke-width="1"
+         id="rect107" />
+      <path
+         d="M-5.5 136 H5.5 M-5.5 146 H5.5 M-5.5 156 H5.5"
+         stroke="#f0c46a"
+         stroke-width="1.4"
+         opacity="0.8"
+         id="path108" />
+      <circle
+         cy="174"
+         r="8"
+         fill="url(#gold)"
+         stroke="#4a3212"
+         stroke-width="1.2"
+         id="circle108" />
+    </g>
+    <circle
+       r="112"
+       fill="url(#discFill)"
+       opacity="0.92"
+       id="circle109" />
+    <circle
+       r="112"
+       fill="none"
+       stroke="url(#gold)"
+       stroke-width="5"
+       id="circle110" />
+    <circle
+       r="100"
+       fill="none"
+       stroke="#f0c46a"
+       stroke-width="1.2"
+       opacity="0.7"
+       id="circle111" />
+    <circle
+       r="80"
+       fill="none"
+       stroke="#a9d4ff"
+       stroke-width="1"
+       opacity="0.35"
+       id="circle112" />
+    <g
+       fill="none"
+       stroke="#a9d4ff"
+       stroke-width="1.4"
+       stroke-linecap="round"
+       opacity="0.75"
+       id="g131">
+      <path
+         transform="rotate(0) translate(0 -90) scale(0.9)"
+         d="M-4 7 L0 -7 L4 7"
+         id="path112" />
+      <path
+         transform="rotate(18) translate(0 -90) scale(0.9)"
+         d="M0 -7 V7 M0 -1 L5 -6 M0 -1 L-5 -6"
+         id="path113" />
+      <path
+         transform="rotate(36) translate(0 -90) scale(0.9)"
+         d="M0 -7 V7 M-4 -3 L4 3"
+         id="path114" />
+      <path
+         transform="rotate(54) translate(0 -90) scale(0.9)"
+         d="M-4 -6 L4 -6 M0 -6 V7 M-4 7 H4"
+         id="path115" />
+      <path
+         transform="rotate(72) translate(0 -90) scale(0.9)"
+         d="M-4 -7 L4 7 M4 -7 L-4 7"
+         id="path116" />
+      <path
+         transform="rotate(90) translate(0 -90) scale(0.9)"
+         d="M0 -7 V7 M0 -7 L5 -2"
+         id="path117" />
+      <path
+         transform="rotate(108) translate(0 -90) scale(0.9)"
+         d="M-4 -6 L4 -6 M0 -6 V7 M-4 7 H4"
+         id="path118" />
+      <path
+         transform="rotate(126) translate(0 -90) scale(0.9)"
+         d="M-3 -7 V7 M-3 -7 L4 -3 L-3 1"
+         id="path119" />
+      <path
+         transform="rotate(144) translate(0 -90) scale(0.9)"
+         d="M-4 7 L0 -7 L4 7"
+         id="path120" />
+      <path
+         transform="rotate(162) translate(0 -90) scale(0.9)"
+         d="M-4 7 L0 -7 L4 7"
+         id="path121" />
+      <path
+         transform="rotate(180) translate(0 -90) scale(0.9)"
+         d="M-4 -6 L4 -6 M0 -6 V7 M-4 7 H4"
+         id="path122" />
+      <path
+         transform="rotate(198) translate(0 -90) scale(0.9)"
+         d="M-4 -6 L4 -6 M0 -6 V7 M-4 7 H4"
+         id="path123" />
+      <path
+         transform="rotate(216) translate(0 -90) scale(0.9)"
+         d="M-4 -7 L0 -2 L4 -7 M0 -2 V7"
+         id="path124" />
+      <path
+         transform="rotate(234) translate(0 -90) scale(0.9)"
+         d="M0 -7 V7 M0 -1 L5 -6 M0 -1 L-5 -6"
+         id="path125" />
+      <path
+         transform="rotate(252) translate(0 -90) scale(0.9)"
+         d="M-4 7 L0 -7 L4 7"
+         id="path126" />
+      <path
+         transform="rotate(270) translate(0 -90) scale(0.9)"
+         d="M0 -7 V7 M0 -1 L5 -6 M0 -1 L-5 -6"
+         id="path127" />
+      <path
+         transform="rotate(288) translate(0 -90) scale(0.9)"
+         d="M-4 -7 L0 -2 L4 -7 M0 -2 V7"
+         id="path128" />
+      <path
+         transform="rotate(306) translate(0 -90) scale(0.9)"
+         d="M0 -7 V7 M0 -7 L5 -2"
+         id="path129" />
+      <path
+         transform="rotate(324) translate(0 -90) scale(0.9)"
+         d="M-4 -7 L4 7 M4 -7 L-4 7"
+         id="path130" />
+      <path
+         transform="rotate(342) translate(0 -90) scale(0.9)"
+         d="M0 -7 V7 M0 -1 L5 -6 M0 -1 L-5 -6"
+         id="path131" />
+    </g>
+    <g
+       fill="url(#gold)"
+       id="g135">
+      <path
+         d="M0 -124 l8 12 l-8 12 l-8 -12 Z"
+         id="path132" />
+      <path
+         d="M0 124 l8 -12 l-8 -12 l-8 12 Z"
+         id="path133" />
+      <path
+         d="M-124 0 l12 8 l12 -8 l-12 -8 Z"
+         id="path134" />
+      <path
+         d="M124 0 l-12 8 l-12 -8 l12 -8 Z"
+         id="path135" />
+    </g>
+    <g
+       transform="scale(0.92)"
+       id="g152">
+      <circle
+         r="120"
+         fill="url(#gemGlow)"
+         id="circle135" />
+      <polygon
+         points="0 -80 48 -30 48 30 0 80 -48 30 -48 -30"
+         fill="#0b1f66"
+         id="polygon135" />
+      <path
+         d="M0 -80 L48 -30 L22 -13 L0 -36 Z"
+         fill="#5aa2ff"
+         id="path136" />
+      <path
+         d="M48 -30 L48 30 L22 13 L22 -13 Z"
+         fill="#2f74ff"
+         id="path137" />
+      <path
+         d="M48 30 L0 80 L0 36 L22 13 Z"
+         fill="#1846c4"
+         id="path138" />
+      <path
+         d="M0 80 L-48 30 L-22 13 L0 36 Z"
+         fill="#0f2f8f"
+         id="path139" />
+      <path
+         d="M-48 30 L-48 -30 L-22 -13 L-22 13 Z"
+         fill="#1d55e0"
+         id="path140" />
+      <path
+         d="M-48 -30 L0 -80 L0 -36 L-22 -13 Z"
+         fill="#3d8bff"
+         id="path141" />
+      <polygon
+         points="0 -36 22 -13 22 13 0 36 -22 13 -22 -13"
+         fill="#4b97ff"
+         id="polygon141" />
+      <path
+         d="M0 -36 L22 -13 L0 -4 L-22 -13 Z"
+         fill="#9fd0ff"
+         opacity="0.85"
+         id="path142" />
+      <path
+         d="M0 -36 L-22 -13 L-48 -30 L0 -80 Z"
+         fill="#cfe8ff"
+         opacity="0.35"
+         id="path143" />
+      <g
+         stroke="#cfe8ff"
+         stroke-opacity="0.35"
+         stroke-width="0.8"
+         fill="none"
+         id="g149">
+        <path
+           d="M0 -80 L0 -36"
+           id="path144" />
+        <path
+           d="M48 -30 L22 -13"
+           id="path145" />
+        <path
+           d="M48 30 L22 13"
+           id="path146" />
+        <path
+           d="M0 80 L0 36"
+           id="path147" />
+        <path
+           d="M-48 30 L-22 13"
+           id="path148" />
+        <path
+           d="M-48 -30 L-22 -13"
+           id="path149" />
+      </g>
+      <polygon
+         points="0 -80 48 -30 48 30 0 80 -48 30 -48 -30"
+         fill="none"
+         stroke="url(#gold)"
+         stroke-width="4.5"
+         stroke-linejoin="round"
+         id="polygon149" />
+      <path
+         d="M-30 -52 L-12 -64"
+         stroke="#ffffff"
+         stroke-width="3"
+         stroke-linecap="round"
+         opacity="0.8"
+         id="path150" />
+      <g
+         fill="#ffffff"
+         filter="url(#glow)"
+         id="g151">
+        <path
+           d="M-14 -46 l2 -7 l2 7 l7 2 l-7 2 l-2 7 l-2 -7 l-7 -2 Z"
+           id="path151" />
+      </g>
+    </g>
+  </g>
+  <g
+     id="text154"
+     style="font-weight:bold;font-size:50px;font-family:Georgia;letter-spacing:4;text-anchor:middle;stroke:#050b22;stroke-width:1.2;paint-order:stroke;filter:url(#shadow)"
+     aria-label="LAPIZWCG">
+    <path
+       style="fill:url(#cvIce)"
+       d="M 1582.0474,982.8916 1581.3638,994 h -31.9092 v -1.9043 q 0.8545,-0.0732 2.0019,-0.21972 1.1475,-0.1709 1.5137,-0.31739 0.8789,-0.34179 1.2207,-0.95214 0.3418,-0.61036 0.3418,-1.5625 v -24.43848 q 0,-0.87891 -0.2685,-1.44043 -0.2686,-0.58594 -1.294,-1.04981 -0.7568,-0.34179 -1.831,-0.53711 -1.0498,-0.21972 -1.6846,-0.31738 v -1.90429 h 19.0185 v 1.90429 q -0.7812,0.0732 -1.8554,0.21973 -1.0498,0.12207 -1.8311,0.36621 -0.9521,0.31738 -1.2695,1.00098 -0.3174,0.65918 -0.3174,1.51367 v 22.77832 q 0,1.61133 0.2197,2.53906 0.2198,0.92774 0.8545,1.36719 0.6348,0.46387 1.7578,0.61035 1.1475,0.12207 3.1495,0.12207 1.9531,0 3.7841,-0.21973 1.8555,-0.24414 2.6612,-1.02539 1.2451,-1.24511 2.539,-3.49121 1.3184,-2.27051 2.0996,-4.15039 z M 1625.3296,994 h -18.8721 v -1.9043 q 1.3184,-0.0976 3.1006,-0.46386 1.7822,-0.39063 1.7822,-0.95215 0,-0.19532 -0.049,-0.43946 -0.024,-0.24414 -0.1953,-0.65918 l -2.9541,-7.17773 h -11.9629 q -0.415,1.00098 -0.9277,2.34375 -0.4883,1.34277 -0.8545,2.39258 -0.4639,1.36719 -0.5616,1.97754 -0.073,0.61035 -0.073,0.85449 0,0.78125 1.1719,1.34277 1.1963,0.53711 3.9551,0.78125 V 994 h -14.209 v -1.9043 q 0.8056,-0.0488 1.8066,-0.24414 1.0254,-0.21972 1.6113,-0.58594 1.001,-0.58593 1.6846,-1.44042 0.708,-0.8545 1.1719,-2.02637 2.832,-6.86035 5.6641,-13.74512 2.8564,-6.88476 6.2988,-15.18555 h 4.8828 q 4.7851,11.76758 7.4951,18.60352 2.71,6.83594 4.6143,11.32812 0.3174,0.73243 0.8056,1.34278 0.4883,0.58594 1.3916,1.12304 0.6836,0.39063 1.5869,0.58594 0.9034,0.19531 1.6358,0.24414 z m -18.1885,-14.01367 -5.0293,-12.54883 -4.956,12.54883 z m 54.9766,-11.96289 q 0,2.92968 -1.2207,5.05371 -1.1963,2.09961 -3.3203,3.41797 -2.1973,1.36718 -5.0293,1.97754 -2.8077,0.61035 -6.3233,0.61035 h -2.832 v 9.74121 q 0,0.8789 0.3174,1.53808 0.3418,0.63477 1.2695,1.0254 0.4883,0.19531 1.5869,0.41503 1.0987,0.21973 1.8555,0.29297 V 994 h -18.7744 v -1.9043 q 0.708,-0.0732 1.8799,-0.19531 1.1718,-0.14648 1.6357,-0.3418 0.9521,-0.39062 1.2451,-0.95214 0.3174,-0.56153 0.3174,-1.5625 v -24.43848 q 0,-0.85449 -0.293,-1.46485 -0.2929,-0.63476 -1.2695,-1.0498 -0.6836,-0.29297 -1.8311,-0.5127 -1.123,-0.24414 -1.6845,-0.31738 v -1.90429 h 19.1162 q 6.7139,0 10.0342,2.14843 3.3203,2.12403 3.3203,6.51856 z m -9.5215,1.24511 q 0,-3.90625 -1.5869,-5.78613 -1.5625,-1.9043 -5.5908,-1.9043 h -2.0264 v 15.20997 h 1.0254 q 4.0039,0 6.0791,-1.83106 2.0996,-1.85547 2.0996,-5.68848 z M 1687.7729,994 h -19.2138 v -1.9043 q 0.6592,-0.0488 1.9287,-0.14648 1.2939,-0.0977 1.7822,-0.29297 0.9033,-0.36621 1.2207,-0.95215 0.3418,-0.61035 0.3418,-1.53808 v -24.56055 q 0,-0.83008 -0.3174,-1.46485 -0.3173,-0.63476 -1.2451,-1.02539 -0.5859,-0.24414 -1.7334,-0.48828 -1.1474,-0.26855 -1.9775,-0.36621 v -1.90429 h 19.2138 v 1.90429 q -0.7324,0.0732 -1.831,0.21973 -1.0986,0.12207 -1.8555,0.36621 -0.9521,0.31738 -1.2695,1.00098 -0.3174,0.65918 -0.3174,1.51367 v 24.53613 q 0,0.87891 0.3174,1.51367 0.3418,0.61035 1.2695,1.00098 0.5127,0.21973 1.6846,0.43945 1.1963,0.19531 2.0019,0.24414 z M 1727.4175,982.30566 1726.2456,994 h -32.5195 v -1.48926 l 22.3877,-30.9082 h -7.5928 q -2.3193,0 -3.3447,0.14648 -1.0254,0.12207 -1.9287,0.53711 -1.0498,0.39063 -2.3194,2.0752 -1.2695,1.66015 -3.3935,5.5664 h -1.9776 l 1.0742,-10.57128 h 30.127 v 1.48925 l -22.3877,30.90821 h 8.7158 q 4.1016,0 5.5664,-0.31739 1.4893,-0.34179 2.1729,-1.19629 1.3916,-1.68457 2.5635,-3.68652 1.1962,-2.02637 2.1972,-4.24805 z"
+       id="path157" />
+    <path
+       style="fill:url(#cvGold)"
+       d="m 1789.0347,961.30957 q -0.7569,0.0732 -1.5137,0.3418 -0.7568,0.24414 -1.4893,0.63476 -1.123,0.63477 -1.6113,1.3916 -0.4639,0.75684 -0.8545,1.83106 -1.3428,3.71094 -4.1504,11.88965 -2.7832,8.17871 -5.8105,16.99218 h -4.9072 l -9.1553,-25.75683 -8.252,25.75683 h -4.9072 q -4.0771,-11.86523 -6.25,-18.26171 -2.1729,-6.4209 -3.6621,-10.76661 -0.4639,-1.31835 -1.0498,-1.90429 -0.586,-0.61035 -1.5137,-1.22071 -0.6592,-0.43945 -1.416,-0.63476 -0.7324,-0.21973 -1.709,-0.3418 v -1.90429 h 18.4815 v 1.85546 q -1.6358,0.19532 -2.4414,0.39063 -0.8057,0.1709 -1.2696,0.36621 -0.4394,0.19531 -0.5371,0.41504 -0.098,0.21973 -0.098,0.39062 0,0.3418 0.073,0.65918 0.098,0.31739 0.1953,0.73243 0.5859,1.90429 2.3682,7.22656 1.7822,5.32226 4.3945,13.20801 l 7.8857,-25.24414 h 5.1758 l 9.1553,26.02539 q 2.0264,-6.27442 3.2227,-10.25391 1.2207,-3.97949 2.0507,-6.81152 0.4883,-1.7334 0.7813,-2.90528 0.293,-1.17187 0.293,-2.02636 0,-0.5127 -0.4883,-0.87891 -0.4639,-0.36621 -1.2696,-0.63477 -0.6835,-0.21972 -1.7822,-0.34179 -1.0742,-0.14649 -1.8799,-0.21973 v -1.95312 h 13.9405 z m 22.9209,33.61816 q -3.8086,0 -7.1289,-1.2207 -3.3204,-1.24512 -5.7862,-3.58887 -2.417,-2.29492 -3.8086,-5.66406 -1.3916,-3.39355 -1.3916,-7.44629 0,-4.02832 1.3916,-7.44629 1.416,-3.44238 3.9551,-5.95703 2.4902,-2.46582 5.9815,-3.80859 3.4912,-1.36719 7.4707,-1.36719 2.8808,0 5.249,0.70801 2.3681,0.68359 4.0039,1.5625 l 1.5137,-1.34277 h 2.124 l 0.2197,12.64648 h -2.1484 q -1.8311,-5.78613 -4.3946,-8.49609 -2.5634,-2.70997 -6.25,-2.70997 -4.5898,0 -6.9824,4.05274 -2.3926,4.02832 -2.3926,11.32812 0,4.12598 0.8057,7.05567 0.8301,2.90527 2.1484,4.6875 1.4161,1.85547 3.3448,2.73437 1.9287,0.8545 4.2724,0.8545 3.418,0 6.0791,-1.85547 2.6856,-1.85547 4.8828,-5.61524 l 2.0997,1.26953 q -1.0498,2.14844 -2.3926,3.85743 -1.3428,1.68457 -3.1006,2.90527 -1.9287,1.34277 -4.2725,2.09961 -2.3193,0.75683 -5.4931,0.75683 z m 60.1767,-15.01464 q -0.7568,0.0732 -1.3427,0.17089 -0.586,0.0977 -1.4649,0.39063 -1.001,0.31738 -1.3184,1.0498 -0.3173,0.73243 -0.3173,1.53809 v 4.02832 q 0,1.2207 0.024,1.97754 0.024,0.73242 0.073,1.83105 -2.4414,1.46485 -7.2265,2.75879 -4.7608,1.29395 -8.7647,1.29395 -3.7598,0 -7.0557,-1.14746 -3.2959,-1.14746 -5.7861,-3.44239 -2.4902,-2.2705 -3.9307,-5.63964 -1.416,-3.36914 -1.416,-7.71485 0,-4.05273 1.3428,-7.49511 1.3428,-3.44239 3.8818,-5.93262 2.4903,-2.46582 6.0547,-3.8086 3.5889,-1.34277 7.9346,-1.34277 2.9541,0 5.4688,0.73242 2.5146,0.70801 4.1503,1.53809 l 1.5137,-1.34277 h 2.124 l 0.2198,12.64648 h -2.1485 q -1.8554,-5.68848 -4.4433,-8.44727 -2.5879,-2.75879 -6.543,-2.75879 -4.6875,0 -7.251,4.10157 -2.539,4.10156 -2.539,11.30371 0,7.6416 2.4902,11.96289 2.5146,4.32129 7.1045,4.32129 2.1484,0 3.8086,-0.63477 1.6845,-0.65918 2.6123,-1.51367 v -7.03125 q 0,-0.87891 -0.3174,-1.46484 -0.3174,-0.61035 -1.2695,-1.04981 -0.7325,-0.34179 -1.8311,-0.56152 -1.0986,-0.21973 -1.831,-0.31738 v -1.9043 h 17.9931 z"
+       id="path158" />
+  </g>
+  <g
+     id="g157">
+    <rect
+       x="1574"
+       y="1017.2"
+       width="120"
+       height="1.5"
+       fill="url(#goldH)"
+       id="rect154" />
+    <rect
+       x="1726"
+       y="1017.2"
+       width="120"
+       height="1.5"
+       fill="url(#goldH)"
+       id="rect155" />
+    <path
+       d="M1710 1009 l9 9 l-9 9 l-9 -9 Z"
+       fill="none"
+       stroke="#f0c46a"
+       stroke-width="1.6"
+       id="path155" />
+    <path
+       d="M1710 1014 l4 4 l-4 4 l-4 -4 Z"
+       fill="#f0c46a"
+       id="path156" />
+    <circle
+       cx="1698"
+       cy="1018"
+       r="2"
+       fill="#f0c46a"
+       id="circle156" />
+    <circle
+       cx="1722"
+       cy="1018"
+       r="2"
+       fill="#f0c46a"
+       id="circle157" />
+  </g>
+  <path
+     d="m 1614.0791,1050 3.9258,-10.6494 h 1.2744 l 3.9258,10.6494 h -1.6113 l -2.9517,-8.5913 -2.9517,8.5913 z m 1.8091,-2.3364 v -1.4209 h 5.603 v 1.4209 z m 15.9282,2.3364 v -10.6494 h 1.4941 V 1050 Z m 0.7471,0 v -1.4209 h 6.0937 V 1050 Z m 15.7304,0 v -1.3843 h 2.8858 q 1.1865,0 1.6772,-0.4541 0.4981,-0.4541 0.4981,-1.1938 v -0.022 q 0,-0.791 -0.4248,-1.2598 -0.4175,-0.476 -1.3843,-0.476 h -3.252 v -1.3477 h 3.252 q 0.8276,0 1.2451,-0.3882 0.4248,-0.3955 0.4248,-1.1499 v 0 q 0,-0.7983 -0.4687,-1.1938 -0.4688,-0.3955 -1.4063,-0.3955 h -3.0469 v -1.3843 h 3.3179 q 1.5747,0 2.3438,0.7837 0.769,0.7837 0.769,2.102 v 0 q 0,0.7984 -0.4687,1.4649 -0.4688,0.6592 -1.4722,0.8423 0.9888,0.1464 1.5308,0.8715 0.5493,0.7251 0.5493,1.6626 v 0.022 q 0,1.3037 -0.8423,2.1021 -0.8423,0.7983 -2.2852,0.7983 z m -0.8789,0 v -10.6494 h 1.4869 V 1050 Z m 18.1768,-10.6494 V 1050 h -1.4941 v -10.6494 z m 13.1597,10.7593 q -1.128,0 -1.9702,-0.4834 -0.8423,-0.4908 -1.3111,-1.377 -0.4614,-0.8862 -0.4614,-2.0654 v -3.0176 q 0,-1.1865 0.4614,-2.0654 0.4688,-0.8863 1.3111,-1.3697 0.8422,-0.4907 1.9702,-0.4907 1.1279,0 1.9702,0.4907 0.8423,0.4834 1.3037,1.3697 0.4687,0.8789 0.4687,2.0654 v 3.0176 q 0,1.1792 -0.4687,2.0654 -0.4614,0.8862 -1.3037,1.377 -0.8423,0.4834 -1.9702,0.4834 z m 0,-1.4722 q 1.0034,0 1.604,-0.6592 0.6079,-0.6592 0.6079,-1.7431 v -3.1202 q 0,-1.0913 -0.6079,-1.7431 -0.6006,-0.6592 -1.604,-0.6592 -0.9961,0 -1.604,0.6592 -0.6079,0.6518 -0.6079,1.7431 v 3.1202 q 0,1.0839 0.6079,1.7431 0.6079,0.6592 1.604,0.6592 z m 13.0131,1.355 v -10.6421 h 1.355 l 5.2075,8.2324 -0.1757,0.1904 v -8.4228 h 1.4795 v 10.6421 h -1.3697 l -5.1928,-8.1079 0.1757,-0.1905 v 8.2984 z m 32.0542,0.1172 q -1.1279,0 -1.9702,-0.4834 -0.8423,-0.4908 -1.311,-1.377 -0.4614,-0.8862 -0.4614,-2.0654 v -3.0176 q 0,-1.1865 0.4614,-2.0654 0.4687,-0.8863 1.311,-1.3697 0.8423,-0.4907 1.9702,-0.4907 1.128,0 1.9703,0.4907 0.8422,0.4834 1.3037,1.3697 0.4687,0.8789 0.4687,2.0654 v 3.0176 q 0,1.1792 -0.4687,2.0654 -0.4615,0.8862 -1.3037,1.377 -0.8423,0.4834 -1.9703,0.4834 z m 0,-1.4722 q 1.0035,0 1.6041,-0.6592 0.6079,-0.6592 0.6079,-1.7431 v -3.1202 q 0,-1.0913 -0.6079,-1.7431 -0.6006,-0.6592 -1.6041,-0.6592 -0.996,0 -1.604,0.6592 -0.6079,0.6518 -0.6079,1.7431 v 3.1202 q 0,1.0839 0.6079,1.7431 0.608,0.6592 1.604,0.6592 z m 13.0132,1.355 v -10.6421 h 1.355 l 5.2075,8.2324 -0.1757,0.1904 v -8.4228 h 1.4794 v 10.6421 h -1.3696 l -5.1929,-8.1079 0.1758,-0.1905 v 8.2984 z m 17.503,0.01 v -10.6494 h 1.4941 V 1050 Z m 0.747,0 v -1.4209 h 6.0938 V 1050 Z m 16.3457,-10.6494 V 1050 h -1.4941 v -10.6494 z m 9.6368,10.6421 v -10.6421 h 1.3549 l 5.2076,8.2324 -0.1758,0.1904 v -8.4228 h 1.4795 v 10.6421 h -1.3697 l -5.1928,-8.1079 0.1757,-0.1905 v 8.2984 z m 17.5029,0.01 v -10.6494 h 1.4941 V 1050 Z m 0.7251,0 v -1.4209 h 6.1157 V 1050 Z m 0,-4.5776 v -1.4209 h 5.31 v 1.4209 z m 0,-4.6509 v -1.4209 h 6.1157 v 1.4209 z"
+     id="text157"
+     style="font-size:15px;font-family:Bahnschrift;letter-spacing:7;text-anchor:middle;opacity:0.81;fill:#a9d4ff"
+     aria-label="ALBION ONLINE" />
+</svg>
