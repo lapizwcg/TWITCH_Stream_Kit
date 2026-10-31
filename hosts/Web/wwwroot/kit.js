@@ -9,6 +9,11 @@ export const DEFAULTS = {
   // pad — отступ от края экрана (точки при высоте 1080), sx/sy — размер по X и по Y (проценты), inner — внутренний отступ
   // (проценты высоты кадра); то же у цели
   follow: { on: true, pos: 'c', title: 'НОВЫЙ ФОЛЛОУЕР', seconds: 4, pad: 70, sx: 100, sy: 100, inner: 1 },
+  // анонсы: on — по таймеру раз в every минут; output — overlay | chat | both; messages — по одному на строку, по очереди
+  announce: {
+    on: false, output: 'overlay', messages: 'Подписывайтесь на канал!', every: 15,
+    title: 'АНОНС', seconds: 8, pos: 't', pad: 70, sx: 100, sy: 100, inner: 1,
+  },
   // source: followers | subs — счёт ведёт Twitch (нужен вход в доке), manual — вручную
   // style: ltr rtl ttb btt radial — вид прогресса
   goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr', pad: 50, sx: 100, sy: 100, inner: 1 },

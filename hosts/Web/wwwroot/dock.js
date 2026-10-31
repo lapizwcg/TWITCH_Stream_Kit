@@ -50,6 +50,20 @@ function render() {
     if (document.activeElement !== $(id)) $(id).value = v;
   $('goalSource').value = g.source;
   renderSize('goal', g);
+
+  const an = settings.announce;
+  $('announceOn').checked = an.on;
+  $('announceOutput').value = an.output;
+  for (const [id, v] of [['announceMessages', an.messages], ['announceTitle', an.title]]) if (document.activeElement !== $(id)) $(id).value = v;
+  $('announceEvery').value = an.every;
+  $('announceEveryVal').textContent = `каждые ${an.every} мин`;
+  $('announceSeconds').value = an.seconds;
+  $('announceSecondsVal').textContent = `${an.seconds} с`;
+  for (const b of $('announcePos').children) b.classList.toggle('active', b.dataset.pos === an.pos);
+  // настройки карточки нужны, только если анонс идёт в оверлей
+  for (const el of document.querySelectorAll('#tab-announce [data-overlay]')) el.hidden = an.output === 'chat';
+  renderSize('announce', an);
+  renderAnnounceNote();
   // счёт по Twitch ведётся сам — руками его не трогаем
   const auto = g.source !== 'manual';
   for (const id of ['goalCurrent', 'goalPlus', 'goalMinus', 'goalReset']) $(id).disabled = auto;
@@ -165,7 +179,7 @@ function renderSize(pre, part) {
     $(id + 'Val').textContent = part[key] + unit;
   }
 }
-for (const pre of ['follow', 'goal']) {
+for (const pre of ['follow', 'goal', 'announce']) {
   for (const key of ['pad', 'sx', 'sy', 'inner'])
     $(pre + key[0].toUpperCase() + key.slice(1)).oninput = (e) => {
       settings[pre][key] = +e.target.value;
@@ -254,6 +268,77 @@ $('goalReset').onclick = () => {
   settings.goal.current = 0;
   commit();
 };
+
+// анонсы: таймер — здесь, в доке (он один на OBS); сообщения по кругу; в оверлей — карточкой через показ, в чат — от имени канала
+let annLast = Date.now();
+let annIndex = 0;
+const annList = () => settings.announce.messages.split('\n').map((s) => s.trim()).filter(Boolean);
+
+function fireAnnounce() {
+  const list = annList();
+  annLast = Date.now();
+  if (!list.length) return;
+  const text = list[annIndex++ % list.length];
+  const out = settings.announce.output;
+  if (out !== 'chat') bus.send('alert', { kind: 'announce', name: text });
+  if (out !== 'overlay') {
+    if (!helix) showError('Анонс в чат: войдите через Twitch.');
+    else helix.sendChat(text).catch((e) => showError(`Анонс в чат не ушёл: ${e.message}`));
+  }
+  renderAnnounceNote();
+}
+
+function renderAnnounceNote() {
+  const a = settings.announce;
+  const n = annList().length;
+  if (!n) return ($('announceNote').textContent = 'Впишите хотя бы одно сообщение.');
+  const left = Math.max(0, a.every * 60000 - (Date.now() - annLast));
+  const mm = Math.floor(left / 60000);
+  const ss = String(Math.floor((left % 60000) / 1000)).padStart(2, '0');
+  const chat = a.output !== 'overlay' && !helix ? ' Для чата нужен вход через Twitch.' : '';
+  $('announceNote').textContent =
+    (a.on ? `Сообщений: ${n}. Следующее через ${mm}:${ss}.` : `Сообщений: ${n}. Таймер выключен — только «Показать сейчас».`) + chat;
+}
+
+setInterval(() => {
+  const a = settings.announce;
+  if (a.on && Date.now() - annLast >= a.every * 60000) fireAnnounce();
+  renderAnnounceNote();
+}, 1000);
+
+$('announceOn').onchange = (e) => {
+  settings.announce.on = e.target.checked;
+  // включили — отсчёт с этого момента, а не с открытия дока
+  annLast = Date.now();
+  commit();
+};
+$('announceOutput').onchange = (e) => {
+  settings.announce.output = e.target.value;
+  commit();
+};
+$('announceMessages').oninput = (e) => {
+  settings.announce.messages = e.target.value;
+  commit();
+};
+$('announceEvery').oninput = (e) => {
+  settings.announce.every = +e.target.value;
+  commit();
+};
+$('announceTitle').oninput = (e) => {
+  settings.announce.title = e.target.value;
+  commit();
+};
+$('announceSeconds').oninput = (e) => {
+  settings.announce.seconds = +e.target.value;
+  commit();
+};
+$('announcePos').onclick = (e) => {
+  const pos = e.target.dataset?.pos;
+  if (!pos) return;
+  settings.announce.pos = pos;
+  commit();
+};
+$('announceNow').onclick = () => fireAnnounce();
 
 const names = ['LapizWCG', 'котик_в_тапках', 'Neformalization_Official', 'xXSlayerXx'];
 let nameN = 0;

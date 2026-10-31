@@ -48,12 +48,18 @@ const apply = (s) => {
   if (s.follow) B.Follow(s.follow.on, q.get('pos') || s.follow.pos, s.follow.title, s.follow.seconds);
   if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100, s.follow.inner ?? 1);
   if (s.goal) B.GoalSize(s.goal.pad ?? 50, (s.goal.sx ?? 100) / 100, (s.goal.sy ?? 100) / 100, s.goal.inner ?? 1);
+  if (s.announce) {
+    // карточка в оверлее — при выводе «оверлей» или «оба»; таймер живёт в доке, «Показать сейчас» работает и без него
+    B.Announce(s.announce.output !== 'chat', s.announce.pos, s.announce.title, s.announce.seconds);
+    B.AnnounceSize(s.announce.pad ?? 70, (s.announce.sx ?? 100) / 100, (s.announce.sy ?? 100) / 100, s.announce.inner ?? 1);
+  }
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
 };
 apply(loadSettings());
 const bus = createBus((msg) => {
   if (msg.type === 'settings') apply(msg.settings);
   else if (msg.type === 'alert' && msg.kind === 'follow') B.ShowFollow(msg.name);
+  else if (msg.type === 'alert' && msg.kind === 'announce') B.ShowAnnounce(msg.name);
   else if (msg.type === 'goalTest') B.PreviewGoal(msg.frac);
   else if (msg.type === 'ping') bus.send('pong', { page: 'alerts' });
 });

@@ -1,9 +1,11 @@
-// ОПОВЕЩЕНИЯ: карточка «Новый фоллоуер · ник» со вспышками частиц на прозрачном фоне (оверлей OBS).
+// ОПОВЕЩЕНИЯ: карточка «заголовок · текст» со вспышками частиц на прозрачном фоне (оверлей OBS). Одна и та же карточка служит
+// оповещению о фолловере (текст — ник, крупно, одной строкой) и анонсу (своё сообщение помельче, переносится по словам в
+// несколько строк) — у каждого свой экземпляр со своими настройками.
 // Карточка выезжает с отскоком, держится заданное время и тает; без оповещения кадр пустой — рисовать нечего. Пришедшие во время
 // показа ждут в очереди — при наплыве фоллоу карточки не налезают друг на друга.
-// Настройки (место, заголовок, время, вкл.) задаёт док-панель через мост страницы (hosts/Web/Bridge.cs) — Configure.
+// Настройки (место, заголовок, время, вкл., размер) задаёт док-панель через мост страницы (hosts/Web/Bridge.cs).
 // Место — Layout (девять мест); источник в OBS — на весь экран: вспышки разлетаются за карточку и не обрезаются его краем.
-// --demo — оповещение само раз в 6 с (проверка без Twitch). Рисует сцена (Stage) — вместе с целью
+// demo — оповещение само раз в 6 с (проверка без Twitch). Рисует сцена (Stage) — вместе с целью
 using System;
 using System.Collections.Generic;
 using Wcg;
@@ -19,23 +21,29 @@ public sealed class Alerts
 	readonly Shapes sh = new(64); readonly Text tx; readonly Vfx fx = new(); readonly FxBatch light = new(), norm = new();
 	readonly bool demo;
 	readonly Queue<string> queue = new();
+	// заголовок по умолчанию; размер текста (точки при высоте 1080); ширина, за которой текст переносится (0 — одной строкой)
+	readonly string defaultTitle;
+	readonly float textPx, wrap;
 	// место карточки в кадре: доли свободного места по X и Y (0 — у левого/верхнего края, 1 — у правого/нижнего)
 	float ax = 0.5f, ay = 0.5f;
 	// отступ от края экрана (точки при высоте 1080) и размер по X/Y (доли); содержимое — по меньшему из размеров, чтобы буквы не
 	// растягивались, а лишнее место по другой оси — поля вокруг
 	float pad = 70, sx = 1, sy = 1, inner = 1;
-	string title = "НОВЫЙ ФОЛЛОУЕР";
+	string title;
 	int hold = 240, t, age = -1, wait, demoN;
 	bool enabled = true;
-	string name = "";
+	List<string> lines = new() { "" };
 
-	public Alerts(Text tx, bool demo) { this.tx = tx; this.demo = demo; }
+	public Alerts(Text tx, bool demo, string defaultTitle, float textPx, float wrap)
+	{
+		this.tx = tx; this.demo = demo; this.defaultTitle = title = defaultTitle; this.textPx = textPx; this.wrap = wrap;
+	}
 
 	public void Configure(bool on, string pos, string head, double seconds)
 	{
 		enabled = on; (ax, ay) = Layout.Anchor(pos);
-		title = string.IsNullOrWhiteSpace(head) ? "НОВЫЙ ФОЛЛОУЕР" : head.Trim();
-		hold = (int)(Math.Clamp(seconds, 1, 30) * 60);
+		title = string.IsNullOrWhiteSpace(head) ? defaultTitle : head.Trim();
+		hold = (int)(Math.Clamp(seconds, 1, 60) * 60);
 		if (!on) queue.Clear();
 	}
 
@@ -51,13 +59,37 @@ public sealed class Alerts
 	float C(int h) => h / 1080f * Math.Min(sx, sy);
 
 	// в очередь; показ — в Step, когда освободится место
-	public void Show(string who) { if (enabled && !string.IsNullOrWhiteSpace(who)) queue.Enqueue(who.Trim()); }
+	public void Show(string s) { if (enabled && !string.IsNullOrWhiteSpace(s)) queue.Enqueue(s.Trim()); }
 	public void ShowDemo() => Show(DemoNames[demoN++ % DemoNames.Length]);
 
-	// внутренний отступ карточки — inner процентов высоты кадра (при масштабе содержимого c); высота содержимого: заголовок, полоска,
-	// ник с хвостами букв (у, р)
+	// внутренний отступ карточки — inner процентов высоты кадра (при масштабе содержимого c)
 	float P(float c) => 10.8f * inner * c;
-	const float Content = 132;
+	// высота строки текста с хвостами букв (у, р); содержимое: заголовок с полоской (48) и строки текста
+	float Line => textPx * 1.3125f;
+	float Content => 48 + lines.Count * Line;
+
+	// перенос по словам: строка не шире wrap (точки при высоте 1080); слово длиннее строки остаётся целым
+	List<string> Wrap(string s)
+	{
+		var res = new List<string>();
+		if (wrap <= 0) { res.Add(s); return res; }
+		string cur = "";
+		foreach (var word in s.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+		{
+			string next = cur.Length == 0 ? word : cur + " " + word;
+			if (cur.Length > 0 && tx.Width(next, textPx) > wrap) { res.Add(cur); cur = word; }
+			else cur = next;
+		}
+		res.Add(cur);
+		return res;
+	}
+
+	float TextWidth(float px)
+	{
+		float m = 0;
+		foreach (var l in lines) m = Math.Max(m, tx.Width(l, px));
+		return m;
+	}
 
 	// ширина карточки: по тексту и внутреннему отступу при масштабе содержимого c, растянутая, если размер по X больше размера по Y
 	float Width(float c, float tw, float nw) => (Math.Max(tw, nw) + 2 * P(c) + 6 * c) * sx / Math.Min(sx, sy);
@@ -66,15 +98,15 @@ public sealed class Alerts
 	(float cx, float cy, float cw, float ch) Place(int w, int h)
 	{
 		float c = C(h), U = h / 1080f;
-		float cw = Width(c, tx.Width(title, MathF.Round(26 * c)), tx.Width(name, MathF.Round(64 * c))), ch = (Content + 2 * P(1)) * U * sy;
+		float cw = Width(c, tx.Width(title, MathF.Round(26 * c)), TextWidth(MathF.Round(textPx * c))), ch = (Content + 2 * P(1)) * U * sy;
 		var (cx, cy) = Layout.Place(ax, ay, w, h, cw, ch, pad * U + 40 * c, pad * U);
 		return (cx, cy, cw, ch);
 	}
 
-	void Start(string who)
+	void Start(string s)
 	{
-		name = who; age = 0;
-		// вспышки — у краёв карточки, не поверх ника; пресеты сделаны под окно в 540 точек высотой — крупнее по размеру кадра
+		lines = Wrap(s); age = 0;
+		// вспышки — у краёв карточки, не поверх текста; пресеты сделаны под окно в 540 точек высотой — крупнее по размеру кадра
 		var (cx, cy, cw, _) = Place(App.W, App.H);
 		float c = C(App.H);
 		foreach (float x in new[] { cx - cw / 2, cx + cw / 2 })
@@ -104,11 +136,11 @@ public sealed class Alerts
 		float p = Math.Min(1f, age / (float)In), k = 1 + 2.7f * MathF.Pow(p - 1, 3) + 1.7f * MathF.Pow(p - 1, 2);
 		float fade = age > In + hold ? 1 - (age - In - hold) / (float)Out : 1;
 		int a = (int)(255 * Math.Clamp(fade, 0, 1));
-		float tp = MathF.Round(26 * u * k), np = MathF.Round(64 * u * k);
+		float tp = MathF.Round(26 * u * k), np = MathF.Round(textPx * u * k);
 		if (tp < 2 || np < 2) return;
-		float tw = tx.Width(title, tp), nw = tx.Width(name, np);
+		float tw = tx.Width(title, tp);
 		var (cx, cy, _, ch0) = Place(w, h);
-		float cw = Width(u * k, tw, nw), ch = ch0 * k;
+		float cw = Width(u * k, tw, TextWidth(np)), ch = ch0 * k;
 		// содержимое — посередине карточки по высоте (размер по Y больше — поля сверху и снизу)
 		float x = cx - cw / 2, y = cy - ch / 2 + (ch - Content * u * k) / 2;
 
@@ -120,7 +152,8 @@ public sealed class Alerts
 
 		tx.Begin();
 		tx.Draw(title, cx - tw / 2, y, tp, Layout.Col("citrine", 0.85, a));
-		tx.Draw(name, cx - nw / 2, y + 48 * u * k, np, Layout.Col("pearl", 0.95, a), 2 * u);
+		for (int i = 0; i < lines.Count; i++)
+			tx.Draw(lines[i], cx - tx.Width(lines[i], np) / 2, y + (48 + i * Line) * u * k, np, Layout.Col("pearl", 0.95, a), 2 * u);
 		tx.Flush(w, h);
 	}
 }

@@ -12,5 +12,8 @@ public static partial class Bridge
 	[JSExport] public static void PreviewGoal(double frac) => Kit.Boot.Stage?.Goal.Preview(frac);
 	// отступ от края (точки при высоте 1080), размер по X/Y (доли), внутренний отступ (проценты высоты кадра)
 	[JSExport] public static void FollowSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Alerts.Size(pad, sx, sy, inner);
+	[JSExport] public static void Announce(bool on, string pos, string title, double seconds) => Kit.Boot.Stage?.Announce.Configure(on, pos, title, seconds);
+	[JSExport] public static void AnnounceSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Announce.Size(pad, sx, sy, inner);
+	[JSExport] public static void ShowAnnounce(string text) => Kit.Boot.Stage?.Announce.Show(text);
 	[JSExport] public static void GoalSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Goal.Size(pad, sx, sy, inner);
 }

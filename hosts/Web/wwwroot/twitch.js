@@ -9,6 +9,7 @@ export const isConfigured = () => CLIENT_ID && !CLIENT_ID.startsWith('PASTE_');
 export const SCOPES = [
   'moderator:read:followers', // фолловеры: число и новые
   'channel:read:subscriptions', // сабы: число и новые
+  'user:write:chat', // анонсы в чат от имени канала
 ];
 
 const TOKEN_KEY = 'kit.token';
@@ -103,6 +104,14 @@ export class Helix {
   /** Сколько сабов у канала (у канала без партнёрки/компаньона — ошибка Twitch, её показываем как есть). */
   async subCount() {
     return (await this.request(`subscriptions?broadcaster_id=${this.session.userId}&first=1`)).total ?? 0;
+  }
+
+  /** Сообщение в свой чат от своего имени (Twitch режет до 500 знаков; отклонённое — ошибка с причиной). */
+  async sendChat(message) {
+    const id = this.session.userId;
+    const json = await this.request('chat/messages', { method: 'POST', body: { broadcaster_id: id, sender_id: id, message: message.slice(0, 500) } });
+    const r = json?.data?.[0];
+    if (r && !r.is_sent) throw new Error(r.drop_reason?.message || 'сообщение не отправлено');
   }
 }
 

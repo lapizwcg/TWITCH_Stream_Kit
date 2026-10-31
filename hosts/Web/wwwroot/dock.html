@@ -53,6 +53,7 @@
 <nav class="tabs">
   <button class="tab active" data-tab="follow">Фолловеры</button>
   <button class="tab" data-tab="goals">Цели</button>
+  <button class="tab" data-tab="announce">Анонсы</button>
 </nav>
 
 <main>
@@ -162,6 +163,65 @@
     <div class="row2">
       <button class="btn" id="goalTest" title="Заливка на 75% на несколько секунд — настоящий счёт не меняется">Тест: 75%</button>
       <button class="btn ghost" id="goalReset">Сбросить счёт</button>
+    </div>
+  </section>
+
+  <!-- анонсы: свои сообщения по таймеру — в оверлей (карточкой), в чат или туда и туда -->
+  <section id="tab-announce" class="pane" hidden>
+    <label class="row switch">
+      <input type="checkbox" id="announceOn">
+      <span>Анонсировать по таймеру</span>
+    </label>
+
+    <label class="field">
+      <div class="label">Куда</div>
+      <select id="announceOutput">
+        <option value="overlay">Оверлей</option>
+        <option value="chat">Чат</option>
+        <option value="both">Оверлей и чат</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <div class="label">Сообщения — по одному на строку, идут по очереди</div>
+      <textarea id="announceMessages" rows="4" maxlength="2000" placeholder="Подписывайтесь на канал!"></textarea>
+    </label>
+
+    <label class="field">
+      <div class="label">Как часто: <b id="announceEveryVal"></b></div>
+      <input id="announceEvery" type="range" min="1" max="60" step="1">
+    </label>
+
+    <div class="row2">
+      <button class="btn" id="announceNow" type="button">Показать сейчас</button>
+    </div>
+    <div class="note" id="announceNote"></div>
+
+    <label class="field" data-overlay>
+      <div class="label">Заголовок карточки</div>
+      <input id="announceTitle" type="text" maxlength="40" placeholder="АНОНС">
+    </label>
+
+    <label class="field" data-overlay>
+      <div class="label">Сколько держится: <b id="announceSecondsVal"></b></div>
+      <input id="announceSeconds" type="range" min="3" max="30" step="1">
+    </label>
+
+    <div class="field" data-overlay>
+      <div class="label">Место на экране</div>
+      <div id="announcePos" class="screen" role="radiogroup" aria-label="Место анонса на экране">
+        <button data-pos="tl" title="слева сверху"></button><button data-pos="t" title="сверху"></button><button data-pos="tr" title="справа сверху"></button>
+        <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
+        <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
+      </div>
+    </div>
+
+    <div class="field sizes" data-overlay>
+      <label><span class="label">Отступ от края: <b id="announcePadVal"></b></span><input id="announcePad" type="range" min="0" max="300" step="5"></label>
+      <label><span class="label">Размер по X: <b id="announceSxVal"></b></span><input id="announceSx" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Размер по Y: <b id="announceSyVal"></b></span><input id="announceSy" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Внутренний отступ: <b id="announceInnerVal"></b></span><input id="announceInner" type="range" min="0" max="6" step="0.25"></label>
+      <button class="btn ghost small" id="announceSizeReset" type="button">Сбросить размер</button>
     </div>
   </section>
 </main>
