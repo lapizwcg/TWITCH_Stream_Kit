@@ -52,14 +52,18 @@ public sealed class Alerts
 	public void Show(string who) { if (enabled && !string.IsNullOrWhiteSpace(who)) queue.Enqueue(who.Trim()); }
 	public void ShowDemo() => Show(DemoNames[demoN++ % DemoNames.Length]);
 
-	// ширина карточки: по тексту при масштабе содержимого c, растянутая, если размер по X больше размера по Y
-	float Width(float c, float tw, float nw) => (Math.Max(tw, nw) + 120 * c) * sx / Math.Min(sx, sy);
+	// внутренний отступ карточки — 1% высоты кадра (при масштабе содержимого c); высота содержимого: заголовок, полоска, ник с хвостами букв (у, р)
+	static float P(float c) => 10.8f * c;
+	const float Content = 132;
+
+	// ширина карточки: по тексту и внутреннему отступу при масштабе содержимого c, растянутая, если размер по X больше размера по Y
+	float Width(float c, float tw, float nw) => (Math.Max(tw, nw) + 2 * P(c) + 6 * c) * sx / Math.Min(sx, sy);
 
 	// размер карточки в покое (без отскока) и её середина по месту; поле от края — отступ плюс запас под вспышки у боков
 	(float cx, float cy, float cw, float ch) Place(int w, int h)
 	{
 		float c = C(h), U = h / 1080f;
-		float cw = Width(c, tx.Width(title, MathF.Round(26 * c)), tx.Width(name, MathF.Round(64 * c))), ch = 190 * U * sy;
+		float cw = Width(c, tx.Width(title, MathF.Round(26 * c)), tx.Width(name, MathF.Round(64 * c))), ch = (Content + 2 * P(1)) * U * sy;
 		var (cx, cy) = Layout.Place(ax, ay, w, h, cw, ch, pad * U + 40 * c, pad * U);
 		return (cx, cy, cw, ch);
 	}
@@ -103,17 +107,17 @@ public sealed class Alerts
 		var (cx, cy, _, ch0) = Place(w, h);
 		float cw = Width(u * k, tw, nw), ch = ch0 * k;
 		// содержимое — посередине карточки по высоте (размер по Y больше — поля сверху и снизу)
-		float x = cx - cw / 2, y = cy - ch / 2 + (ch - 190 * u * k) / 2;
+		float x = cx - cw / 2, y = cy - ch / 2 + (ch - Content * u * k) / 2;
 
 		sh.Begin(); sh.Screen();
-		sh.Rect(x, cy - ch / 2, cw, ch, Layout.Col("obsidian", 0.12, a * 225 / 255), 26 * u * k, 4 * u * k, Layout.Col("c_azure", 0.7, a));
+		sh.Rect(x, cy - ch / 2, cw, ch, Layout.Col("obsidian", 0.12, a * 225 / 255), 16 * u * k, 4 * u * k, Layout.Col("c_azure", 0.7, a));
 		// полоска-акцент под заголовком
-		sh.Rect(cx - tw / 2, y + 70 * u * k, tw, 4 * u * k, Layout.Col("citrine", 0.8, a), 2 * u * k);
+		sh.Rect(cx - tw / 2, y + 38 * u * k, tw, 4 * u * k, Layout.Col("citrine", 0.8, a), 2 * u * k);
 		sh.Flush(w, h);
 
 		tx.Begin();
-		tx.Draw(title, cx - tw / 2, y + 30 * u * k, tp, Layout.Col("citrine", 0.85, a));
-		tx.Draw(name, cx - nw / 2, y + 92 * u * k, np, Layout.Col("pearl", 0.95, a), 2 * u);
+		tx.Draw(title, cx - tw / 2, y, tp, Layout.Col("citrine", 0.85, a));
+		tx.Draw(name, cx - nw / 2, y + 48 * u * k, np, Layout.Col("pearl", 0.95, a), 2 * u);
 		tx.Flush(w, h);
 	}
 }

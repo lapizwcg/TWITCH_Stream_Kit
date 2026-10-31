@@ -68,8 +68,13 @@ public sealed class Goal
 	bool Vertical => style is "ttb" or "btt";
 	bool Ring => style == "radial";
 
-	// размер плашки в покое (точки при высоте 1080): полоса, столбик, кольцо
-	(float w, float h) Base => Ring ? (320, 372) : Vertical ? (170, 560) : (700, 136);
+	// внутренний отступ плашки — 1% высоты кадра (при масштабе содержимого u)
+	static float P(float u) => 10.8f * u;
+
+	// размер плашки в покое (точки при высоте 1080): по содержимому плюс внутренний отступ со всех сторон.
+	// Полоса: строка заголовка 36 + зазор 10 + дорожка 38; столбик: заголовок и счёт по 32 с зазорами 10; кольцо: строка 36 +
+	// зазор 10 + круг 256
+	(float w, float h) Base => Ring ? (256 + 2 * P(1), 36 + 10 + 256 + 2 * P(1)) : Vertical ? (120, 560) : (700, 36 + 10 + 38 + 2 * P(1));
 
 	(float x, float y, float w, float h) Box(int w, int h)
 	{
@@ -83,11 +88,11 @@ public sealed class Goal
 
 	// дорожка полосы или столбика: вдоль оси — во всю плашку, поперёк — по масштабу содержимого
 	(float x, float y, float w, float h) Track(float bx, float by, float bw, float bh, float u) => Vertical
-		? (bx + bw / 2 - 22 * u, by + 72 * u, 44 * u, bh - 72 * u - 76 * u)
-		: (bx + 30 * u, by + OffY(bh, u) + 136 * u - 30 * u - 38 * u, bw - 60 * u, 38 * u);
+		? (bx + bw / 2 - 22 * u, by + P(u) + 42 * u, 44 * u, bh - 2 * P(u) - 84 * u)
+		: (bx + P(u), by + OffY(bh, u) + Base.h * u - P(u) - 38 * u, bw - 2 * P(u), 38 * u);
 
 	// кольцо: середина, внешний радиус, толщина
-	(float cx, float cy, float r, float th) RingOf(float bx, float by, float bw, float bh, float u) => (bx + bw / 2, by + OffY(bh, u) + 70 * u + 128 * u, 128 * u, 30 * u);
+	(float cx, float cy, float r, float th) RingOf(float bx, float by, float bw, float bh, float u) => (bx + bw / 2, by + OffY(bh, u) + P(u) + 46 * u + 128 * u, 128 * u, 30 * u);
 
 	// точка края заливки при доле frac — для искр и свечения
 	(float x, float y) Head(float frac, int w, int h)
@@ -157,11 +162,11 @@ public sealed class Goal
 
 		// плашка — тёмное стекло с переливом сверху вниз, тонкой кромкой и светлой линией по верху
 		gr.Begin(); gr.Screen();
-		gr.Linear(bx, by, bw, bh, Layout.Col("obsidian", 0.2, a * 235 / 255), Layout.Col("obsidian", 0.06, a * 235 / 255), 26 * u, soft: 1.5f);
+		gr.Linear(bx, by, bw, bh, Layout.Col("obsidian", 0.2, a * 235 / 255), Layout.Col("obsidian", 0.06, a * 235 / 255), 16 * u, soft: 1.5f);
 		gr.Flush(w, h);
 		sh.Begin(); sh.Screen();
-		sh.Rect(bx, by, bw, bh, 0, 26 * u, 2.5f * u, Layout.Col(mat, 0.62, a * 200 / 255));
-		sh.Rect(bx + 26 * u, by + 1.5f * u, bw - 52 * u, 1.5f * u, Layout.Col("pearl", 0.95, a * 40 / 255));
+		sh.Rect(bx, by, bw, bh, 0, 16 * u, 2.5f * u, Layout.Col(mat, 0.62, a * 200 / 255));
+		sh.Rect(bx + 16 * u, by + 1.5f * u, bw - 32 * u, 1.5f * u, Layout.Col("pearl", 0.95, a * 40 / 255));
 		sh.Flush(w, h);
 
 		if (Ring) RingBar(bx, by, bw, bh, u, a, frac, mat, w, h);
@@ -275,15 +280,14 @@ public sealed class Goal
 		gr.Flush(w, h);
 	}
 
-	// заголовок и счёт: у полосы — заголовок слева, счёт и проценты справа; у столбика — сверху и снизу; у кольца — число в середине
+	// заголовок и счёт «1/25»: у полосы — заголовок слева, счёт справа; у столбика — сверху и снизу; у кольца — счёт в середине
 	void Labels(float bx, float by, float bw, float bh, float u, int a, bool done, int w, int h)
 	{
 		bool cheer = party >= 0 && party < Party;
 		string head = cheer ? "ЦЕЛЬ ДОСТИГНУТА!" : title;
-		uint headCol = Layout.Col(cheer || done ? "gold" : "citrine", 0.85, a), countCol = Layout.Col("pearl", 0.95, a), dim = Layout.Col("pearl", 0.72, a);
-		int value = (int)MathF.Round(shown);
-		string count = $"{value} / {target}", pct = $"{Math.Clamp(value * 100 / target, 0, 999)}%";
-		float pulse = cheer ? 1 + 0.06f * MathF.Sin(t * 0.2f) : 1;
+		uint headCol = Layout.Col(cheer || done ? "gold" : "citrine", 0.85, a), countCol = Layout.Col("pearl", 0.95, a);
+		string count = $"{(int)MathF.Round(shown)}/{target}";
+		float pulse = cheer ? 1 + 0.06f * MathF.Sin(t * 0.2f) : 1, p = P(u);
 		// надпись не шире своего места: длинная — мельче
 		float Fit(string s, float px, float room) => MathF.Round(Math.Min(px, px * room / Math.Max(1, tx.Width(s, px))));
 		void Center(string s, float cx, float y, float px, uint col, float outline = 0) => tx.Draw(s, cx - tx.Width(s, px) / 2, y, px, col, outline);
@@ -292,25 +296,20 @@ public sealed class Goal
 		if (Ring)
 		{
 			var (cx, cy, r, th) = RingOf(bx, by, bw, bh, u);
-			string v = value.ToString(), sub = $"из {target} · {pct}";
-			float hp = Fit(head, 30 * u * pulse, bw - 40 * u), vp = Fit(v, 64 * u, 2 * (r - th) - 34 * u);
-			Center(head, bx + bw / 2, by + OffY(bh, u) + 22 * u, hp, headCol);
-			Center(v, cx, cy - vp * 0.62f, vp, countCol, 1.5f * u);
-			Center(sub, cx, cy + vp * 0.45f, Fit(sub, 22 * u, 2 * (r - th) - 20 * u), dim);
+			float cp = Fit(count, 60 * u, 2 * (r - th) - 30 * u);
+			Center(head, bx + bw / 2, by + OffY(bh, u) + p, Fit(head, 30 * u * pulse, bw - 2 * p), headCol);
+			Center(count, cx, cy - cp * 0.62f, cp, countCol, 1.5f * u);
 		}
 		else if (Vertical)
 		{
-			Center(head, bx + bw / 2, by + 24 * u, Fit(head, 26 * u * pulse, bw - 24 * u), headCol);
-			Center(count, bx + bw / 2, by + bh - 62 * u, Fit(count, 26 * u, bw - 20 * u), countCol, 1.5f * u);
-			Center(pct, bx + bw / 2, by + bh - 32 * u, 22 * u, dim);
+			Center(head, bx + bw / 2, by + p, Fit(head, 26 * u * pulse, bw - 2 * p), headCol);
+			Center(count, bx + bw / 2, by + bh - p - 32 * u, Fit(count, 26 * u, bw - 2 * p), countCol, 1.5f * u);
 		}
 		else
 		{
-			float cp = 30 * u, cw = tx.Width(count, cp), pp = 22 * u, pw = tx.Width(pct, pp);
-			float ty = by + OffY(bh, u);
-			tx.Draw(head, bx + 30 * u, ty + 24 * u, Fit(head, 30 * u * pulse, bw - 90 * u - cw - pw), headCol);
-			tx.Draw(count, bx + bw - 30 * u - cw, ty + 24 * u, cp, countCol, 1.5f * u);
-			tx.Draw(pct, bx + bw - 30 * u - cw - 14 * u - pw, ty + 30 * u, pp, dim);
+			float cp = 30 * u, cw = tx.Width(count, cp), ty = by + OffY(bh, u) + p;
+			tx.Draw(head, bx + p, ty, Fit(head, 30 * u * pulse, bw - 2 * p - cw - 20 * u), headCol);
+			tx.Draw(count, bx + bw - p - cw, ty, cp, countCol, 1.5f * u);
 		}
 		tx.Flush(w, h);
 	}
