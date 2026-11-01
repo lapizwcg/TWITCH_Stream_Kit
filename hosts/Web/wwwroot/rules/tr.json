@@ -1,0 +1,142 @@
+{
+  "code": "tr",
+  "name": "Türkçe",
+  "pageTitle": "Albion: Solo Leveling — kurallar",
+  "title": { "pre": "Albion: ", "accent": "Solo Leveling", "post": "" },
+  "lead": "Yepyeni bir karakterle başlayıp tek başına tam bir Tier 8 sete ulaş: pazar yerini hiç kullanmadan ve diğer oyunculardan hiçbir şey almadan.",
+  "note": "Bu challenge sadece eğlence için. Kimse kimseyi denetlemez: herkes katılabilir, dürüstlük herkesin kendine karşı kişisel bir meydan okumasıdır.",
+  "language": "Dil",
+  "footer": "Kanal {channel} · Albion Online",
+  "sections": [
+    {
+      "h": "Nasıl katılırsın",
+      "ul": [
+        "Yeni bir karakter oluştur. Önceden geliştirilmiş bir karakterle başlamak yasak.",
+        "Aşağıdaki kurallara göre oyna. Bir durum yazılmamışsa iki ilkeye göre karar ver.",
+        "İlerlemeni {twitch} sohbetinde paylaş."
+      ]
+    },
+    {
+      "h": "İki ilke",
+      "principles": [
+        ["Kaynak — sadece oyun", "Oyunun kendisinin verdiği her şey serbest. Pazar yeri üzerinden veya diğer oyunculardan gelen her şey yasak."],
+        ["Kullanım — sadece kendi ürettiğin", "Karakterin giydiği, yediği, içtiği ve bindiği her şeyi o karakter kendisi üretmiş olmalı. Geliştirmeler de sadece kendi üretiminle yapılır."]
+      ]
+    },
+    {
+      "h": "1. Pazar yeri ve Premium",
+      "p": ["Pazar yeri tamamen yasak. Altın satın alabilirsin ama altını tekrar gümüşe çeviremezsin: böylece dışarıdan gümüş sokulamaz."],
+      "cols": [
+        { "kind": "no", "h": "Yasak", "ul": [
+          "Pazar yerinden herhangi bir şey almak: satış emirlerinden veya alım emirleriyle",
+          "Pazar yerinde herhangi bir şey satmak: başka oyuncuların alım emirlerine veya kendi satış emirlerinle",
+          "Caerleon'daki Kara Pazar'a satmak",
+          "Altını gümüşe çevirmek"
+        ] },
+        { "kind": "yes", "h": "Serbest", "ul": [
+          "Gümüşle veya gerçek parayla altın satın almak",
+          "Ana hesabından gümüş aktarmak, ama sadece Premium için: satın alma anındaki kura göre Premium'un altın fiyatı kadar, hemen harcanmak şartıyla",
+          "Premium ve tüm bonusları",
+          "Gümüşle ada ve ada geliştirmeleri satın almak — bu pazar yeri sayılmaz",
+          "Tamir, istasyon ücretleri ve diğer oyun hizmetleri için gümüş ödemek"
+        ] }
+      ]
+    },
+    {
+      "h": "2. Diğer oyuncular",
+      "p": ["Diğer oyuncularla yapılan her etkinlik serbest, büyük çaplı içerikler dahil; savaşta yardım da sorun değil. Yasak olan tek şey, doğrudan veya dolaylı olarak oyunculardan değerli bir şey almak. Loncalar ve partiler yasak, çünkü ortak şöhret ve gümüş bunlar üzerinden akıyor. Öldürdüğün oyuncuların ganimeti oyun ganimetidir ve serbesttir."],
+      "cols": [
+        { "kind": "no", "h": "Yasak", "ul": [
+          "Oyuncularla herhangi bir şekilde ticaret yapmak",
+          "Hediye kabul etmek: eşya, kaynak, gümüş",
+          "Oyuncuların yere bıraktığı gümüşü almak",
+          "Gümüş karşılığı düello yapmak: bu gizli ticarettir",
+          "Yan karakter kullanmak veya diğer karakterlerden bir şey aktarmak (Premium için gümüş hariç)",
+          "Bir loncaya katılmak",
+          "Şehir dışında partide olmak"
+        ] },
+        { "kind": "yes", "h": "Serbest", "ul": [
+          "Oyuncularla konuşmak",
+          "Partiye girmeden büyük çaplı ve açık dünya etkinliklerine katılmak",
+          "Savaşta başkalarına yardım etmek ve yardım kabul etmek",
+          "Oyuncularla savaşmak ve öldürdüklerinin ganimetini almak",
+          "Diğer oyuncuların istasyonlarını normal kullanım ücretiyle kullanmak"
+        ] }
+      ]
+    },
+    {
+      "h": "3. Ekipman ve sarf malzemeleri",
+      "p": ["Karakterin giydiği veya kullandığı her şeyi o karakter kendisi üretir. Bulduğun hazır bir eşyayı, kendin üretebiliyor olsan bile kuşanamazsın. Başlangıç ekipmanını oyuncu eğitimde kendisi ürettiği için serbest."],
+      "cols": [
+        { "kind": "yes", "h": "Sadece kendi üretimin", "ul": [
+          "Silah, yan el, kafa, zırh, ayakkabı",
+          "Çanta ve pelerin",
+          "Aletler ve toplama ekipmanı",
+          "Yemek ve iksirler",
+          "Binekler (bölüm 6)"
+        ] },
+        { "kind": "no", "h": "Yasak", "ul": [
+          "Bulduğun, düşürdüğün veya ödül olarak aldığın hazır ekipmanı giymek veya kullanmak",
+          "Bulduğun yemekleri yemek ve iksirleri içmek",
+          "Bulduğun aletleri kullanmak"
+        ] }
+      ]
+    },
+    {
+      "h": "4. Ganimet ve ödüller",
+      "p": ["Her oyun ganimeti kendi üretimin için hammadde olarak serbest: canavarlar ve bosslar, açık dünyadaki sandıklar, zindanlar ve sisler, hizip ve sezonluk sandıklar, öldürülen oyuncular, görev ve günlük ödülleri."],
+      "cols": [
+        { "kind": "yes", "h": "Doğrudan kullanılabilir", "ul": [
+          "Kaynaklar — ham ve işlenmiş, büyülü olanlar dahil",
+          "Artifaktlar; rünler, ruhlar ve kalıntılar — sadece artifakt yapmak için",
+          "Kavrayış tomarları",
+          "Gümüş keseleri ve canavarlardan düşen gümüş",
+          "Yavru hayvanlar ve tohumlar"
+        ] },
+        { "kind": "no", "h": "Sadece parçalanır", "ul": [
+          "Hazır ekipman, aletler, çantalar, pelerinler",
+          "Hazır yemek, iksirler ve binekler"
+        ], "p": "Bunları kaynağa veya tamir istasyonunda gümüşe dönüştürmek için parçala." }
+      ]
+    },
+    {
+      "h": "5. Üretim ve geliştirme",
+      "p": ["Bir eşya ancak daha iyi malzemelerle yeniden üretilirse iyileşir — asla bir NPC'de yükseltilerek değil."],
+      "cols": [
+        { "kind": "yes", "h": "Serbest", "ul": [
+          "Her türlü üretim ve işleme istasyonu: şehirlerde, adalarda, sığınaklarda ve kara bölge şehirlerinde, başkalarının istasyonları dahil",
+          "Üretim ve işleme için odak",
+          "Rünleri, ruhları ve kalıntıları artifakta çevirmek",
+          "Büyülü kaynaklardan büyülü eşya üretmek",
+          "Eşyaları tamir istasyonunda onarmak"
+        ] },
+        { "kind": "no", "h": "Yasak", "ul": [
+          "Eşya kalitesini tamir istasyonunda yükseltmek: kalite sadece üretimde çıkan kalitedir",
+          "Hazır eşyaları rünler, ruhlar ve kalıntılarla büyülemek",
+          "Kaynakların büyü seviyesini yükseltmek (örneğin .0'dan .1'e)"
+        ] }
+      ]
+    },
+    {
+      "h": "6. Ada, çiftlik ve binekler",
+      "p": ["Başlangıçta sadece başlangıç katırın var. Diğer tüm binekleri kendin yetiştirmeli veya evcilleştirip eyerlemelisin."],
+      "cols": [
+        { "kind": "yes", "h": "Serbest", "ul": [
+          "Gümüşle ada ve ada geliştirmeleri; adadaki çiftlikler, meralar ve istasyonlar",
+          "Oyun kaynaklarından gelen tohumlar ve yavru hayvanlar: kendi çiftliğin, toplama, ganimet, ödüller",
+          "Başlangıç katırı",
+          "Kendi yetiştirdiğin veya evcilleştirdiğin binekler: öküzler, atlar, vahşi binekler",
+          "Hizip binekleri: bunlar da kendin yetiştirip eyerlenir"
+        ] },
+        { "kind": "no", "h": "Yasak", "ul": [
+          "Sezonluk binekler: hazır eyerli gelirler",
+          "Satın alınmış, hediye edilmiş veya bulunmuş hazır binekler"
+        ] }
+      ]
+    },
+    {
+      "h3": "Setini kaybetmek",
+      "p": ["Ceza yok: setini kaybettiysen yenisini üret. Zaten ekipmanını kendin yapıyorsun, challenge'ın amacı da bu."]
+    }
+  ]
+}

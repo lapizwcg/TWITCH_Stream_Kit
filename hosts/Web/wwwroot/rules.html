@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Соло Левелинг без рынка</title>
-<meta name="description" content="Правила челленджа «Альбион: Соло Левелинг без рынка» с канала LapizWCG">
-<!-- ПРАВИЛА ЧЕЛЛЕНДЖА для зрителей: что разрешено и запрещено (копия документа правил в Claude Docs) -->
+<title>Albion: Solo Leveling</title>
+<meta name="description" content="Albion Online challenge «Solo Leveling» by LapizWCG: rules in many languages">
+<!-- ПРАВИЛА ЧЕЛЛЕНДЖА для зрителей на многих языках. Тексты — rules/<код>.json (ru — исходник, копия документа правил в Claude Docs;
+     остальные — переводы с той же структурой). Язык: ?lang= в адресе, затем выбранный раньше (localStorage), затем язык браузера,
+     иначе английский -->
 <style>
 :root {
   --bg: #0f1116; --panel: #181b22; --line: #2b2f3a; --text: #e6e8ec; --muted: #9aa0ab;
@@ -13,7 +15,9 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 'Segoe UI', system-ui, sans-serif; }
-main { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+main { max-width: 860px; margin: 0 auto; padding: 16px 16px 64px; }
+.lang { display: flex; justify-content: flex-end; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; }
+.lang select { padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--text); font: inherit; }
 header { text-align: center; padding: 8px 0 20px; }
 header img { width: min(420px, 100%); height: auto; }
 h1 { margin: 12px 0 4px; font-size: clamp(24px, 5vw, 34px); letter-spacing: .02em; }
@@ -39,137 +43,80 @@ a { color: var(--gold); }
 </head>
 <body>
 <main>
+  <div class="lang"><label for="lang" id="langLabel">Language</label><select id="lang"></select></div>
   <header>
     <img src="logos/plaque_blue.svg" alt="LapizWCG — Albion Online">
-    <h1>Альбион: <span>Соло Левелинг</span> без рынка</h1>
-    <p class="lead">Пройти путь от нового персонажа до полного сета Т8 в одиночку, ни разу не воспользовавшись рынком и ничего не получая от других игроков.</p>
+    <h1 id="title">Albion: <span>Solo Leveling</span></h1>
+    <p class="lead" id="lead"></p>
   </header>
-
-  <p class="note">Это челлендж для удовольствия. Никто никого не проверяет: присоединиться может любой, а честность — личный вызов каждого самому себе.</p>
-
-  <h2>Как присоединиться</h2>
-  <ul>
-    <li>Создайте нового персонажа. Начинать с прокачанного персонажа нельзя.</li>
-    <li>Играйте по правилам ниже. Если ситуация не описана, решайте по двум принципам.</li>
-    <li>Делитесь прогрессом в чате канала <a href="https://www.twitch.tv/lapizwcg">twitch.tv/lapizwcg</a>.</li>
-  </ul>
-
-  <h2>Два принципа</h2>
-  <ul class="principles">
-    <li><b>Источник — только игра</b>Всё, что даёт сама игра, разрешено. Всё, что приходит через рынок или от других игроков, запрещено.</li>
-    <li><b>Использование — только своё</b>Всё, что персонаж носит, ест, пьёт и на чём ездит, создано им самим. Улучшения тоже достигаются только своим крафтом.</li>
-  </ul>
-
-  <h2>1. Рынок и премиум</h2>
-  <p>Рынок запрещён полностью. Золото можно покупать, но менять его обратно на серебро нельзя: так не получится притащить серебро извне.</p>
-  <div class="cols">
-    <div class="box no"><h3>Запрещено</h3><ul>
-      <li>Покупать на рынке что угодно: по готовым лотам и через заказы на покупку</li>
-      <li>Продавать на рынке что угодно: по чужим заказам и через свои лоты</li>
-      <li>Продавать на чёрном рынке в Карлеоне</li>
-      <li>Менять золото на серебро</li>
-    </ul></div>
-    <div class="box yes"><h3>Разрешено</h3><ul>
-      <li>Покупать золото за серебро или за реальные деньги</li>
-      <li>Передать серебро с основного аккаунта, но только на премиум: столько, сколько стоит премиум в золоте по курсу на момент покупки, и сразу потратить</li>
-      <li>Премиум и любые его бонусы</li>
-      <li>Покупать остров и его улучшения за серебро — это не рынок</li>
-      <li>Платить серебром за ремонт, налоги станций и другие игровые услуги</li>
-    </ul></div>
-  </div>
-
-  <h2>2. Другие игроки</h2>
-  <p>Любые активности с другими игроками разрешены, включая массовые, и помощь в бою — это нормально. Запрещено только получать от игроков ценности, прямо или косвенно. Гильдия и группа запрещены потому, что через них идёт общая слава и серебро. Лут с убитых игроков — игровая добыча, он разрешён.</p>
-  <div class="cols">
-    <div class="box no"><h3>Запрещено</h3><ul>
-      <li>Торговать с игроками в любой форме</li>
-      <li>Принимать подарки: вещи, ресурсы, серебро</li>
-      <li>Подбирать серебро, которое игроки выбрасывают на землю</li>
-      <li>Играть дуэли на серебро: это скрытая торговля</li>
-      <li>Использовать твинков и передавать что-либо с других персонажей (кроме серебра на премиум)</li>
-      <li>Вступать в гильдию</li>
-      <li>Состоять в группе за пределами города</li>
-    </ul></div>
-    <div class="box yes"><h3>Разрешено</h3><ul>
-      <li>Общаться с игроками</li>
-      <li>Участвовать в массовых и общих активностях без вступления в группу</li>
-      <li>Помогать другим и принимать помощь в бою</li>
-      <li>Сражаться с игроками и забирать лут с убитых</li>
-      <li>Пользоваться станциями других игроков за обычный игровой налог</li>
-    </ul></div>
-  </div>
-
-  <h2>3. Экипировка и расходники</h2>
-  <p>Всё, что персонаж носит или использует, скрафчено им самим. Найденную готовую вещь надеть нельзя, даже если вы умеете её крафтить. Стартовую экипировку игрок крафтит сам в обучении, поэтому она разрешена.</p>
-  <div class="cols">
-    <div class="box yes"><h3>Только своего крафта</h3><ul>
-      <li>Оружие, вторая рука, шлем, броня, обувь</li>
-      <li>Сумка и плащ</li>
-      <li>Инструменты и сборочная экипировка</li>
-      <li>Еда и зелья</li>
-      <li>Маунты (раздел 6)</li>
-    </ul></div>
-    <div class="box no"><h3>Запрещено</h3><ul>
-      <li>Носить или использовать найденную, выпавшую или полученную в награду готовую экипировку</li>
-      <li>Есть и пить найденные еду и зелья</li>
-      <li>Пользоваться найденными инструментами</li>
-    </ul></div>
-  </div>
-
-  <h2>4. Лут и награды</h2>
-  <p>Любая игровая добыча разрешена как сырьё для своего крафта: мобы и боссы, сундуки в мире, данжах и туманах, фракционные и сезонные сундуки, убитые игроки, награды за задания и журналы.</p>
-  <div class="cols">
-    <div class="box yes"><h3>Можно использовать напрямую</h3><ul>
-      <li>Ресурсы — сырьё и переработанные, включая зачарованные</li>
-      <li>Артефакты; руны, души и реликвии — только для получения артефактов</li>
-      <li>Тома знаний</li>
-      <li>Мешки серебра и серебро с мобов</li>
-      <li>Детёныши животных и семена</li>
-    </ul></div>
-    <div class="box no"><h3>Только в разбор</h3><ul>
-      <li>Готовая экипировка, инструменты, сумки, плащи</li>
-      <li>Готовые еда, зелья и маунты</li>
-    </ul>
-    <p>Разбирать можно на ресурсы или на серебро у ремонтника.</p></div>
-  </div>
-
-  <h2>5. Крафт и улучшения</h2>
-  <p>Вещь становится лучше, только если скрафтить её заново из лучших материалов, а не докрутить у NPC.</p>
-  <div class="cols">
-    <div class="box yes"><h3>Разрешено</h3><ul>
-      <li>Любые станции крафта и переработки: городские, на островах, в хайдаутах и городах чёрной зоны, включая чужие</li>
-      <li>Фокус для крафта и переработки</li>
-      <li>Превращать руны, души и реликвии в артефакты</li>
-      <li>Крафтить зачарованные вещи из зачарованных ресурсов</li>
-      <li>Ремонтировать вещи у ремонтника</li>
-    </ul></div>
-    <div class="box no"><h3>Запрещено</h3><ul>
-      <li>Поднимать качество вещей у ремонтника: качество — только то, что выпало при крафте</li>
-      <li>Зачаровывать готовые вещи рунами, душами и реликвиями</li>
-      <li>Повышать зачарование ресурсов (например, с .0 на .1)</li>
-    </ul></div>
-  </div>
-
-  <h2>6. Остров, ферма и транспорт</h2>
-  <p>На старте есть только стартовый мул. Все остальные маунты нужно вырастить или приручить и оседлать самому.</p>
-  <div class="cols">
-    <div class="box yes"><h3>Разрешено</h3><ul>
-      <li>Остров и его улучшения за серебро; фермы, пастбища и станции на острове</li>
-      <li>Семена и детёныши из игровых источников: своя ферма, сбор, лут, награды</li>
-      <li>Стартовый мул</li>
-      <li>Маунты своего выращивания и приручения: быки, лошади, дикие маунты</li>
-      <li>Фракционные маунты: их тоже выращивают и седлают сами</li>
-    </ul></div>
-    <div class="box no"><h3>Запрещено</h3><ul>
-      <li>Сезонные маунты: они выдаются сразу оседланными</li>
-      <li>Купленные, подаренные и найденные готовые маунты</li>
-    </ul></div>
-  </div>
-
-  <h3>Потеря сета</h3>
-  <p>Штрафов нет: потеряли сет — крафтите новый. Экипировку вы и так делаете сами, в этом и смысл челленджа.</p>
-
-  <footer>Канал <a href="https://www.twitch.tv/lapizwcg">LapizWCG</a> · Albion Online</footer>
+  <p class="note" id="note"></p>
+  <div id="rules"></div>
+  <footer id="footer"></footer>
 </main>
+<script>
+// языки: код файла rules/<код>.json и название на самом языке; порядок — в списке выбора
+var LANGS = [
+  ['en', 'English'], ['ru', 'Русский'], ['uk', 'Українська'], ['es', 'Español'], ['pt', 'Português'], ['de', 'Deutsch'],
+  ['fr', 'Français'], ['it', 'Italiano'], ['pl', 'Polski'], ['tr', 'Türkçe'], ['zh', '简体中文'], ['ko', '한국어'], ['ja', '日本語'],
+];
+var TWITCH = 'https://www.twitch.tv/lapizwcg';
+var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+// {twitch} и {channel} — ссылка на канал
+var links = function (s) {
+  return esc(s).replace('{twitch}', '<a href="' + TWITCH + '">twitch.tv/lapizwcg</a>').replace('{channel}', '<a href="' + TWITCH + '">LapizWCG</a>');
+};
+var ul = function (items, cls) { return '<ul' + (cls ? ' class="' + cls + '"' : '') + '>' + items.map(function (t) { return '<li>' + links(t) + '</li>'; }).join('') + '</ul>'; };
+
+function render(t) {
+  document.documentElement.lang = t.code;
+  document.title = t.pageTitle;
+  document.getElementById('langLabel').textContent = t.language;
+  document.getElementById('title').innerHTML = esc(t.title.pre) + '<span>' + esc(t.title.accent) + '</span>' + esc(t.title.post || '');
+  document.getElementById('lead').textContent = t.lead;
+  document.getElementById('note').textContent = t.note;
+  document.getElementById('footer').innerHTML = links(t.footer);
+  document.getElementById('rules').innerHTML = t.sections.map(function (s) {
+    var h = s.h ? '<h2>' + esc(s.h) + '</h2>' : '<h3>' + esc(s.h3) + '</h3>';
+    var p = (s.p || []).map(function (x) { return '<p>' + links(x) + '</p>'; }).join('');
+    var body = '';
+    if (s.ul) body += ul(s.ul);
+    if (s.principles) body += '<ul class="principles">' + s.principles.map(function (x) { return '<li><b>' + esc(x[0]) + '</b>' + esc(x[1]) + '</li>'; }).join('') + '</ul>';
+    if (s.cols) body += '<div class="cols">' + s.cols.map(function (c) {
+      return '<div class="box ' + c.kind + '"><h3>' + esc(c.h) + '</h3>' + ul(c.ul) + (c.p ? '<p>' + links(c.p) + '</p>' : '') + '</div>';
+    }).join('') + '</div>';
+    return h + p + body;
+  }).join('');
+}
+
+function load(code) {
+  fetch('rules/' + code + '.json', { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(function () { if (code !== 'en') load('en'); });
+}
+
+// язык: ?lang= → выбранный раньше → язык браузера → английский
+function pick() {
+  var has = function (c) { return LANGS.some(function (l) { return l[0] === c; }); };
+  var q = new URLSearchParams(location.search).get('lang');
+  if (q && has(q)) return q;
+  try { var saved = localStorage.getItem('rules.lang'); if (saved && has(saved)) return saved; } catch (e) {}
+  var nav = navigator.languages || [navigator.language || 'en'];
+  for (var i = 0; i < nav.length; i++) { var c = String(nav[i]).toLowerCase().split('-')[0]; if (has(c)) return c; }
+  return 'en';
+}
+
+var sel = document.getElementById('lang');
+sel.innerHTML = LANGS.map(function (l) { return '<option value="' + l[0] + '">' + l[1] + '</option>'; }).join('');
+sel.value = pick();
+sel.onchange = function () {
+  try { localStorage.setItem('rules.lang', sel.value); } catch (e) {}
+  var u = new URL(location.href);
+  u.searchParams.set('lang', sel.value);
+  history.replaceState(null, '', u.href);
+  load(sel.value);
+};
+load(sel.value);
+</script>
 </body>
 </html>

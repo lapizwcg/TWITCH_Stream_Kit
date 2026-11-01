@@ -1,0 +1,142 @@
+{
+  "code": "pl",
+  "name": "Polski",
+  "pageTitle": "Albion: Solo Leveling — zasady",
+  "title": { "pre": "Albion: ", "accent": "Solo Leveling", "post": "" },
+  "lead": "Doprowadź zupełnie nową postać do pełnego zestawu Tier 8 w pojedynkę — bez korzystania z rynku i bez przyjmowania czegokolwiek od innych graczy.",
+  "note": "Ten challenge jest tylko dla zabawy. Nikt nikogo nie sprawdza: każdy może dołączyć, a uczciwość to osobiste wyzwanie wobec samego siebie.",
+  "language": "Język",
+  "footer": "Kanał {channel} · Albion Online",
+  "sections": [
+    {
+      "h": "Jak dołączyć",
+      "ul": [
+        "Stwórz nową postać. Start z już wyleveloną postacią jest niedozwolony.",
+        "Graj według zasad poniżej. Jeśli sytuacja nie jest opisana, rozstrzygnij ją według dwóch zasad ogólnych.",
+        "Dziel się postępami na czacie {twitch}."
+      ]
+    },
+    {
+      "h": "Dwie zasady ogólne",
+      "principles": [
+        ["Źródło — tylko gra", "Wszystko, co daje ci sama gra, jest dozwolone. Wszystko, co pochodzi z rynku lub od innych graczy, jest zabronione."],
+        ["Użycie — tylko własne", "Wszystko, co twoja postać nosi, je, pije i dosiada, wytwarza ta postać. Ulepszenia również pochodzą wyłącznie z twojego własnego rzemiosła."]
+      ]
+    },
+    {
+      "h": "1. Rynek i Premium",
+      "p": ["Rynek jest całkowicie zabroniony. Możesz kupować złoto, ale nie możesz wymieniać go z powrotem na srebro: dzięki temu nie da się wnieść srebra z zewnątrz."],
+      "cols": [
+        { "kind": "no", "h": "Zabronione", "ul": [
+          "Kupowanie czegokolwiek na rynku: ze zleceń sprzedaży lub przez zlecenia kupna",
+          "Sprzedawanie czegokolwiek na rynku: na zlecenia kupna innych graczy lub przez własne zlecenia sprzedaży",
+          "Sprzedaż na Czarnym Rynku w Caerleon",
+          "Wymiana złota na srebro"
+        ] },
+        { "kind": "yes", "h": "Dozwolone", "ul": [
+          "Kupowanie złota za srebro lub za prawdziwe pieniądze",
+          "Przelewanie srebra z głównego konta, ale tylko na Premium: dokładnie cena Premium w złocie według kursu z chwili zakupu, wydana od razu",
+          "Premium i wszystkie jego bonusy",
+          "Kupno wyspy i jej ulepszeń za srebro — to nie jest rynek",
+          "Płacenie srebrem za naprawy, opłaty za stacje i inne usługi w grze"
+        ] }
+      ]
+    },
+    {
+      "h": "2. Inni gracze",
+      "p": ["Każda aktywność z innymi graczami jest dozwolona, także zawartość na dużą skalę, a pomoc w walce jest w porządku. Zabronione jest tylko otrzymywanie od graczy wartościowych rzeczy, bezpośrednio lub pośrednio. Gildie i drużyny są zabronione, ponieważ przepływa przez nie wspólna sława i srebro. Łup z zabitych graczy to łup z gry i jest dozwolony."],
+      "cols": [
+        { "kind": "no", "h": "Zabronione", "ul": [
+          "Handel z graczami w jakiejkolwiek formie",
+          "Przyjmowanie prezentów: przedmiotów, surowców, srebra",
+          "Podnoszenie srebra, które gracze upuszczają na ziemię",
+          "Pojedynki o srebro: to ukryty handel",
+          "Używanie alternatywnych postaci lub przenoszenie czegokolwiek z innych postaci (poza srebrem na Premium)",
+          "Dołączanie do gildii",
+          "Bycie w drużynie poza miastem"
+        ] },
+        { "kind": "yes", "h": "Dozwolone", "ul": [
+          "Rozmawianie z graczami",
+          "Udział w aktywnościach na dużą skalę i w otwartym świecie bez dołączania do drużyny",
+          "Pomaganie innym i przyjmowanie pomocy w walce",
+          "Walka z graczami i branie łupów z tych, których zabijesz",
+          "Korzystanie ze stacji innych graczy za zwykłą opłatę"
+        ] }
+      ]
+    },
+    {
+      "h": "3. Ekwipunek i materiały zużywalne",
+      "p": ["Wszystko, co twoja postać nosi lub używa, wytwarza ta postać. Nie możesz założyć znalezionego gotowego przedmiotu, nawet jeśli sam umiesz go wytworzyć. Startowy ekwipunek gracz wytwarza w samouczku, więc jest dozwolony."],
+      "cols": [
+        { "kind": "yes", "h": "Tylko własny wyrób", "ul": [
+          "Broń, ręka dodatkowa, głowa, zbroja, buty",
+          "Torba i peleryna",
+          "Narzędzia i sprzęt do zbierania",
+          "Jedzenie i mikstury",
+          "Wierzchowce (sekcja 6)"
+        ] },
+        { "kind": "no", "h": "Zabronione", "ul": [
+          "Noszenie lub używanie gotowego ekwipunku, który znalazłeś, zdobyłeś jako łup lub dostałeś w nagrodę",
+          "Jedzenie lub picie znalezionego jedzenia i mikstur",
+          "Używanie znalezionych narzędzi"
+        ] }
+      ]
+    },
+    {
+      "h": "4. Łupy i nagrody",
+      "p": ["Każdy łup z gry jest dozwolony jako surowiec do własnego rzemiosła: moby i bossowie, skrzynie w otwartym świecie, lochy i mgły, skrzynie frakcji i sezonowe, zabici gracze, nagrody za zadania i dzienniki."],
+      "cols": [
+        { "kind": "yes", "h": "Można używać bezpośrednio", "ul": [
+          "Surowce — surowe i przetworzone, także zaklęte",
+          "Artefakty; runy, dusze i relikty — tylko do tworzenia artefaktów",
+          "Tomy wiedzy",
+          "Sakwy ze srebrem i srebro z mobów",
+          "Młode zwierzęta i nasiona"
+        ] },
+        { "kind": "no", "h": "Tylko do rozbiórki", "ul": [
+          "Gotowy ekwipunek, narzędzia, torby, peleryny",
+          "Gotowe jedzenie, mikstury i wierzchowce"
+        ], "p": "Rozbierz je na surowce lub za srebro w stacji napraw." }
+      ]
+    },
+    {
+      "h": "5. Rzemiosło i ulepszenia",
+      "p": ["Przedmiot staje się lepszy tylko wtedy, gdy wytworzysz go ponownie z lepszych materiałów — nigdy przez ulepszenie u NPC."],
+      "cols": [
+        { "kind": "yes", "h": "Dozwolone", "ul": [
+          "Wszelkie stacje wytwarzania i przetwarzania: w miastach, na wyspach, w kryjówkach i w miastach czarnych stref, także stacje innych graczy",
+          "Skupienie przy wytwarzaniu i przetwarzaniu",
+          "Przerabianie run, dusz i reliktów na artefakty",
+          "Wytwarzanie zaklętych przedmiotów z zaklętych surowców",
+          "Naprawianie przedmiotów w stacji napraw"
+        ] },
+        { "kind": "no", "h": "Zabronione", "ul": [
+          "Podnoszenie jakości przedmiotu w stacji napraw: jakość to tylko to, co dostałeś przy wytwarzaniu",
+          "Zaklinanie gotowych przedmiotów runami, duszami i reliktami",
+          "Podnoszenie zaklęcia surowców (na przykład z .0 na .1)"
+        ] }
+      ]
+    },
+    {
+      "h": "6. Wyspa, farma i wierzchowce",
+      "p": ["Na starcie masz tylko startowego muła. Każdy inny wierzchowiec musisz sam wyhodować lub oswoić i osiodłać."],
+      "cols": [
+        { "kind": "yes", "h": "Dozwolone", "ul": [
+          "Wyspa i jej ulepszenia za srebro; farmy, pastwiska i stacje na wyspie",
+          "Nasiona i młode zwierzęta ze źródeł w grze: własna farma, zbieranie, łupy, nagrody",
+          "Startowy muł",
+          "Wierzchowce, które sam wyhodowałeś lub oswoiłeś: woły, konie, dzikie wierzchowce",
+          "Wierzchowce frakcji: one również są hodowane i siodłane przez ciebie"
+        ] },
+        { "kind": "no", "h": "Zabronione", "ul": [
+          "Wierzchowce sezonowe: są już osiodłane",
+          "Gotowe wierzchowce kupione, podarowane lub znalezione"
+        ] }
+      ]
+    },
+    {
+      "h3": "Utrata zestawu",
+      "p": ["Nie ma kary: straciłeś zestaw — wytwórz nowy. I tak sam robisz swój sprzęt; na tym polega cały sens challengu."]
+    }
+  ]
+}

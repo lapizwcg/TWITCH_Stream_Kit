@@ -1,0 +1,142 @@
+{
+  "code": "de",
+  "name": "Deutsch",
+  "pageTitle": "Albion: Solo Leveling — Regeln",
+  "title": { "pre": "Albion: ", "accent": "Solo Leveling", "post": "" },
+  "lead": "Bring einen komplett neuen Charakter ganz allein bis zum vollen Tier-8-Set — ohne je den Marktplatz zu nutzen und ohne etwas von anderen Spielern zu bekommen.",
+  "note": "Diese Challenge ist nur zum Spaß. Niemand kontrolliert jemanden: Jeder kann mitmachen, und Ehrlichkeit ist eine persönliche Herausforderung an dich selbst.",
+  "language": "Sprache",
+  "footer": "Kanal {channel} · Albion Online",
+  "sections": [
+    {
+      "h": "So machst du mit",
+      "ul": [
+        "Erstelle einen neuen Charakter. Mit einem bereits hochgelevelten Charakter zu starten ist nicht erlaubt.",
+        "Spiele nach den Regeln unten. Wenn eine Situation nicht geregelt ist, entscheide nach den zwei Prinzipien.",
+        "Teile deinen Fortschritt im {twitch}-Chat."
+      ]
+    },
+    {
+      "h": "Zwei Prinzipien",
+      "principles": [
+        ["Quelle — nur das Spiel", "Alles, was dir das Spiel selbst gibt, ist erlaubt. Alles, was über den Marktplatz oder von anderen Spielern kommt, ist verboten."],
+        ["Nutzung — nur Eigenes", "Alles, was dein Charakter trägt, isst, trinkt und reitet, stellt dieser Charakter selbst her. Verbesserungen kommen ebenfalls nur aus deinem eigenen Handwerk."]
+      ]
+    },
+    {
+      "h": "1. Marktplatz und Premium",
+      "p": ["Der Marktplatz ist komplett verboten. Du darfst Gold kaufen, aber nicht zurück in Silber tauschen: So kann kein Silber von außen hereingebracht werden."],
+      "cols": [
+        { "kind": "no", "h": "Verboten", "ul": [
+          "Etwas auf dem Marktplatz kaufen: über Verkaufsaufträge oder über Kaufaufträge",
+          "Etwas auf dem Marktplatz verkaufen: an Kaufaufträge anderer Spieler oder über eigene Verkaufsaufträge",
+          "An den Schwarzmarkt in Caerleon verkaufen",
+          "Gold in Silber tauschen"
+        ] },
+        { "kind": "yes", "h": "Erlaubt", "ul": [
+          "Gold mit Silber oder echtem Geld kaufen",
+          "Silber vom Hauptaccount übertragen, aber nur für Premium: genau der Goldpreis von Premium zum Wechselkurs beim Kauf, sofort ausgegeben",
+          "Premium und alle seine Boni",
+          "Eine Insel und ihre Upgrades mit Silber kaufen — das ist nicht der Marktplatz",
+          "Silber für Reparaturen, Stationsgebühren und andere Spieldienste zahlen"
+        ] }
+      ]
+    },
+    {
+      "h": "2. Andere Spieler",
+      "p": ["Jede Aktivität mit anderen Spielern ist erlaubt, auch Großinhalte, und Hilfe im Kampf ist in Ordnung. Verboten ist nur, Wertvolles von Spielern zu erhalten, direkt oder indirekt. Gilden und Gruppen sind verboten, weil darüber gemeinsamer Ruhm und Silber fließen. Beute von getöteten Spielern ist Spielbeute und erlaubt."],
+      "cols": [
+        { "kind": "no", "h": "Verboten", "ul": [
+          "Handel mit Spielern in jeder Form",
+          "Geschenke annehmen: Gegenstände, Ressourcen, Silber",
+          "Silber aufheben, das Spieler auf den Boden fallen lassen",
+          "Duelle um Silber: das ist versteckter Handel",
+          "Zweitcharaktere nutzen oder irgendetwas von anderen Charakteren übertragen (außer Silber für Premium)",
+          "Einer Gilde beitreten",
+          "Außerhalb einer Stadt in einer Gruppe sein"
+        ] },
+        { "kind": "yes", "h": "Erlaubt", "ul": [
+          "Mit Spielern reden",
+          "An Großinhalten und Aktivitäten in der offenen Welt teilnehmen, ohne einer Gruppe beizutreten",
+          "Anderen helfen und im Kampf Hilfe annehmen",
+          "Gegen Spieler kämpfen und die Beute der Getöteten nehmen",
+          "Stationen anderer Spieler gegen die normale Nutzungsgebühr verwenden"
+        ] }
+      ]
+    },
+    {
+      "h": "3. Ausrüstung und Verbrauchsgüter",
+      "p": ["Alles, was dein Charakter trägt oder benutzt, stellt dieser Charakter selbst her. Du darfst keinen gefundenen fertigen Gegenstand ausrüsten, auch wenn du ihn selbst herstellen könntest. Die Startausrüstung stellt der Spieler im Tutorial selbst her, daher ist sie erlaubt."],
+      "cols": [
+        { "kind": "yes", "h": "Nur selbst hergestellt", "ul": [
+          "Waffe, Nebenhand, Kopf, Rüstung, Schuhe",
+          "Tasche und Umhang",
+          "Werkzeuge und Sammelausrüstung",
+          "Essen und Tränke",
+          "Reittiere (Abschnitt 6)"
+        ] },
+        { "kind": "no", "h": "Verboten", "ul": [
+          "Fertige Ausrüstung tragen oder benutzen, die du gefunden, erbeutet oder als Belohnung erhalten hast",
+          "Gefundenes Essen essen oder gefundene Tränke trinken",
+          "Gefundene Werkzeuge benutzen"
+        ] }
+      ]
+    },
+    {
+      "h": "4. Beute und Belohnungen",
+      "p": ["Jede Spielbeute ist als Rohmaterial für dein eigenes Handwerk erlaubt: Mobs und Bosse, Truhen in der offenen Welt, Dungeons und Nebel, Fraktions- und Saisontruhen, getötete Spieler, Belohnungen für Quests und Journale."],
+      "cols": [
+        { "kind": "yes", "h": "Direkt nutzbar", "ul": [
+          "Ressourcen — roh und raffiniert, auch verzauberte",
+          "Artefakte; Runen, Seelen und Relikte — nur zur Herstellung von Artefakten",
+          "Folianten der Weisheit",
+          "Silbertaschen und Silber von Mobs",
+          "Jungtiere und Saatgut"
+        ] },
+        { "kind": "no", "h": "Nur verwerten", "ul": [
+          "Fertige Ausrüstung, Werkzeuge, Taschen, Umhänge",
+          "Fertiges Essen, Tränke und Reittiere"
+        ], "p": "Verwerte sie zu Ressourcen oder gegen Silber an der Reparaturstation." }
+      ]
+    },
+    {
+      "h": "5. Handwerk und Verbesserungen",
+      "p": ["Ein Gegenstand wird nur besser, wenn du ihn aus besseren Materialien neu herstellst — nie durch ein Upgrade bei einem NPC."],
+      "cols": [
+        { "kind": "yes", "h": "Erlaubt", "ul": [
+          "Alle Herstellungs- und Veredelungsstationen: in Städten, auf Inseln, in Verstecken und in Städten der schwarzen Zonen, auch Stationen anderer Spieler",
+          "Fokus für Herstellung und Veredelung",
+          "Runen, Seelen und Relikte zu Artefakten verarbeiten",
+          "Verzauberte Gegenstände aus verzauberten Ressourcen herstellen",
+          "Gegenstände an der Reparaturstation reparieren"
+        ] },
+        { "kind": "no", "h": "Verboten", "ul": [
+          "Die Qualität eines Gegenstands an der Reparaturstation erhöhen: Qualität ist nur das, was du beim Herstellen bekommen hast",
+          "Fertige Gegenstände mit Runen, Seelen und Relikten verzaubern",
+          "Die Verzauberung von Ressourcen erhöhen (zum Beispiel von .0 auf .1)"
+        ] }
+      ]
+    },
+    {
+      "h": "6. Insel, Farm und Reittiere",
+      "p": ["Am Anfang hast du nur das Start-Maultier. Jedes andere Reittier musst du selbst aufziehen oder zähmen und satteln."],
+      "cols": [
+        { "kind": "yes", "h": "Erlaubt", "ul": [
+          "Eine Insel und ihre Upgrades für Silber; Farmen, Weiden und Stationen auf der Insel",
+          "Saatgut und Jungtiere aus Spielquellen: eigene Farm, Sammeln, Beute, Belohnungen",
+          "Das Start-Maultier",
+          "Selbst aufgezogene oder gezähmte Reittiere: Ochsen, Pferde, wilde Reittiere",
+          "Fraktions-Reittiere: auch sie werden selbst aufgezogen und gesattelt"
+        ] },
+        { "kind": "no", "h": "Verboten", "ul": [
+          "Saison-Reittiere: sie kommen bereits gesattelt",
+          "Fertige Reittiere, die gekauft, geschenkt oder gefunden wurden"
+        ] }
+      ]
+    },
+    {
+      "h3": "Set verloren",
+      "p": ["Es gibt keine Strafe: Set verloren — stell ein neues her. Du stellst deine Ausrüstung ohnehin selbst her; genau das ist der Sinn der Challenge."]
+    }
+  ]
+}
