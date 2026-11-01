@@ -6,26 +6,26 @@
 <title>Stream Kit — оповещения</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.czwhad0svi.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.5z93gou780.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
     "./dock.js": "./dock.rgz0ftpz55.js",
-    "./kit.js": "./kit.iu7grjndlt.js",
+    "./kit.js": "./kit.0i6o5l1ysd.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.czwhad0svi.js": "sha256-yKACM9Gf8fynZispl5tFvS9HN65BRTGcOWZhAGvC0lk=",
-    "./_framework/dotnet.js": "sha256-yKACM9Gf8fynZispl5tFvS9HN65BRTGcOWZhAGvC0lk=",
+    "./_framework/dotnet.5z93gou780.js": "sha256-QWULjMHu0jsX7VkoG1E/Do9d6fkH6KW7hVEwHSbLMUQ=",
+    "./_framework/dotnet.js": "sha256-QWULjMHu0jsX7VkoG1E/Do9d6fkH6KW7hVEwHSbLMUQ=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./dock.js": "sha256-dfnl0MjbNDfrrFJQ+Oc8N/xxyDwxR2cJ7YzULpm31k4=",
     "./dock.rgz0ftpz55.js": "sha256-dfnl0MjbNDfrrFJQ+Oc8N/xxyDwxR2cJ7YzULpm31k4=",
-    "./kit.iu7grjndlt.js": "sha256-umLmhLW1mysqX2+4bEBA2EgB3uJ9Je7S5rkw/wX8BBc=",
-    "./kit.js": "sha256-umLmhLW1mysqX2+4bEBA2EgB3uJ9Je7S5rkw/wX8BBc=",
+    "./kit.0i6o5l1ysd.js": "sha256-GKArGfOvxHLjoBUYdF6AU9OinTg1rjKKji9mTK/iSp4=",
+    "./kit.js": "sha256-GKArGfOvxHLjoBUYdF6AU9OinTg1rjKKji9mTK/iSp4=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261101-075108-d91fba5';
+  var CURRENT = '20261101-080434-f8be215';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -99,7 +99,7 @@ async function ensureFonts(s) {
 let chain = Promise.resolve();
 const settle = (s) => (chain = chain.then(() => ensureFonts(s)).then(() => apply(s)));
 // логотип: место из девяти (как у окошек), ширина и сдвиг — точки при высоте 1080, по размеру окна; при рамке эфира — внутри
-// выреза, в углу — ещё и отступ под угол выреза (Layout.Place)
+// выреза, вплотную к линии (Layout.Place)
 let logo = null, frame = null;
 function placeLogo() {
   const el = document.getElementById('logo');
@@ -107,9 +107,7 @@ function placeLogo() {
   const [id, , lw, lh] = logoOf(logo.file);
   const u = innerHeight / 1080, w = (logo.size ?? 400) * u, h = (w * lh) / lw, pos = logo.pos || 'br';
   const ax = pos.includes('l') ? 0 : pos.includes('r') ? 1 : 0.5, ay = pos.includes('t') ? 0 : pos.includes('b') ? 1 : 0.5;
-  const { inset, cut } = frameInset(frame);
-  const corner = { '0,0': cut[0], '1,0': cut[1], '1,1': cut[2], '0,1': cut[3] }[`${ax},${ay}`] ?? 0;
-  const m = (inset + corner) * u;
+  const m = frameInset(frame) * u;
   if (!el.src.endsWith(`logos/${id}.svg`)) el.src = `logos/${id}.svg`;
   el.style.width = `${w}px`;
   el.style.height = `${h}px`;
