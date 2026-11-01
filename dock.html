@@ -6,26 +6,26 @@
 <title>Stream Kit — пульт</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.7lzjf8slmo.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.czwhad0svi.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./dock.js": "./dock.7o66fxlt4q.js",
-    "./kit.js": "./kit.3cf5yphygx.js",
+    "./dock.js": "./dock.rgz0ftpz55.js",
+    "./kit.js": "./kit.iu7grjndlt.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.7lzjf8slmo.js": "sha256-FTbFaOElmAjzMstdePbAvMhaV4tdaq3+HEXW0awSxzg=",
-    "./_framework/dotnet.js": "sha256-FTbFaOElmAjzMstdePbAvMhaV4tdaq3+HEXW0awSxzg=",
+    "./_framework/dotnet.czwhad0svi.js": "sha256-yKACM9Gf8fynZispl5tFvS9HN65BRTGcOWZhAGvC0lk=",
+    "./_framework/dotnet.js": "sha256-yKACM9Gf8fynZispl5tFvS9HN65BRTGcOWZhAGvC0lk=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./dock.7o66fxlt4q.js": "sha256-uXVWEZ1v57vKLTwvZq5z+0zueY/2m4ptp7FU73x5S0A=",
-    "./dock.js": "sha256-uXVWEZ1v57vKLTwvZq5z+0zueY/2m4ptp7FU73x5S0A=",
-    "./kit.3cf5yphygx.js": "sha256-49K9y9SOx8dRfR3814Y3sSSwdpEcyKgRbzkjqifhvFg=",
-    "./kit.js": "sha256-49K9y9SOx8dRfR3814Y3sSSwdpEcyKgRbzkjqifhvFg=",
+    "./dock.js": "sha256-dfnl0MjbNDfrrFJQ+Oc8N/xxyDwxR2cJ7YzULpm31k4=",
+    "./dock.rgz0ftpz55.js": "sha256-dfnl0MjbNDfrrFJQ+Oc8N/xxyDwxR2cJ7YzULpm31k4=",
+    "./kit.iu7grjndlt.js": "sha256-umLmhLW1mysqX2+4bEBA2EgB3uJ9Je7S5rkw/wX8BBc=",
+    "./kit.js": "sha256-umLmhLW1mysqX2+4bEBA2EgB3uJ9Je7S5rkw/wX8BBc=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261101-072024-ebef4ad';
+  var CURRENT = '20261101-075108-d91fba5';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -82,6 +82,7 @@
   <button class="tab" data-tab="goals">Цели</button>
   <button class="tab" data-tab="announce">Анонсы</button>
   <button class="tab" data-tab="frame">Рамка</button>
+  <button class="tab" data-tab="challenge">Челлендж</button>
   <button class="tab" data-tab="logo">Логотип</button>
 </nav>
 
@@ -273,6 +274,98 @@
     </label>
     <div class="frame-body look-body"></div>
   </section>
+  <!-- челлендж «Соло Левелинг без рынка»: ранг и вехи, счётчики, достижения и нарушения — карточками окошком анонса, журнал -->
+  <section id="tab-challenge" class="pane" hidden>
+    <div class="rank">
+      <div id="chRankBadge" class="rank-badge"></div>
+      <div class="rank-who">
+        <b id="chRankName"></b>
+        <span id="chRankProgress" class="note"></span>
+      </div>
+      <select id="chRank" aria-label="Ранг"></select>
+    </div>
+    <div id="chItems" class="checks"></div>
+    <button class="btn" id="chRankUp" type="button"></button>
+
+    <div class="field">
+      <div class="label">Счётчики</div>
+      <div class="stats">
+        <div class="stat"><span>День</span><div class="counter"><button class="btn ghost small" data-stat="day" data-d="-1">−</button><b data-val-stat="day"></b><button class="btn ghost small" data-stat="day" data-d="1">+</button></div></div>
+        <div class="stat"><span>Смерти</span><div class="counter"><button class="btn ghost small" data-stat="deaths" data-d="-1">−</button><b data-val-stat="deaths"></b><button class="btn ghost small" data-stat="deaths" data-d="1">+</button></div></div>
+        <div class="stat"><span>Убийства</span><div class="counter"><button class="btn ghost small" data-stat="kills" data-d="-1">−</button><b data-val-stat="kills"></b><button class="btn ghost small" data-stat="kills" data-d="1">+</button></div></div>
+        <div class="stat"><span>Нарушения</span><div class="counter"><b id="chVioCount"></b></div></div>
+      </div>
+    </div>
+
+    <!-- статистика из игры: AoMarket (AO-Auras) на этом компьютере, http://127.0.0.1:<порт> -->
+    <div class="field">
+      <div class="label game-head">Из игры за сессию <span id="chStatsLink" class="link off"></span></div>
+      <div class="stats game">
+        <div class="stat"><span>Серебро</span><b data-game="silver">—</b></div>
+        <div class="stat"><span>Слава</span><b data-game="fame">—</b></div>
+        <div class="stat"><span>Крафт</span><b data-game="crafts">—</b></div>
+        <div class="stat"><span>Сбор</span><b data-game="harvests">—</b></div>
+      </div>
+      <div class="note" id="chStatsNote"></div>
+      <button class="btn ghost small" id="chStatsReset" type="button">Новая сессия</button>
+    </div>
+
+    <form id="chAch" class="field">
+      <div class="label">Достижение</div>
+      <div class="test">
+        <input id="chAchText" type="text" maxlength="80" placeholder="например: первый соло-данж">
+        <button class="btn ok">Достижение</button>
+      </div>
+    </form>
+
+    <form id="chVio" class="field">
+      <div class="label">Нарушение правил</div>
+      <div class="chips" id="chVioPresets"></div>
+      <div class="test">
+        <input id="chVioText" type="text" maxlength="80" placeholder="что нарушено">
+        <button class="btn bad">Нарушение</button>
+      </div>
+    </form>
+
+    <div class="field">
+      <div class="label">Журнал</div>
+      <ol id="chLog" class="log"></ol>
+    </div>
+
+    <details class="look">
+      <summary>Карточки в оверлее</summary>
+      <div class="look-body">
+        <label class="row switch"><input type="checkbox" id="chCards"><span>Показывать карточки</span></label>
+        <label class="field"><span class="label">Заголовок достижения</span><input id="chAchTitle" type="text" maxlength="40" placeholder="ДОСТИЖЕНИЕ"></label>
+        <label class="field"><span class="label">Заголовок нарушения</span><input id="chVioTitle" type="text" maxlength="40" placeholder="НАРУШЕНИЕ"></label>
+        <label class="field"><span class="label">Заголовок нового ранга</span><input id="chRankTitle" type="text" maxlength="40" placeholder="НОВЫЙ РАНГ"></label>
+        <label class="row switch"><input type="checkbox" id="chGameCards"><span>Смерть и убийство из игры — карточкой</span></label>
+        <label class="field"><span class="label">Заголовок смерти</span><input id="chDeathTitle" type="text" maxlength="40" placeholder="СМЕРТЬ"></label>
+        <label class="field"><span class="label">Заголовок убийства</span><input id="chKillTitle" type="text" maxlength="40" placeholder="УБИЙСТВО"></label>
+        <div class="note">Карточки выходят окошком анонса: место, время и оформление — во вкладке «Анонсы».</div>
+        <label class="row switch"><input type="checkbox" id="chGoal"><span>Прогресс ранга — целью</span></label>
+        <div class="note">Цель (вкладка «Цели») станет «РАНГ E · 1/2» и будет считаться по отмеченным вехам вместо фолловеров.</div>
+      </div>
+    </details>
+
+    <details class="look">
+      <summary>Связь с игрой</summary>
+      <div class="look-body">
+        <label class="row switch"><input type="checkbox" id="chStatsOn"><span>Брать статистику из AoMarket</span></label>
+        <label class="field"><span class="label">Порт</span><input id="chStatsPort" type="text" inputmode="numeric" maxlength="5" placeholder="8790"></label>
+        <div class="note">AoMarket из AO-Auras читает трафик игры и отдаёт статистику только на этот компьютер. AO-Profiter (start.ps1)
+          запускает его сам с портом 8790; вручную — <code>AoMarket --stats-port 8790</code>. Смерти и убийства прибавляются к
+          счётчикам выше, их по-прежнему можно поправить кнопками.</div>
+      </div>
+    </details>
+
+    <details class="look">
+      <summary>Вехи по рангам</summary>
+      <div class="look-body" id="chRanksEdit"></div>
+    </details>
+
+    <button class="btn ghost small" id="chReset" type="button">Начать челлендж заново</button>
+  </section>
   <!-- логотип канала поверх кадра: например, закрыть мини-карту -->
   <section id="tab-logo" class="pane" hidden>
     <label class="row switch">
@@ -297,7 +390,7 @@
       <button class="btn ghost small" id="logoReset" type="button">Сбросить место и размер</button>
     </div>
     <p class="note">Ширина и сдвиг — в точках кадра 1920×1080, как в OBS. Мини-карта Albion — справа снизу: ставьте «справа снизу» и
-      подгоняйте шириной и сдвигом. Рамка эфира логотип не сдвигает.</p>
+      подгоняйте шириной и сдвигом. При включённой рамке эфира логотип стоит внутри неё, как и окошки.</p>
   </section>
 </main>
 
