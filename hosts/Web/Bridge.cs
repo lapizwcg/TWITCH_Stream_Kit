@@ -15,6 +15,8 @@ public static partial class Bridge
 	[JSExport] public static void Announce(bool on, string pos, string title, double seconds) => Kit.Boot.Stage?.Announce.Configure(on, pos, title, seconds);
 	[JSExport] public static void AnnounceSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Announce.Size(pad, sx, sy, inner);
 	[JSExport] public static void ShowAnnounce(string text) => Kit.Boot.Stage?.Announce.Show(text);
+	// карточка окошком анонса со своим заголовком — челлендж: достижение, нарушение, новый ранг
+	[JSExport] public static void ShowCard(string title, string text) => Kit.Boot.Stage?.Announce.Show(text, title);
 	// оформление окошка (follow | announce | goal): JSON как в доке — Style.Load
 	[JSExport]
 	public static void Style(string widget, string json)

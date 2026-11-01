@@ -55,6 +55,7 @@
   <button class="tab" data-tab="goals">Цели</button>
   <button class="tab" data-tab="announce">Анонсы</button>
   <button class="tab" data-tab="frame">Рамка</button>
+  <button class="tab" data-tab="challenge">Челлендж</button>
 </nav>
 
 <main>
@@ -244,6 +245,71 @@
       <span>Показывать рамку</span>
     </label>
     <div class="frame-body look-body"></div>
+  </section>
+  <!-- челлендж «Соло Левелинг без рынка»: ранг и вехи, счётчики, достижения и нарушения — карточками окошком анонса, журнал -->
+  <section id="tab-challenge" class="pane" hidden>
+    <div class="rank">
+      <div id="chRankBadge" class="rank-badge"></div>
+      <div class="rank-who">
+        <b id="chRankName"></b>
+        <span id="chRankProgress" class="note"></span>
+      </div>
+      <select id="chRank" aria-label="Ранг"></select>
+    </div>
+    <div id="chItems" class="checks"></div>
+    <button class="btn" id="chRankUp" type="button"></button>
+
+    <div class="field">
+      <div class="label">Счётчики</div>
+      <div class="stats">
+        <div class="stat"><span>День</span><div class="counter"><button class="btn ghost small" data-stat="day" data-d="-1">−</button><b data-val-stat="day"></b><button class="btn ghost small" data-stat="day" data-d="1">+</button></div></div>
+        <div class="stat"><span>Смерти</span><div class="counter"><button class="btn ghost small" data-stat="deaths" data-d="-1">−</button><b data-val-stat="deaths"></b><button class="btn ghost small" data-stat="deaths" data-d="1">+</button></div></div>
+        <div class="stat"><span>Убийства</span><div class="counter"><button class="btn ghost small" data-stat="kills" data-d="-1">−</button><b data-val-stat="kills"></b><button class="btn ghost small" data-stat="kills" data-d="1">+</button></div></div>
+        <div class="stat"><span>Нарушения</span><div class="counter"><b id="chVioCount"></b></div></div>
+      </div>
+    </div>
+
+    <form id="chAch" class="field">
+      <div class="label">Достижение</div>
+      <div class="test">
+        <input id="chAchText" type="text" maxlength="80" placeholder="например: первый соло-данж">
+        <button class="btn ok">Достижение</button>
+      </div>
+    </form>
+
+    <form id="chVio" class="field">
+      <div class="label">Нарушение правил</div>
+      <div class="chips" id="chVioPresets"></div>
+      <div class="test">
+        <input id="chVioText" type="text" maxlength="80" placeholder="что нарушено">
+        <button class="btn bad">Нарушение</button>
+      </div>
+    </form>
+
+    <div class="field">
+      <div class="label">Журнал</div>
+      <ol id="chLog" class="log"></ol>
+    </div>
+
+    <details class="look">
+      <summary>Карточки в оверлее</summary>
+      <div class="look-body">
+        <label class="row switch"><input type="checkbox" id="chCards"><span>Показывать карточки</span></label>
+        <label class="field"><span class="label">Заголовок достижения</span><input id="chAchTitle" type="text" maxlength="40" placeholder="ДОСТИЖЕНИЕ"></label>
+        <label class="field"><span class="label">Заголовок нарушения</span><input id="chVioTitle" type="text" maxlength="40" placeholder="НАРУШЕНИЕ"></label>
+        <label class="field"><span class="label">Заголовок нового ранга</span><input id="chRankTitle" type="text" maxlength="40" placeholder="НОВЫЙ РАНГ"></label>
+        <div class="note">Карточки выходят окошком анонса: место, время и оформление — во вкладке «Анонсы».</div>
+        <label class="row switch"><input type="checkbox" id="chGoal"><span>Прогресс ранга — целью</span></label>
+        <div class="note">Цель (вкладка «Цели») станет «РАНГ E · 1/2» и будет считаться по отмеченным вехам вместо фолловеров.</div>
+      </div>
+    </details>
+
+    <details class="look">
+      <summary>Вехи по рангам</summary>
+      <div class="look-body" id="chRanksEdit"></div>
+    </details>
+
+    <button class="btn ghost small" id="chReset" type="button">Начать челлендж заново</button>
   </section>
 </main>
 

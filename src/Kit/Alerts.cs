@@ -25,7 +25,8 @@ public sealed class Alerts
 	// шрифты заголовка и текста — из оформления (Fonts.cs)
 	Text Head => Fonts.Get(Style.Head);
 	Text Body => Fonts.Get(Style.Font);
-	readonly Queue<string> queue = new();
+	// очередь: текст и свой заголовок (null — заголовок из настроек)
+	readonly Queue<(string text, string head)> queue = new();
 	// заголовок по умолчанию; размер текста (точки при высоте 1080); ширина, за которой текст переносится (0 — одной строкой)
 	readonly string defaultTitle;
 	readonly float textPx, wrap;
@@ -34,7 +35,9 @@ public sealed class Alerts
 	// отступ от края экрана (точки при высоте 1080) и размер по X/Y (доли); содержимое — по меньшему из размеров, чтобы буквы не
 	// растягивались, а лишнее место по другой оси — поля вокруг
 	float pad = 70, sx = 1, sy = 1, inner = 1;
-	string title;
+	string title, shown;
+	// заголовок карточки, которая сейчас на экране
+	string Shown => shown ?? title;
 	int hold = 240, t, age = -1, wait, demoN;
 	bool enabled = true;
 	List<string> lines = new() { "" };
@@ -63,8 +66,12 @@ public sealed class Alerts
 	// масштаб содержимого: высота кадра и меньший из размеров
 	float C(int h) => h / 1080f * Math.Min(sx, sy);
 
-	// в очередь; показ — в Step, когда освободится место
-	public void Show(string s) { if (enabled && !string.IsNullOrWhiteSpace(s)) queue.Enqueue(s.Trim()); }
+	// в очередь; показ — в Step, когда освободится место. Карточка со своим заголовком (челлендж: «ДОСТИЖЕНИЕ», «НАРУШЕНИЕ») —
+	// и при выключенном показе: её просят кнопкой в доке, а не таймером
+	public void Show(string s, string head = null)
+	{
+		if ((enabled || head != null) && !string.IsNullOrWhiteSpace(s)) queue.Enqueue((s.Trim(), string.IsNullOrWhiteSpace(head) ? null : head.Trim()));
+	}
 	public void ShowDemo() => Show(DemoNames[demoN++ % DemoNames.Length]);
 
 	// внутренний отступ карточки — inner процентов высоты кадра (при масштабе содержимого c)
@@ -107,14 +114,14 @@ public sealed class Alerts
 	(float cx, float cy, float cw, float ch) Place(int w, int h)
 	{
 		float c = C(h), U = h / 1080f;
-		float cw = Width(c, Style.W(Head, title, MathF.Round(HP * c), true), TextWidth(MathF.Round(NP * c))), ch = (Content + 2 * P(1)) * U * sy;
+		float cw = Width(c, Style.W(Head, Shown, MathF.Round(HP * c), true), TextWidth(MathF.Round(NP * c))), ch = (Content + 2 * P(1)) * U * sy;
 		var (cx, cy) = Layout.Place(ax, ay, w, h, cw, ch, pad * U + 40 * c, pad * U);
 		return (cx, cy, cw, ch);
 	}
 
-	void Start(string s)
+	void Start((string text, string head) item)
 	{
-		lines = Wrap(s); age = 0;
+		lines = Wrap(item.text); shown = item.head; age = 0;
 		// вспышки — у краёв карточки, не поверх текста; пресеты сделаны под окно в 540 точек высотой — крупнее по размеру кадра
 		var (cx, cy, cw, ch) = Place(App.W, App.H);
 		Style.Appear(fx, cx - cw / 2, cy - ch / 2, cw, ch, C(App.H));
@@ -145,7 +152,7 @@ public sealed class Alerts
 		int a = (int)(255 * Math.Clamp(fade, 0, 1));
 		float tp = MathF.Round(HP * u * k), np = MathF.Round(NP * u * k);
 		if (tp < 2 || np < 2) return;
-		float tw = Style.W(Head, title, tp, true);
+		float tw = Style.W(Head, Shown, tp, true);
 		var (cx, cy, _, ch0) = Place(w, h);
 		float cw = Width(u * k, tw, TextWidth(np)), ch = ch0 * k;
 		// содержимое — посередине карточки по высоте (размер по Y больше — поля сверху и снизу)
@@ -161,7 +168,7 @@ public sealed class Alerts
 
 		var hf = Head; var bf = Body;
 		hf.Begin();
-		Style.Ink(hf, title, cx - tw / 2, y, tp, Style.Col(Style.Accent, a), a, u * k, true);
+		Style.Ink(hf, Shown, cx - tw / 2, y, tp, Style.Col(Style.Accent, a), a, u * k, true);
 		hf.Flush(w, h);
 		bf.Begin();
 		for (int i = 0; i < lines.Count; i++)

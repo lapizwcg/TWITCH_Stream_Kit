@@ -70,14 +70,20 @@ function render() {
   if (document.querySelector('[data-look] .mp')) for (const part of LOOK_PARTS) renderLook(part);
   // счёт по Twitch ведётся сам — руками его не трогаем
   const auto = g.source !== 'manual';
-  for (const id of ['goalCurrent', 'goalPlus', 'goalMinus', 'goalReset']) $(id).disabled = auto;
-  $('goalNote').textContent = !auto
+  // прогресс ранга челленджа ведёт цель — счёт и заголовок её, руками не трогаем
+  const byRank = settings.challenge.goal;
+  $('goalSource').disabled = $('goalTitle').disabled = byRank;
+  for (const id of ['goalCurrent', 'goalPlus', 'goalMinus', 'goalReset']) $(id).disabled = auto || byRank;
+  $('goalNote').textContent = byRank
+    ? 'Счёт ведёт челлендж: отмеченные вехи текущего ранга.'
+    : !auto
     ? 'Счёт ведёте вы: кнопками или числом.'
     : !helix
       ? 'Войдите через Twitch — счёт будет вестись сам.'
       : g.source === 'subs'
         ? 'Считает Twitch: все сабы канала, новые прибавляются сами.'
         : 'Считает Twitch: все фолловеры канала, новые прибавляются сами.';
+  renderChallenge();
 }
 
 // ---------- Twitch ----------
@@ -674,6 +680,172 @@ function renderFrame() {
   box.querySelector('[data-edge]').value = fr.edge;
 }
 buildFrame();
+
+// ---------- челлендж «Соло Левелинг без рынка» ----------
+// ранг и его вехи, счётчики, достижения и нарушения — в журнал и карточкой окошком анонса (со своим заголовком), прогресс ранга —
+// целью, если включено. Вехи отмечаются по тексту («E|текст»), поэтому правка списка не сдвигает отметки
+
+const VIO_PRESETS = ['Покупка на рынке', 'Продажа на рынке', 'Группа вне города', 'Обмен с игроком', 'Чужая помощь'];
+const CARD_TITLE = { ach: 'achTitle', vio: 'vioTitle', rank: 'rankTitle' };
+const ch = () => settings.challenge;
+const rankOf = (i = ch().rank) => ch().ranks[Math.max(0, Math.min(i, ch().ranks.length - 1))];
+const itemsOf = (r) => r.items.split('\n').map((s) => s.trim()).filter(Boolean);
+const doneKey = (r, text) => `${r.id}|${text}`;
+const rankDone = (r) => itemsOf(r).filter((t) => ch().done.includes(doneKey(r, t))).length;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+function chCard(kind, text) {
+  const c = ch();
+  if (c.cards) bus.send('card', { title: c[CARD_TITLE[kind]] || DEFAULTS.challenge[CARD_TITLE[kind]], text });
+}
+function chLog(kind, text) {
+  const c = ch();
+  c.log.unshift({ t: Date.now(), day: c.day, kind, text });
+  c.log.length = Math.min(c.log.length, 500);
+}
+// прогресс ранга целью: «РАНГ D · РЕМЕСЛЕННИК», отмечено из всех вех ранга
+function chCommit() {
+  const c = ch();
+  if (c.goal) {
+    const r = rankOf();
+    Object.assign(settings.goal, { source: 'manual', title: `РАНГ ${r.id} · ${r.name.toUpperCase()}`, current: rankDone(r), target: Math.max(1, itemsOf(r).length) });
+  }
+  commit();
+}
+
+function buildChallenge() {
+  $('chVioPresets').innerHTML = VIO_PRESETS.map((t) => `<button class="btn ghost small" type="button" data-preset="${esc(t)}">${esc(t)}</button>`).join('');
+  $('chRanksEdit').innerHTML = ch().ranks
+    .map((r, i) => `<label class="field"><span class="label">Ранг ${esc(r.id)} — название</span><input type="text" maxlength="40" data-rank-name="${i}"></label>
+      <label class="field"><span class="label">Вехи ранга ${esc(r.id)} — по одной на строку</span><textarea rows="3" maxlength="1000" data-rank-items="${i}"></textarea></label>`)
+    .join('') + '<button class="btn ghost small" type="button" id="chRanksReset">Вернуть вехи по умолчанию</button>';
+}
+
+function renderChallenge() {
+  const c = ch();
+  const r = rankOf();
+  const items = itemsOf(r);
+  const got = rankDone(r);
+  $('chRank').innerHTML = c.ranks.map((x, i) => `<option value="${i}">${esc(x.id)} · ${esc(x.name)}</option>`).join('');
+  $('chRank').value = String(c.rank);
+  $('chRankBadge').textContent = r.id;
+  $('chRankName').textContent = `«${r.name}»`;
+  $('chRankProgress').textContent = items.length ? `вехи: ${got} из ${items.length}` : 'у ранга нет вех';
+  $('chItems').innerHTML = items
+    .map((t) => `<label class="check"><input type="checkbox" data-item="${esc(t)}"${c.done.includes(doneKey(r, t)) ? ' checked' : ''}><span>${esc(t)}</span></label>`)
+    .join('');
+  const next = c.ranks[c.rank + 1];
+  $('chRankUp').disabled = !next;
+  $('chRankUp').textContent = next ? `Повысить ранг → ${next.id} «${next.name}»` : 'Высший ранг';
+  // все вехи ранга взяты — кнопка повышения горит
+  $('chRankUp').classList.toggle('ready', !!next && items.length > 0 && got === items.length);
+  for (const b of document.querySelectorAll('[data-val-stat]')) b.textContent = c[b.dataset.valStat];
+  $('chVioCount').textContent = c.log.filter((e) => e.kind === 'vio').length;
+  const when = (t) => new Date(t).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  const mark = { vio: '⚠', ach: '★', rank: '▲' };
+  $('chLog').innerHTML = c.log.length
+    ? c.log.slice(0, 100).map((e, i) => `<li class="${e.kind}"><i>${mark[e.kind] || ''}</i><span><b>${esc(e.text)}</b><small>день ${e.day} · ${when(e.t)}</small></span><button type="button" class="del" data-del="${i}" title="Убрать из журнала">×</button></li>`).join('')
+    : '<li class="empty">Пока пусто</li>';
+  $('chCards').checked = c.cards;
+  $('chGoal').checked = c.goal;
+  for (const [id, k] of [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chRankTitle', 'rankTitle']])
+    if (document.activeElement !== $(id)) $(id).value = c[k];
+  for (const el of document.querySelectorAll('[data-rank-name]')) if (document.activeElement !== el) el.value = c.ranks[+el.dataset.rankName]?.name ?? '';
+  for (const el of document.querySelectorAll('[data-rank-items]')) if (document.activeElement !== el) el.value = c.ranks[+el.dataset.rankItems]?.items ?? '';
+}
+
+$('chRank').onchange = (e) => {
+  ch().rank = +e.target.value;
+  chCommit();
+};
+// отметили веху — достижение: в журнал и карточкой; сняли отметку — тихо
+$('chItems').onchange = (e) => {
+  const t = e.target.dataset.item;
+  if (t === undefined) return;
+  const c = ch();
+  const key = doneKey(rankOf(), t);
+  c.done = c.done.filter((k) => k !== key);
+  if (e.target.checked) {
+    c.done.push(key);
+    chLog('ach', t);
+    chCard('ach', t);
+  }
+  chCommit();
+};
+$('chRankUp').onclick = () => {
+  const c = ch();
+  if (!c.ranks[c.rank + 1]) return;
+  c.rank++;
+  const r = rankOf();
+  const text = `${r.id} · «${r.name}»`;
+  chLog('rank', `Ранг ${text}`);
+  chCard('rank', text);
+  chCommit();
+};
+$('tab-challenge').addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  const c = ch();
+  if (b.dataset.stat) {
+    c[b.dataset.stat] = Math.max(b.dataset.stat === 'day' ? 1 : 0, c[b.dataset.stat] + +b.dataset.d);
+    commit();
+  } else if (b.dataset.preset) {
+    $('chVioText').value = b.dataset.preset;
+    $('chVioText').focus();
+  } else if (b.dataset.del !== undefined) {
+    c.log.splice(+b.dataset.del, 1);
+    commit();
+  } else if (b.id === 'chRanksReset') {
+    c.ranks = structuredClone(DEFAULTS.challenge.ranks);
+    chCommit();
+  }
+});
+$('chAch').onsubmit = (e) => {
+  e.preventDefault();
+  const t = $('chAchText').value.trim();
+  if (!t) return $('chAchText').focus();
+  chLog('ach', t);
+  chCard('ach', t);
+  $('chAchText').value = '';
+  commit();
+};
+$('chVio').onsubmit = (e) => {
+  e.preventDefault();
+  const t = $('chVioText').value.trim() || 'Нарушение правил';
+  chLog('vio', t);
+  chCard('vio', t);
+  $('chVioText').value = '';
+  commit();
+};
+$('chCards').onchange = (e) => {
+  ch().cards = e.target.checked;
+  commit();
+};
+$('chGoal').onchange = (e) => {
+  ch().goal = e.target.checked;
+  if (e.target.checked) settings.goal.on = true;
+  chCommit();
+};
+for (const [id, k] of [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chRankTitle', 'rankTitle']])
+  $(id).oninput = (e) => {
+    ch()[k] = e.target.value;
+    commit();
+  };
+$('chRanksEdit').oninput = (e) => {
+  const el = e.target;
+  const c = ch();
+  if (el.dataset.rankName !== undefined) c.ranks[+el.dataset.rankName].name = el.value;
+  else if (el.dataset.rankItems !== undefined) c.ranks[+el.dataset.rankItems].items = el.value;
+  else return;
+  chCommit();
+};
+// заново: ранг, отметки, счётчики и журнал — с нуля; вехи и заголовки карточек остаются
+$('chReset').onclick = () => {
+  if (!confirm('Начать челлендж заново? Ранг, отметки, счётчики и журнал сбросятся.')) return;
+  Object.assign(ch(), { rank: 0, done: [], day: 1, deaths: 0, kills: 0, log: [] });
+  chCommit();
+};
+buildChallenge();
 
 render();
 startTwitch();

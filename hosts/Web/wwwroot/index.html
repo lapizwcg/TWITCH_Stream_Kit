@@ -88,6 +88,7 @@ const bus = createBus((msg) => {
   if (msg.type === 'settings') settle(msg.settings);
   else if (msg.type === 'alert' && msg.kind === 'follow') B.ShowFollow(msg.name);
   else if (msg.type === 'alert' && msg.kind === 'announce') B.ShowAnnounce(msg.name);
+  else if (msg.type === 'card') B.ShowCard(msg.title || '', msg.text);
   else if (msg.type === 'goalTest') B.PreviewGoal(msg.frac);
   else if (msg.type === 'ping') bus.send('pong', { page: 'alerts' });
 });

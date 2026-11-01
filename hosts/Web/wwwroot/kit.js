@@ -39,6 +39,26 @@ export const DEFAULTS = {
     look: { bg: 'obsidian@0.12', border: 'c_azure@0.7' },
   },
   goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr', pad: 50, sx: 100, sy: 100, inner: 1, look: style() },
+  // челлендж «Альбион: Соло Левелинг без рынка»: rank — номер в ranks, у ранга вехи (по одной на строку, правятся в доке);
+  // done — отмеченные вехи («E|текст вехи»: правка списка не сдвигает отметки); счётчики; log — журнал, новые сверху:
+  // { t: время, day, kind: 'vio' | 'ach' | 'rank', text }. Карточки — окошком анонса со своим заголовком; goal — прогресс ранга
+  // ведёт цель (счёт вручную: «РАНГ D · 1/3»)
+  challenge: {
+    rank: 0,
+    ranks: [
+      { id: 'E', name: 'Голые руки', items: 'Первый крафт\nПолный сет Т3 своими руками' },
+      { id: 'D', name: 'Ремесленник', items: 'Полный сет Т4\nПервый соло-данж\nПокупка острова' },
+      { id: 'C', name: 'Свой транспорт', items: 'Первый выращенный маунт\nСет Т5\nВыход в жёлтую зону' },
+      { id: 'B', name: 'Опасные земли', items: 'Сет Т6\nСбор в красной зоне' },
+      { id: 'A', name: 'Мастер', items: 'Сет Т7\nВылазка в чёрную зону\nФракционный маунт' },
+      { id: 'S', name: 'Монарх', items: 'Полный сет Т8 или зачарованный, весь скрафченный самим' },
+    ],
+    done: [],
+    day: 1, deaths: 0, kills: 0,
+    log: [],
+    cards: true, achTitle: 'ДОСТИЖЕНИЕ', vioTitle: 'НАРУШЕНИЕ', rankTitle: 'НОВЫЙ РАНГ',
+    goal: false,
+  },
 };
 
 export function loadSettings() {
@@ -59,6 +79,7 @@ export function saveSettings(s) {
 }
 
 // сообщения: { type: 'settings', settings } | { type: 'alert', kind, name } — настоящее событие канала или тест из дока |
+// { type: 'card', title, text } — карточка челленджа окошком анонса |
 // { type: 'goalTest', frac } — тест цели | { type: 'ping' } | { type: 'pong', page }
 export function createBus(onMessage) {
   const seen = new Set();
