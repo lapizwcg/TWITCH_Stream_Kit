@@ -598,12 +598,16 @@ for (const part of LOOK_PARTS) buildLook(part);
 // ---------- рамка эфира ----------
 
 const FRAME_CORNERS = [['round', 'Скругление'], ['bevel', 'Срез'], ['rect', 'Прямой'], ['scoop', 'Вогнутый'], ['notch', 'Ступенька']];
-const FRAME_EDGES = [['line', 'Прямая'], ['wave', 'Волна'], ['zigzag', 'Зигзаг'], ['scallop', 'Дуги'], ['crenel', 'Зубцы']];
+const FRAME_EDGES = [
+  ['line', 'Прямая'], ['wave', 'Волна'], ['zigzag', 'Зигзаг'], ['scallop', 'Дуги'], ['crenel', 'Зубцы'], ['saw', 'Пила'], ['spikes', 'Шипы'],
+  ['steps', 'Ступени'], ['bulbs', 'Капли'], ['tee', 'Т-узор'], ['meander', 'Меандр'],
+];
+const FRAME_ORNAMENTS = [['none', 'Без узора'], ['line', 'Линия'], ['double', 'Две линии'], ['dots', 'Точки'], ['diamonds', 'Ромбы'], ['rivets', 'Заклёпки'], ['chevrons', 'Уголки']];
 // ползунки: ключ, подпись, мин, макс, шаг, единица
 const FRAME_RANGES = {
   width: ['Толщина', 0, 120, 1, 'px'], margin: ['Отступ от края экрана', 0, 100, 1, 'px'], opacity: ['Непрозрачность фона', 0, 100, 1, '%'],
   line: ['Толщина линии', 0, 12, 0.5, 'px'], glow: ['Свечение линии', 0, 60, 1, 'px'], corner: ['Размер углов', 0, 200, 1, 'px'],
-  amp: ['Высота формы', 0, 40, 1, 'px'], period: ['Шаг формы', 20, 300, 5, 'px'],
+  amp: ['Высота формы', 0, 60, 1, 'px'], period: ['Шаг формы', 20, 300, 5, 'px'], ornSize: ['Размер узора', 30, 250, 5, '%'],
 };
 function buildFrame() {
   const box = document.querySelector('#tab-frame .frame-body');
@@ -623,6 +627,10 @@ function buildFrame() {
     <h4>Форма края</h4>
     <label class="field"><span class="label">Край</span><select data-edge>${opts(FRAME_EDGES)}</select></label>
     ${range('amp')}${range('period')}
+    <h4>Узор на полосе</h4>
+    <label class="field"><span class="label">Узор</span><select data-ornament>${opts(FRAME_ORNAMENTS)}</select></label>
+    ${range('ornSize')}
+    <p class="note">Узор идёт с тем же шагом, что форма края, в части полосы, свободной от формы.</p>
     <button class="btn ghost small" data-reset type="button">Сбросить рамку</button>`;
   const fr = () => settings.frame;
   $('frameOn').onchange = (e) => {
@@ -645,6 +653,7 @@ function buildFrame() {
     const el = e.target;
     if (el.dataset.corner !== undefined) fr().corners[+el.dataset.corner] = el.value;
     else if (el.hasAttribute('data-edge')) fr().edge = el.value;
+    else if (el.hasAttribute('data-ornament')) fr().ornament = el.value;
     else return;
     commit();
   };
@@ -662,8 +671,8 @@ function renderFrame() {
   fr.look ??= structuredClone(DEFAULTS.frame.look);
   $('frameOn').checked = fr.on;
   for (const k of Object.keys(FRAME_RANGES)) {
-    box.querySelector(`[data-range="${k}"]`).value = fr[k];
-    box.querySelector(`[data-val="${k}"]`).textContent = `${fr[k]} ${FRAME_RANGES[k][4]}`;
+    box.querySelector(`[data-range="${k}"]`).value = fr[k] ?? DEFAULTS.frame[k];
+    box.querySelector(`[data-val="${k}"]`).textContent = `${fr[k] ?? DEFAULTS.frame[k]} ${FRAME_RANGES[k][4]}`;
   }
   for (const b of box.querySelectorAll('.mp')) {
     const { mat, tone } = parseMt(fr.look[b.dataset.key]);
@@ -672,6 +681,7 @@ function renderFrame() {
   }
   for (const sel of box.querySelectorAll('[data-corner]')) sel.value = fr.corners[+sel.dataset.corner];
   box.querySelector('[data-edge]').value = fr.edge;
+  box.querySelector('[data-ornament]').value = fr.ornament ?? 'none';
 }
 buildFrame();
 
