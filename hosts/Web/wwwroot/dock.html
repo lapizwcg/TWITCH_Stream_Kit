@@ -247,18 +247,17 @@
     </label>
     <div class="frame-body look-body"></div>
   </section>
-  <!-- челлендж «Соло Левелинг без рынка»: ранг и вехи, счётчики, достижения и нарушения — карточками окошком анонса, журнал -->
+  <!-- челлендж «Соло Левелинг без рынка»: ранг (выбирается вручную), счётчики, достижения и нарушения — карточками окошком анонса,
+       журнал; вехи рангов — только на странице правил (rules.html) -->
   <section id="tab-challenge" class="pane" hidden>
     <div class="rank">
       <div id="chRankBadge" class="rank-badge"></div>
       <div class="rank-who">
         <b id="chRankName"></b>
-        <span id="chRankProgress" class="note"></span>
+        <span class="note">ранг — вручную; повышение выходит карточкой</span>
       </div>
       <select id="chRank" aria-label="Ранг"></select>
     </div>
-    <div id="chItems" class="checks"></div>
-    <button class="btn" id="chRankUp" type="button"></button>
 
     <div class="field">
       <div class="label">Счётчики</div>
@@ -322,8 +321,6 @@
         <label class="field"><span class="label">Заголовок смерти</span><input id="chDeathTitle" type="text" maxlength="40" placeholder="СМЕРТЬ"></label>
         <label class="field"><span class="label">Заголовок убийства</span><input id="chKillTitle" type="text" maxlength="40" placeholder="УБИЙСТВО"></label>
         <div class="note">Карточки выходят окошком анонса: место, время и оформление — во вкладке «Анонсы».</div>
-        <label class="row switch"><input type="checkbox" id="chGoal"><span>Прогресс ранга — целью</span></label>
-        <div class="note">Цель (вкладка «Цели») станет «РАНГ E · 1/2» и будет считаться по отмеченным вехам вместо фолловеров.</div>
       </div>
     </details>
 
@@ -338,13 +335,8 @@
       </div>
     </details>
 
-    <details class="look">
-      <summary>Вехи по рангам</summary>
-      <div class="look-body" id="chRanksEdit"></div>
-    </details>
-
     <!-- страница правил и рангов для зрителей — та же папка, что и док (на сайте и локально) -->
-    <p class="note">Правила и ранги для зрителей: <a href="rules.html" target="_blank" rel="noopener">rules.html</a> — ссылку можно дать в чат.</p>
+    <p class="note">Правила, ранги и их задания для зрителей: <a href="rules.html" target="_blank" rel="noopener">rules.html</a> — ссылку можно дать в чат.</p>
     <button class="btn ghost small" id="chReset" type="button">Начать челлендж заново</button>
   </section>
   <!-- логотип канала поверх кадра: например, закрыть мини-карту -->

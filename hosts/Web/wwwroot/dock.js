@@ -1,6 +1,6 @@
 // ДОК-ПАНЕЛЬ: поля ↔ настройки. Каждое изменение сразу сохраняется и уходит в открытые оверлеи — в OBS видно без перезагрузки.
 // Здесь же — связь с Twitch: вход, события канала (новые фолловеры → оповещение в показ), счёт цели по фолловерам или сабам
-import { DEFAULTS, STYLE, LOGOS, logoOf, loadSettings, saveSettings, createBus } from './kit.js';
+import { DEFAULTS, STYLE, LOGOS, RANKS, logoOf, loadSettings, saveSettings, createBus } from './kit.js';
 import * as Twitch from './twitch.js';
 
 const $ = (id) => document.getElementById(id);
@@ -688,8 +688,8 @@ function renderFrame() {
 buildFrame();
 
 // ---------- челлендж «Соло Левелинг без рынка» ----------
-// ранг и его вехи, счётчики, достижения и нарушения — в журнал и карточкой окошком анонса (со своим заголовком), прогресс ранга —
-// целью, если включено. Вехи отмечаются по тексту («Т1|текст»), поэтому правка списка не сдвигает отметки
+// ранг (выбирается вручную, повышение — карточкой), счётчики, достижения и нарушения — в журнал и карточкой окошком анонса (со своим
+// заголовком). Задания рангов — только на странице правил (rules.html): переходы между рангами док не ведёт
 
 // частые нарушения — по правилам (rules.html); помощь в бою — не нарушение
 const VIO_PRESETS = ['Покупка на рынке', 'Продажа на рынке', 'Группа вне города', 'Обмен с игроком', 'Подарок от игрока', 'Не своя вещь, еда или зелье'];
@@ -697,10 +697,7 @@ const CARD_TITLE = { ach: 'achTitle', vio: 'vioTitle', rank: 'rankTitle', death:
 // поля заголовков карточек: id поля — ключ в настройках
 const CH_TITLES = [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chRankTitle', 'rankTitle'], ['chDeathTitle', 'deathTitle'], ['chKillTitle', 'killTitle']];
 const ch = () => settings.challenge;
-const rankOf = (i = ch().rank) => ch().ranks[Math.max(0, Math.min(i, ch().ranks.length - 1))];
-const itemsOf = (r) => r.items.split('\n').map((s) => s.trim()).filter(Boolean);
-const doneKey = (r, text) => `${r.id}|${text}`;
-const rankDone = (r) => itemsOf(r).filter((t) => ch().done.includes(doneKey(r, t))).length;
+const rankOf = (i = ch().rank) => RANKS[Math.max(0, Math.min(i, RANKS.length - 1))];
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 function chCard(kind, text) {
@@ -713,42 +710,17 @@ function chLog(kind, text) {
   c.log.unshift({ t: Date.now(), day: c.day, kind, text });
   c.log.length = Math.min(c.log.length, 500);
 }
-// прогресс ранга целью: «РАНГ Т2 · УЧЕНИК», отмечено из всех вех ранга
-function chCommit() {
-  const c = ch();
-  if (c.goal) {
-    const r = rankOf();
-    Object.assign(settings.goal, { source: 'manual', title: `РАНГ ${r.id} · ${r.name.toUpperCase()}`, current: rankDone(r), target: Math.max(1, itemsOf(r).length) });
-  }
-  commit();
-}
-
 function buildChallenge() {
   $('chVioPresets').innerHTML = VIO_PRESETS.map((t) => `<button class="btn ghost small" type="button" data-preset="${esc(t)}">${esc(t)}</button>`).join('');
-  $('chRanksEdit').innerHTML = ch().ranks
-    .map((r, i) => `<label class="field"><span class="label">Ранг ${esc(r.id)} — название</span><input type="text" maxlength="40" data-rank-name="${i}"></label>
-      <label class="field"><span class="label">Вехи ранга ${esc(r.id)} — по одной на строку</span><textarea rows="3" maxlength="1000" data-rank-items="${i}"></textarea></label>`)
-    .join('') + '<button class="btn ghost small" type="button" id="chRanksReset">Вернуть вехи по умолчанию</button>';
+  $('chRank').innerHTML = RANKS.map((x, i) => `<option value="${i}">${esc(x.id)} · ${esc(x.name)}</option>`).join('');
 }
 
 function renderChallenge() {
   const c = ch();
   const r = rankOf();
-  const items = itemsOf(r);
-  const got = rankDone(r);
-  $('chRank').innerHTML = c.ranks.map((x, i) => `<option value="${i}">${esc(x.id)} · ${esc(x.name)}</option>`).join('');
-  $('chRank').value = String(c.rank);
+  $('chRank').value = String(RANKS.indexOf(r));
   $('chRankBadge').textContent = r.id;
   $('chRankName').textContent = `«${r.name}»`;
-  $('chRankProgress').textContent = items.length ? `вехи: ${got} из ${items.length}` : 'у ранга нет вех';
-  $('chItems').innerHTML = items
-    .map((t) => `<label class="check"><input type="checkbox" data-item="${esc(t)}"${c.done.includes(doneKey(r, t)) ? ' checked' : ''}><span>${esc(t)}</span></label>`)
-    .join('');
-  const next = c.ranks[c.rank + 1];
-  $('chRankUp').disabled = !next;
-  $('chRankUp').textContent = next ? `Повысить ранг → ${next.id} «${next.name}»` : 'Высший ранг';
-  // все вехи ранга взяты — кнопка повышения горит
-  $('chRankUp').classList.toggle('ready', !!next && items.length > 0 && got === items.length);
   for (const b of document.querySelectorAll('[data-val-stat]')) b.textContent = c[b.dataset.valStat];
   $('chVioCount').textContent = c.log.filter((e) => e.kind === 'vio').length;
   const when = (t) => new Date(t).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
@@ -757,44 +729,26 @@ function renderChallenge() {
     ? c.log.slice(0, 100).map((e, i) => `<li class="${e.kind}"><i>${mark[e.kind] || ''}</i><span><b>${esc(e.text)}</b><small>день ${e.day} · ${when(e.t)}</small></span><button type="button" class="del" data-del="${i}" title="Убрать из журнала">×</button></li>`).join('')
     : '<li class="empty">Пока пусто</li>';
   $('chCards').checked = c.cards;
-  $('chGoal').checked = c.goal;
   $('chGameCards').checked = c.gameCards;
   $('chStatsOn').checked = c.statsOn;
   if (document.activeElement !== $('chStatsPort')) $('chStatsPort').value = c.statsPort;
   renderGame();
   for (const [id, k] of CH_TITLES)
     if (document.activeElement !== $(id)) $(id).value = c[k];
-  for (const el of document.querySelectorAll('[data-rank-name]')) if (document.activeElement !== el) el.value = c.ranks[+el.dataset.rankName]?.name ?? '';
-  for (const el of document.querySelectorAll('[data-rank-items]')) if (document.activeElement !== el) el.value = c.ranks[+el.dataset.rankItems]?.items ?? '';
 }
 
+// ранг — вручную; выше прежнего — в журнал и карточкой «НОВЫЙ РАНГ», ниже (поправили ошибку) — тихо
 $('chRank').onchange = (e) => {
-  ch().rank = +e.target.value;
-  chCommit();
-};
-// отметили веху — достижение: в журнал и карточкой; сняли отметку — тихо
-$('chItems').onchange = (e) => {
-  const t = e.target.dataset.item;
-  if (t === undefined) return;
   const c = ch();
-  const key = doneKey(rankOf(), t);
-  c.done = c.done.filter((k) => k !== key);
-  if (e.target.checked) {
-    c.done.push(key);
-    chLog('ach', t);
-    chCard('ach', t);
+  const up = +e.target.value > c.rank;
+  c.rank = +e.target.value;
+  if (up) {
+    const r = rankOf();
+    const text = `${r.id} · «${r.name}»`;
+    chLog('rank', `Ранг ${text}`);
+    chCard('rank', text);
   }
-  chCommit();
-};
-$('chRankUp').onclick = () => {
-  const c = ch();
-  if (!c.ranks[c.rank + 1]) return;
-  c.rank++;
-  const r = rankOf();
-  const text = `${r.id} · «${r.name}»`;
-  chLog('rank', `Ранг ${text}`);
-  chCard('rank', text);
-  chCommit();
+  commit();
 };
 $('tab-challenge').addEventListener('click', (e) => {
   const b = e.target.closest('button');
@@ -809,9 +763,6 @@ $('tab-challenge').addEventListener('click', (e) => {
   } else if (b.dataset.del !== undefined) {
     c.log.splice(+b.dataset.del, 1);
     commit();
-  } else if (b.id === 'chRanksReset') {
-    c.ranks = structuredClone(DEFAULTS.challenge.ranks);
-    chCommit();
   }
 });
 $('chAch').onsubmit = (e) => {
@@ -835,29 +786,16 @@ $('chCards').onchange = (e) => {
   ch().cards = e.target.checked;
   commit();
 };
-$('chGoal').onchange = (e) => {
-  ch().goal = e.target.checked;
-  if (e.target.checked) settings.goal.on = true;
-  chCommit();
-};
 for (const [id, k] of CH_TITLES)
   $(id).oninput = (e) => {
     ch()[k] = e.target.value;
     commit();
   };
-$('chRanksEdit').oninput = (e) => {
-  const el = e.target;
-  const c = ch();
-  if (el.dataset.rankName !== undefined) c.ranks[+el.dataset.rankName].name = el.value;
-  else if (el.dataset.rankItems !== undefined) c.ranks[+el.dataset.rankItems].items = el.value;
-  else return;
-  chCommit();
-};
-// заново: ранг, отметки, счётчики и журнал — с нуля; вехи и заголовки карточек остаются
+// заново: ранг, счётчики и журнал — с нуля; заголовки карточек остаются
 $('chReset').onclick = () => {
-  if (!confirm('Начать челлендж заново? Ранг, отметки, счётчики и журнал сбросятся.')) return;
-  Object.assign(ch(), { rank: 0, done: [], day: 1, deaths: 0, kills: 0, log: [] });
-  chCommit();
+  if (!confirm('Начать челлендж заново? Ранг, счётчики и журнал сбросятся.')) return;
+  Object.assign(ch(), { rank: 0, day: 1, deaths: 0, kills: 0, log: [] });
+  commit();
 };
 // ---------- статистика из игры: AoMarket --stats-port (AO-Auras) на этом компьютере ----------
 // поток событий (SSE): «stats» — счёт сессии после каждого изменения, «death» / «kill» — сразу, для карточки. Смерти и убийства
