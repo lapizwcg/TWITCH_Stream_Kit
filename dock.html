@@ -6,26 +6,26 @@
 <title>Stream Kit — пульт</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.5z93gou780.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.c8k4s38rj3.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./dock.js": "./dock.rgz0ftpz55.js",
-    "./kit.js": "./kit.0i6o5l1ysd.js",
+    "./dock.js": "./dock.jiyjxujmeq.js",
+    "./kit.js": "./kit.vqgbp9rf4q.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.5z93gou780.js": "sha256-QWULjMHu0jsX7VkoG1E/Do9d6fkH6KW7hVEwHSbLMUQ=",
-    "./_framework/dotnet.js": "sha256-QWULjMHu0jsX7VkoG1E/Do9d6fkH6KW7hVEwHSbLMUQ=",
+    "./_framework/dotnet.c8k4s38rj3.js": "sha256-lPj2MOe0J874g++8kn6WGic+9Pyx2LKFTBqP6ocR5vs=",
+    "./_framework/dotnet.js": "sha256-lPj2MOe0J874g++8kn6WGic+9Pyx2LKFTBqP6ocR5vs=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./dock.js": "sha256-dfnl0MjbNDfrrFJQ+Oc8N/xxyDwxR2cJ7YzULpm31k4=",
-    "./dock.rgz0ftpz55.js": "sha256-dfnl0MjbNDfrrFJQ+Oc8N/xxyDwxR2cJ7YzULpm31k4=",
-    "./kit.0i6o5l1ysd.js": "sha256-GKArGfOvxHLjoBUYdF6AU9OinTg1rjKKji9mTK/iSp4=",
-    "./kit.js": "sha256-GKArGfOvxHLjoBUYdF6AU9OinTg1rjKKji9mTK/iSp4=",
+    "./dock.jiyjxujmeq.js": "sha256-hSE3LEqGpuOynk3EoTk9iITrEhOKzDA8ekdcXpc9W9k=",
+    "./dock.js": "sha256-hSE3LEqGpuOynk3EoTk9iITrEhOKzDA8ekdcXpc9W9k=",
+    "./kit.js": "sha256-hxYxOEYEGPlJx0Ma+quEg3B6O84Pjkj5LkI3mBhL4vM=",
+    "./kit.vqgbp9rf4q.js": "sha256-hxYxOEYEGPlJx0Ma+quEg3B6O84Pjkj5LkI3mBhL4vM=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261101-080434-f8be215';
+  var CURRENT = '20261101-081447-e4d5430';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -364,6 +364,8 @@
       <div class="look-body" id="chRanksEdit"></div>
     </details>
 
+    <!-- страница правил и рангов для зрителей — та же папка, что и док (на сайте и локально) -->
+    <p class="note">Правила и ранги для зрителей: <a href="rules.html" target="_blank" rel="noopener">rules.html</a> — ссылку можно дать в чат.</p>
     <button class="btn ghost small" id="chReset" type="button">Начать челлендж заново</button>
   </section>
   <!-- логотип канала поверх кадра: например, закрыть мини-карту -->
