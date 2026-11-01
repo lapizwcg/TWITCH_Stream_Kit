@@ -913,7 +913,11 @@ function renderGame() {
   link.className = `link ${gameState === 'on' ? 'on' : 'off'}`;
   link.textContent = { off: 'выключено', wait: 'AoMarket не отвечает', on: game?.player ? `${game.player} · подключено` : 'подключено' }[gameState];
   const num = (v) => (game ? Math.round(v).toLocaleString('ru-RU') : '—');
-  for (const b of document.querySelectorAll('[data-game]')) b.textContent = num(game?.[b.dataset.game] ?? 0);
+  // ключ — путь в ответе AoMarket («totals.fame»); общей славы персонажа может ещё не быть — прочерк, а не 0
+  for (const b of document.querySelectorAll('[data-game]')) {
+    const v = b.dataset.game.split('.').reduce((o, k) => o?.[k], game);
+    b.textContent = v == null && b.dataset.game.includes('.') ? '—' : num(v ?? 0);
+  }
   $('chStatsReset').disabled = gameState !== 'on';
   $('chStatsNote').textContent =
     gameState === 'off'

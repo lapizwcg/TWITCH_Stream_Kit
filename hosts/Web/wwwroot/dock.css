@@ -162,4 +162,5 @@ select { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-ra
 /* статистика из игры: связь с AoMarket и четыре числа сессии */
 .game-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
 .stats.game .stat b { font-size: 15px; }
+.stats .stat.wide { grid-column: 1 / -1; }
 .look code { font-size: 11px; }
