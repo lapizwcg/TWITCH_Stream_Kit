@@ -38,7 +38,7 @@ canvas { display: block; width: 100vw; height: 100vh; }
 <script type="module">
 // ключи — из адреса (?demo → --demo)
 import { boot } from './wcg.js';
-import { loadSettings, createBus, logoOf } from './kit.js';
+import { loadSettings, createBus, logoOf, frameInset } from './kit.js';
 const q = new URLSearchParams(location.search);
 const args = [...q].map(([k, v]) => v === '' ? '--' + k : '--' + k + '=' + v);
 // maxDpr 1: в OBS источник и так рисуется в своём размере (1920×1080), лишние точки — лишняя работа видеокарте
@@ -71,25 +71,30 @@ async function ensureFonts(s) {
 // настройки — по очереди: пока качается шрифт, следующие ждут, чтобы старые не легли поверх новых
 let chain = Promise.resolve();
 const settle = (s) => (chain = chain.then(() => ensureFonts(s)).then(() => apply(s)));
-// логотип: место из девяти (как у окошек), ширина и сдвиг — точки при высоте 1080, по размеру окна
-let logo = null;
+// логотип: место из девяти (как у окошек), ширина и сдвиг — точки при высоте 1080, по размеру окна; при рамке эфира — внутри
+// выреза, в углу — ещё и отступ под угол выреза (Layout.Place)
+let logo = null, frame = null;
 function placeLogo() {
   const el = document.getElementById('logo');
   if (!logo?.on) { el.hidden = true; return; }
   const [id, , lw, lh] = logoOf(logo.file);
   const u = innerHeight / 1080, w = (logo.size ?? 400) * u, h = (w * lh) / lw, pos = logo.pos || 'br';
   const ax = pos.includes('l') ? 0 : pos.includes('r') ? 1 : 0.5, ay = pos.includes('t') ? 0 : pos.includes('b') ? 1 : 0.5;
+  const { inset, cut } = frameInset(frame);
+  const corner = { '0,0': cut[0], '1,0': cut[1], '1,1': cut[2], '0,1': cut[3] }[`${ax},${ay}`] ?? 0;
+  const m = (inset + corner) * u;
   if (!el.src.endsWith(`logos/${id}.svg`)) el.src = `logos/${id}.svg`;
   el.style.width = `${w}px`;
   el.style.height = `${h}px`;
-  el.style.left = `${ax * (innerWidth - w) + (logo.dx ?? 0) * u}px`;
-  el.style.top = `${ay * (innerHeight - h) + (logo.dy ?? 0) * u}px`;
+  el.style.left = `${m + ax * (innerWidth - 2 * m - w) + (logo.dx ?? 0) * u}px`;
+  el.style.top = `${m + ay * (innerHeight - 2 * m - h) + (logo.dy ?? 0) * u}px`;
   el.style.opacity = (logo.opacity ?? 100) / 100;
   el.hidden = false;
 }
 addEventListener('resize', placeLogo);
 const apply = (s) => {
-  if (s.logo) { logo = s.logo; placeLogo(); }
+  if (s.frame) frame = s.frame;
+  if (s.logo || s.frame) { logo = s.logo ?? logo; placeLogo(); }
   if (s.follow) B.Follow(s.follow.on, q.get('pos') || s.follow.pos, s.follow.title, s.follow.seconds);
   if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100, s.follow.inner ?? 1);
   if (s.goal) B.GoalSize(s.goal.pad ?? 50, (s.goal.sx ?? 100) / 100, (s.goal.sy ?? 100) / 100, s.goal.inner ?? 1);

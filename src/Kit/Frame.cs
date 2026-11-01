@@ -56,8 +56,10 @@ public sealed class Frame
 		for (int i = 0; i < 4 && i < cs.Count; i++) Corners[i] = Kinds.Contains(cs[i].AsString()) ? cs[i].AsString() : "bevel";
 		var lk = d["look"].Dict();
 		Bg = Mt(lk["bg"].AsString(), Bg); Border = Mt(lk["border"].AsString(), Border);
-		// окошки — внутри выреза: поле от края экрана — отступ, толщина рамки и половина линии
-		Layout.Inset = On ? Margin + Width + Line / 2 : 0;
+		// окошки — внутри выреза: поле от края экрана — как у выреза в Build (толщина или место под узор) плюс половина линии;
+		// в углах — ещё и место под угол выреза: окошко в углу встаёт так, чтобы срез, скругление или выступ его не задевали
+		Layout.Inset = On ? Math.Max(Margin + Width, Reach(1)) + Line / 2 : 0;
+		for (int i = 0; i < 4; i++) Layout.CornerCut[i] = On ? Corner * Corners[i] switch { "rect" => 0, "round" => 0.3f, "bevel" => 0.5f, _ => 1f } : 0;
 		dirty = true;
 	}
 
