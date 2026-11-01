@@ -269,6 +269,19 @@
       </div>
     </div>
 
+    <!-- статистика из игры: AoMarket (AO-Auras) на этом компьютере, http://127.0.0.1:<порт> -->
+    <div class="field">
+      <div class="label game-head">Из игры за сессию <span id="chStatsLink" class="link off"></span></div>
+      <div class="stats game">
+        <div class="stat"><span>Серебро</span><b data-game="silver">—</b></div>
+        <div class="stat"><span>Слава</span><b data-game="fame">—</b></div>
+        <div class="stat"><span>Крафт</span><b data-game="crafts">—</b></div>
+        <div class="stat"><span>Сбор</span><b data-game="harvests">—</b></div>
+      </div>
+      <div class="note" id="chStatsNote"></div>
+      <button class="btn ghost small" id="chStatsReset" type="button">Новая сессия</button>
+    </div>
+
     <form id="chAch" class="field">
       <div class="label">Достижение</div>
       <div class="test">
@@ -298,9 +311,23 @@
         <label class="field"><span class="label">Заголовок достижения</span><input id="chAchTitle" type="text" maxlength="40" placeholder="ДОСТИЖЕНИЕ"></label>
         <label class="field"><span class="label">Заголовок нарушения</span><input id="chVioTitle" type="text" maxlength="40" placeholder="НАРУШЕНИЕ"></label>
         <label class="field"><span class="label">Заголовок нового ранга</span><input id="chRankTitle" type="text" maxlength="40" placeholder="НОВЫЙ РАНГ"></label>
+        <label class="row switch"><input type="checkbox" id="chGameCards"><span>Смерть и убийство из игры — карточкой</span></label>
+        <label class="field"><span class="label">Заголовок смерти</span><input id="chDeathTitle" type="text" maxlength="40" placeholder="СМЕРТЬ"></label>
+        <label class="field"><span class="label">Заголовок убийства</span><input id="chKillTitle" type="text" maxlength="40" placeholder="УБИЙСТВО"></label>
         <div class="note">Карточки выходят окошком анонса: место, время и оформление — во вкладке «Анонсы».</div>
         <label class="row switch"><input type="checkbox" id="chGoal"><span>Прогресс ранга — целью</span></label>
         <div class="note">Цель (вкладка «Цели») станет «РАНГ E · 1/2» и будет считаться по отмеченным вехам вместо фолловеров.</div>
+      </div>
+    </details>
+
+    <details class="look">
+      <summary>Связь с игрой</summary>
+      <div class="look-body">
+        <label class="row switch"><input type="checkbox" id="chStatsOn"><span>Брать статистику из AoMarket</span></label>
+        <label class="field"><span class="label">Порт</span><input id="chStatsPort" type="text" inputmode="numeric" maxlength="5" placeholder="8790"></label>
+        <div class="note">AoMarket из AO-Auras читает трафик игры и отдаёт статистику только на этот компьютер. AO-Profiter (start.ps1)
+          запускает его сам с портом 8790; вручную — <code>AoMarket --stats-port 8790</code>. Смерти и убийства прибавляются к
+          счётчикам выше, их по-прежнему можно поправить кнопками.</div>
       </div>
     </details>
 

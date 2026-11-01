@@ -59,6 +59,9 @@ export const DEFAULTS = {
     log: [],
     cards: true, achTitle: 'ДОСТИЖЕНИЕ', vioTitle: 'НАРУШЕНИЕ', rankTitle: 'НОВЫЙ РАНГ',
     goal: false,
+    // статистика из игры: AoMarket --stats-port (AO-Auras) на этом компьютере; смерти и убийства прибавляются к счётчикам сами,
+    // карточки «СМЕРТЬ» / «УБИЙСТВО»; sync — последние увиденные счёты AoMarket ({ since, deaths, kills }), от них считается прибавка
+    statsOn: true, statsPort: 8790, gameCards: true, deathTitle: 'СМЕРТЬ', killTitle: 'УБИЙСТВО', sync: null,
   },
 };
 

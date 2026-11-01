@@ -690,7 +690,9 @@ buildFrame();
 // целью, если включено. Вехи отмечаются по тексту («E|текст»), поэтому правка списка не сдвигает отметки
 
 const VIO_PRESETS = ['Покупка на рынке', 'Продажа на рынке', 'Группа вне города', 'Обмен с игроком', 'Чужая помощь'];
-const CARD_TITLE = { ach: 'achTitle', vio: 'vioTitle', rank: 'rankTitle' };
+const CARD_TITLE = { ach: 'achTitle', vio: 'vioTitle', rank: 'rankTitle', death: 'deathTitle', kill: 'killTitle' };
+// поля заголовков карточек: id поля — ключ в настройках
+const CH_TITLES = [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chRankTitle', 'rankTitle'], ['chDeathTitle', 'deathTitle'], ['chKillTitle', 'killTitle']];
 const ch = () => settings.challenge;
 const rankOf = (i = ch().rank) => ch().ranks[Math.max(0, Math.min(i, ch().ranks.length - 1))];
 const itemsOf = (r) => r.items.split('\n').map((s) => s.trim()).filter(Boolean);
@@ -700,7 +702,8 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 
 function chCard(kind, text) {
   const c = ch();
-  if (c.cards) bus.send('card', { title: c[CARD_TITLE[kind]] || DEFAULTS.challenge[CARD_TITLE[kind]], text });
+  // смерть и убийство из игры — своим переключателем
+  if (kind === 'death' || kind === 'kill' ? c.gameCards : c.cards) bus.send('card', { title: c[CARD_TITLE[kind]] || DEFAULTS.challenge[CARD_TITLE[kind]], text });
 }
 function chLog(kind, text) {
   const c = ch();
@@ -752,7 +755,11 @@ function renderChallenge() {
     : '<li class="empty">Пока пусто</li>';
   $('chCards').checked = c.cards;
   $('chGoal').checked = c.goal;
-  for (const [id, k] of [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chRankTitle', 'rankTitle']])
+  $('chGameCards').checked = c.gameCards;
+  $('chStatsOn').checked = c.statsOn;
+  if (document.activeElement !== $('chStatsPort')) $('chStatsPort').value = c.statsPort;
+  renderGame();
+  for (const [id, k] of CH_TITLES)
     if (document.activeElement !== $(id)) $(id).value = c[k];
   for (const el of document.querySelectorAll('[data-rank-name]')) if (document.activeElement !== el) el.value = c.ranks[+el.dataset.rankName]?.name ?? '';
   for (const el of document.querySelectorAll('[data-rank-items]')) if (document.activeElement !== el) el.value = c.ranks[+el.dataset.rankItems]?.items ?? '';
@@ -830,7 +837,7 @@ $('chGoal').onchange = (e) => {
   if (e.target.checked) settings.goal.on = true;
   chCommit();
 };
-for (const [id, k] of [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chRankTitle', 'rankTitle']])
+for (const [id, k] of CH_TITLES)
   $(id).oninput = (e) => {
     ch()[k] = e.target.value;
     commit();
@@ -849,7 +856,93 @@ $('chReset').onclick = () => {
   Object.assign(ch(), { rank: 0, done: [], day: 1, deaths: 0, kills: 0, log: [] });
   chCommit();
 };
+// ---------- статистика из игры: AoMarket --stats-port (AO-Auras) на этом компьютере ----------
+// поток событий (SSE): «stats» — счёт сессии после каждого изменения, «death» / «kill» — сразу, для карточки. Смерти и убийства
+// прибавляются к счётчикам челленджа по разнице со счётом, увиденным в прошлый раз (sync): док, закрытый на время боя, догонит
+// при подключении; перезапуск AoMarket (новое since) начинает отсчёт заново, ничего не прибавляя
+
+let game = null; // последний счёт сессии из AoMarket
+let gameState = 'off'; // off | wait | on
+let gameSource = null;
+const gameUrl = (path) => `http://127.0.0.1:${ch().statsPort}${path}`;
+
+function connectGame() {
+  gameSource?.close();
+  gameSource = null;
+  game = null;
+  gameState = ch().statsOn ? 'wait' : 'off';
+  renderGame();
+  if (!ch().statsOn) return;
+  // EventSource переподключается сам, пока AoMarket не запущен — раз в несколько секунд
+  gameSource = new EventSource(gameUrl('/events'));
+  gameSource.onerror = () => {
+    gameState = 'wait';
+    renderGame();
+  };
+  const on = (kind, fn) => gameSource.addEventListener(kind, (e) => {
+    try {
+      fn(JSON.parse(e.data));
+    } catch {}
+  });
+  on('stats', onGameStats);
+  on('death', (d) => chCard('death', d.mob ? `${d.killer} (моб)` : d.killer ? `от ${d.killer}` : 'Персонаж погиб'));
+  on('kill', (d) => chCard('kill', d.victim));
+}
+
+function onGameStats(s) {
+  game = s;
+  gameState = 'on';
+  const c = ch();
+  const sy = c.sync;
+  if (sy && sy.since === s.since) {
+    c.deaths += Math.max(0, s.deaths - sy.deaths);
+    c.kills += Math.max(0, s.kills - sy.kills);
+  }
+  // настройки сохраняем, только когда сдвинулись смерти, убийства или сессия — серебро идёт часто
+  if (!sy || sy.since !== s.since || sy.deaths !== s.deaths || sy.kills !== s.kills) {
+    c.sync = { since: s.since, deaths: s.deaths, kills: s.kills };
+    commit();
+  } else renderGame();
+}
+
+function renderGame() {
+  const link = $('chStatsLink');
+  link.className = `link ${gameState === 'on' ? 'on' : 'off'}`;
+  link.textContent = { off: 'выключено', wait: 'AoMarket не отвечает', on: game?.player ? `${game.player} · подключено` : 'подключено' }[gameState];
+  const num = (v) => (game ? Math.round(v).toLocaleString('ru-RU') : '—');
+  for (const b of document.querySelectorAll('[data-game]')) b.textContent = num(game?.[b.dataset.game] ?? 0);
+  $('chStatsReset').disabled = gameState !== 'on';
+  $('chStatsNote').textContent =
+    gameState === 'off'
+      ? 'Статистика из игры выключена — «Связь с игрой» ниже.'
+      : gameState === 'wait'
+        ? `Нет связи с AoMarket на порту ${ch().statsPort}: запустите AO-Profiter (start.ps1) или AoMarket --stats-port ${ch().statsPort}. Док переподключится сам.`
+        : game?.since
+          ? `Сессия с ${new Date(game.since).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}. Смерти и убийства идут в счётчики выше.`
+          : '';
+}
+
+// новая сессия в AoMarket: серебро, слава, крафт и сбор — с нуля; счётчики челленджа не трогаются
+$('chStatsReset').onclick = () => {
+  fetch(gameUrl('/reset'), { method: 'POST', body: '' }).catch(() => {});
+};
+$('chStatsOn').onchange = (e) => {
+  ch().statsOn = e.target.checked;
+  commit();
+  connectGame();
+};
+$('chStatsPort').onchange = (e) => {
+  const port = Math.floor(+e.target.value);
+  if (port > 0 && port < 65536) ch().statsPort = port;
+  commit();
+  connectGame();
+};
+$('chGameCards').onchange = (e) => {
+  ch().gameCards = e.target.checked;
+  commit();
+};
 buildChallenge();
 
 render();
+connectGame();
 startTwitch();
