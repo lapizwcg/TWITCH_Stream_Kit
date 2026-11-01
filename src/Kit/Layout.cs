@@ -16,22 +16,14 @@ public static class Layout
 
 	// поле рамки эфира (Frame) от края экрана до края выреза — точки при высоте 1080; окошки ставятся внутри неё
 	public static float Inset;
-	// сколько угол выреза (по часовой tl tr br bl) забирает у окошка, стоящего в этом углу, — точки при высоте 1080
-	public static readonly float[] CornerCut = new float[4];
 
-	// середина блока cw×ch на месте (ax, ay) в кадре w×h с полем mx, my от краёв (плюс поле рамки; в углу — и место под угол выреза)
+	// середина блока cw×ch на месте (ax, ay) в кадре w×h с полем mx, my от краёв (плюс поле рамки): при отступе 0 — вплотную к линии
 	public static (float cx, float cy) Place(float ax, float ay, int w, int h, float cw, float ch, float mx, float my)
 	{
-		float f = (Inset + Cut(ax, ay)) * h / 1080f;
+		float f = Inset * h / 1080f;
 		mx += f; my += f;
 		return (mx + cw / 2 + ax * (w - 2 * mx - cw), my + ch / 2 + ay * (h - 2 * my - ch));
 	}
-
-	// угол выреза под окошком: только у мест в углах кадра
-	static float Cut(float ax, float ay) => (ax, ay) switch
-	{
-		(0, 0) => CornerCut[0], (1, 0) => CornerCut[1], (1, 1) => CornerCut[2], (0, 1) => CornerCut[3], _ => 0,
-	};
 
 	// цвет с умноженной прозрачностью
 	public static uint Col(string mat, double tone, int a = 255)

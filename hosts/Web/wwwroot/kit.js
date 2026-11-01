@@ -29,18 +29,16 @@ export const LOGOS = [
 ];
 export const logoOf = (id) => LOGOS.flatMap(([, list]) => list).find(([v]) => v === id) || LOGOS[0][1][0];
 
-// вырез рамки эфира для того, что рисуется не в движке (логотип): поле от края экрана и место под каждый угол выреза (tl tr br bl) —
-// точки при высоте 1080; считается как в Frame.Load (src/Kit/Frame.cs) — меняются вместе
+// вырез рамки эфира для того, что рисуется не в движке (логотип): поле от края экрана до линии выреза — точки при высоте 1080;
+// считается как в Frame.Load (src/Kit/Frame.cs) — меняются вместе
 export function frameInset(f) {
-  if (!f?.on) return { inset: 0, cut: [0, 0, 0, 0] };
+  if (!f?.on) return 0;
   const num = (v, def, lo, hi) => Math.min(hi, Math.max(lo, Number.isFinite(+v) ? +v : def));
   const width = num(f.width, 36, 0, 200), margin = num(f.margin, 0, 0, 200), line = num(f.line, 2, 0, 16);
-  const corner = num(f.corner, 24, 0, 300), scale = num(f.scale, 100, 30, 300) / 100;
+  const scale = num(f.scale, 100, 30, 300) / 100;
   // место под узор у края экрана (Frame.Reach)
   const reach = line <= 0 ? 0 : f.style === 'plain' ? line : 13 * scale + line * 1.2;
-  const share = { rect: 0, round: 0.3, bevel: 0.5 };
-  const cut = [0, 1, 2, 3].map((i) => corner * (share[f.corners?.[i] ?? 'bevel'] ?? 1));
-  return { inset: Math.max(margin + width, reach) + line / 2, cut };
+  return Math.max(margin + width, reach) + line / 2;
 }
 
 export const DEFAULTS = {

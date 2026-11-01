@@ -72,7 +72,7 @@ async function ensureFonts(s) {
 let chain = Promise.resolve();
 const settle = (s) => (chain = chain.then(() => ensureFonts(s)).then(() => apply(s)));
 // логотип: место из девяти (как у окошек), ширина и сдвиг — точки при высоте 1080, по размеру окна; при рамке эфира — внутри
-// выреза, в углу — ещё и отступ под угол выреза (Layout.Place)
+// выреза, вплотную к линии (Layout.Place)
 let logo = null, frame = null;
 function placeLogo() {
   const el = document.getElementById('logo');
@@ -80,9 +80,7 @@ function placeLogo() {
   const [id, , lw, lh] = logoOf(logo.file);
   const u = innerHeight / 1080, w = (logo.size ?? 400) * u, h = (w * lh) / lw, pos = logo.pos || 'br';
   const ax = pos.includes('l') ? 0 : pos.includes('r') ? 1 : 0.5, ay = pos.includes('t') ? 0 : pos.includes('b') ? 1 : 0.5;
-  const { inset, cut } = frameInset(frame);
-  const corner = { '0,0': cut[0], '1,0': cut[1], '1,1': cut[2], '0,1': cut[3] }[`${ax},${ay}`] ?? 0;
-  const m = (inset + corner) * u;
+  const m = frameInset(frame) * u;
   if (!el.src.endsWith(`logos/${id}.svg`)) el.src = `logos/${id}.svg`;
   el.style.width = `${w}px`;
   el.style.height = `${h}px`;
