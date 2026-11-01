@@ -4,11 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Соло Левелинг без рынка</title>
-<meta name="description" content="Правила и ранги челленджа «Альбион: Соло Левелинг без рынка» с канала LapizWCG">
-<!-- карта модулей: сборка вписывает сюда kit.js с отпечатком в имени, как в index.html и dock.html -->
-<script type="importmap"></script>
-<!-- ПРАВИЛА ЧЕЛЛЕНДЖА для зрителей: что разрешено и запрещено, ранги и их вехи. Правила — здесь; ранги — из kit.js (RANKS), тот же
-     список, что во вкладке «Челлендж» дока -->
+<meta name="description" content="Правила челленджа «Альбион: Соло Левелинг без рынка» с канала LapizWCG">
+<!-- ПРАВИЛА ЧЕЛЛЕНДЖА для зрителей: что разрешено и запрещено (копия документа правил в Claude Docs) -->
 <style>
 :root {
   --bg: #0f1116; --panel: #181b22; --line: #2b2f3a; --text: #e6e8ec; --muted: #9aa0ab;
@@ -36,13 +33,6 @@ li { margin: 3px 0; }
 .box h3 { margin-top: 8px; }
 .yes h3 { color: var(--ok); }
 .no h3 { color: var(--bad); }
-.ranks { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; padding: 0; list-style: none; }
-.rank { display: flex; gap: 14px; margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
-.badge { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 12px; background: linear-gradient(160deg, var(--blue), #1d3f7a);
-  box-shadow: inset 0 0 0 2px var(--gold); color: #fff; font-size: 20px; font-weight: 800; }
-.rank h3 { margin: 2px 0 4px; }
-.rank ul { color: var(--text); }
-.rank .final { color: var(--gold); }
 footer { margin-top: 48px; color: var(--muted); font-size: 14px; text-align: center; }
 a { color: var(--gold); }
 </style>
@@ -61,7 +51,7 @@ a { color: var(--gold); }
   <ul>
     <li>Создайте нового персонажа. Начинать с прокачанного персонажа нельзя.</li>
     <li>Играйте по правилам ниже. Если ситуация не описана, решайте по двум принципам.</li>
-    <li>Отмечайте свои ранги и делитесь прогрессом в чате канала <a href="https://www.twitch.tv/lapizwcg">twitch.tv/lapizwcg</a>.</li>
+    <li>Делитесь прогрессом в чате канала <a href="https://www.twitch.tv/lapizwcg">twitch.tv/lapizwcg</a>.</li>
   </ul>
 
   <h2>Два принципа</h2>
@@ -179,24 +169,7 @@ a { color: var(--gold); }
   <h3>Потеря сета</h3>
   <p>Штрафов нет: потеряли сет — крафтите новый. Экипировку вы и так делаете сами, в этом и смысл челленджа.</p>
 
-  <h2>Ранги</h2>
-  <p>Ранг — это тир сета, который вы носите. Начинаете Новичком (Т1). Чтобы подняться на следующий ранг, выполните все задания своего ранга.</p>
-  <p>Задания — то, что видно в самой игре: открытые тиры сбора и переработки на доске судьбы, мастерство, слава по видам из окна статистики персонажа и свой сет. Заданий на зоны нет: куда ходить, решаете сами. Слава считается с создания персонажа.</p>
-  <ol id="ranks" class="ranks"></ol>
-
   <footer>Канал <a href="https://www.twitch.tv/lapizwcg">LapizWCG</a> · Albion Online</footer>
 </main>
-<script type="module">
-import { RANKS } from './kit.js';
-const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-document.getElementById('ranks').innerHTML = RANKS.map((r, i) => {
-  const items = r.items.split('\n').map((s) => s.trim()).filter(Boolean);
-  const next = RANKS[i + 1];
-  const body = items.length
-    ? `<p>До ранга ${esc(next?.id ?? '')} «${esc(next?.name ?? '')}»:</p><ul>${items.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>`
-    : '<p class="final">Высший ранг: челлендж пройден.</p>';
-  return `<li class="rank"><div class="badge">${esc(r.id)}</div><div><h3>${esc(r.name)}</h3>${body}</div></li>`;
-}).join('');
-</script>
 </body>
 </html>

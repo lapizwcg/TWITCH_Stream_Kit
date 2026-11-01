@@ -1,6 +1,6 @@
 // ДОК-ПАНЕЛЬ: поля ↔ настройки. Каждое изменение сразу сохраняется и уходит в открытые оверлеи — в OBS видно без перезагрузки.
 // Здесь же — связь с Twitch: вход, события канала (новые фолловеры → оповещение в показ), счёт цели по фолловерам или сабам
-import { DEFAULTS, STYLE, LOGOS, RANKS, logoOf, loadSettings, saveSettings, createBus } from './kit.js';
+import { DEFAULTS, STYLE, LOGOS, announceItem, logoOf, loadSettings, saveSettings, createBus } from './kit.js';
 import * as Twitch from './twitch.js';
 
 const $ = (id) => document.getElementById(id);
@@ -55,29 +55,18 @@ function render() {
   renderSize('goal', g);
 
   const an = settings.announce;
-  $('announceOn').checked = an.on;
-  $('announceOutput').value = an.output;
-  for (const [id, v] of [['announceMessages', an.messages], ['announceTitle', an.title]]) if (document.activeElement !== $(id)) $(id).value = v;
-  $('announceEvery').value = an.every;
-  $('announceEveryVal').textContent = `каждые ${an.every} мин`;
+  if (document.activeElement !== $('announceTitle')) $('announceTitle').value = an.title;
   $('announceSeconds').value = an.seconds;
   $('announceSecondsVal').textContent = `${an.seconds} с`;
   for (const b of $('announcePos').children) b.classList.toggle('active', b.dataset.pos === an.pos);
-  // настройки карточки нужны, только если анонс идёт в оверлей
-  for (const el of document.querySelectorAll('#tab-announce [data-overlay]')) el.hidden = an.output === 'chat';
   renderSize('announce', an);
-  renderAnnounceNote();
+  renderAnnounce();
   // оформление — после того как разделы собраны (buildLook)
   if (document.querySelector('[data-look] .mp')) for (const part of LOOK_PARTS) renderLook(part);
   // счёт по Twitch ведётся сам — руками его не трогаем
   const auto = g.source !== 'manual';
-  // прогресс ранга челленджа ведёт цель — счёт и заголовок её, руками не трогаем
-  const byRank = settings.challenge.goal;
-  $('goalSource').disabled = $('goalTitle').disabled = byRank;
-  for (const id of ['goalCurrent', 'goalPlus', 'goalMinus', 'goalReset']) $(id).disabled = auto || byRank;
-  $('goalNote').textContent = byRank
-    ? 'Счёт ведёт челлендж: отмеченные вехи текущего ранга.'
-    : !auto
+  for (const id of ['goalCurrent', 'goalPlus', 'goalMinus', 'goalReset']) $(id).disabled = auto;
+  $('goalNote').textContent = !auto
     ? 'Счёт ведёте вы: кнопками или числом.'
     : !helix
       ? 'Войдите через Twitch — счёт будет вестись сам.'
@@ -280,59 +269,106 @@ $('goalReset').onclick = () => {
   commit();
 };
 
-// анонсы: таймер — здесь, в доке (он один на OBS); сообщения по кругу; в оверлей — карточкой через показ, в чат — от имени канала
-let annLast = Date.now();
-let annIndex = 0;
-const annList = () => settings.announce.messages.split('\n').map((s) => s.trim()).filter(Boolean);
+// анонсы: таймеры — здесь, в доке (он один на OBS), у каждого анонса свой; сообщения по кругу; в оверлей — карточкой окошком анонса
+// со своим заголовком, в чат — от имени канала. Отсчёт и номер сообщения — по id анонса, в настройки не пишутся
+const annState = new Map();
+const annOf = (id) => settings.announce.items.find((a) => a.id === id);
+const annRun = (a) => {
+  if (!annState.has(a.id)) annState.set(a.id, { last: Date.now(), n: 0 });
+  return annState.get(a.id);
+};
+const annList = (a) => a.messages.split('\n').map((s) => s.trim()).filter(Boolean);
 
-function fireAnnounce() {
-  const list = annList();
-  annLast = Date.now();
+function fireAnnounce(a) {
+  const run = annRun(a);
+  const list = annList(a);
+  run.last = Date.now();
   if (!list.length) return;
-  const text = list[annIndex++ % list.length];
-  const out = settings.announce.output;
-  if (out !== 'chat') bus.send('alert', { kind: 'announce', name: text });
-  if (out !== 'overlay') {
-    if (!helix) showError('Анонс в чат: войдите через Twitch.');
-    else helix.sendChat(text).catch((e) => showError(`Анонс в чат не ушёл: ${e.message}`));
+  const text = list[run.n++ % list.length];
+  if (a.output !== 'chat') bus.send('card', { title: a.title.trim() || settings.announce.title || DEFAULTS.announce.title, text });
+  if (a.output !== 'overlay') {
+    if (!helix) showError(`Анонс «${a.name}» в чат: войдите через Twitch.`);
+    else helix.sendChat(text).catch((e) => showError(`Анонс «${a.name}» в чат не ушёл: ${e.message}`));
   }
-  renderAnnounceNote();
+  renderAnnounce();
 }
 
-function renderAnnounceNote() {
-  const a = settings.announce;
-  const n = annList().length;
-  if (!n) return ($('announceNote').textContent = 'Впишите хотя бы одно сообщение.');
-  const left = Math.max(0, a.every * 60000 - (Date.now() - annLast));
-  const mm = Math.floor(left / 60000);
-  const ss = String(Math.floor((left % 60000) / 1000)).padStart(2, '0');
-  const chat = a.output !== 'overlay' && !helix ? ' Для чата нужен вход через Twitch.' : '';
-  $('announceNote').textContent =
-    (a.on ? `Сообщений: ${n}. Следующее через ${mm}:${ss}.` : `Сообщений: ${n}. Таймер выключен — только «Показать сейчас».`) + chat;
+// карточки анонсов собираются заново, только когда меняется сам список; значения — на каждом render
+function buildAnnounce() {
+  const items = settings.announce.items;
+  const box = $('annItems');
+  if (box.dataset.ids === items.map((a) => a.id).join()) return;
+  box.dataset.ids = items.map((a) => a.id).join();
+  box.innerHTML = items
+    .map((a) => `<div class="ann" data-ann="${a.id}">
+      <div class="ann-head"><input type="text" maxlength="40" data-k="name" aria-label="Название анонса">
+        <button class="btn ghost small" type="button" data-act="del" title="Удалить анонс">Удалить</button></div>
+      <label class="row switch"><input type="checkbox" data-k="on"><span>По таймеру</span></label>
+      <label class="field"><div class="label">Куда</div><select data-k="output">
+        <option value="overlay">Оверлей</option><option value="chat">Чат</option><option value="both">Оверлей и чат</option></select></label>
+      <label class="field"><div class="label">Сообщения — по одному на строку, идут по очереди</div>
+        <textarea rows="3" maxlength="2000" data-k="messages" placeholder="Подписывайтесь на канал!"></textarea></label>
+      <label class="field"><div class="label">Как часто: <b data-v="every"></b></div><input type="range" min="1" max="60" step="1" data-k="every"></label>
+      <label class="field" data-overlay><div class="label">Заголовок карточки</div><input type="text" maxlength="40" data-k="title"></label>
+      <div class="row2"><button class="btn" type="button" data-act="now">Показать сейчас</button></div>
+      <div class="note" data-v="note"></div>
+    </div>`)
+    .join('');
+}
+
+function renderAnnounce() {
+  buildAnnounce();
+  for (const el of $('annItems').children) {
+    const a = annOf(el.dataset.ann);
+    if (!a) continue;
+    for (const f of el.querySelectorAll('[data-k]')) {
+      if (f === document.activeElement) continue;
+      if (f.type === 'checkbox') f.checked = a[f.dataset.k];
+      else f.value = a[f.dataset.k];
+    }
+    el.querySelector('[data-k="title"]').placeholder = settings.announce.title || DEFAULTS.announce.title;
+    el.querySelector('[data-overlay]').hidden = a.output === 'chat';
+    el.querySelector('[data-v="every"]').textContent = `каждые ${a.every} мин`;
+    const n = annList(a).length;
+    const left = Math.max(0, a.every * 60000 - (Date.now() - annRun(a).last));
+    const chat = a.output !== 'overlay' && !helix ? ' Для чата нужен вход через Twitch.' : '';
+    el.querySelector('[data-v="note"]').textContent = !n
+      ? 'Впишите хотя бы одно сообщение.'
+      : (a.on
+          ? `Сообщений: ${n}. Следующее через ${Math.floor(left / 60000)}:${String(Math.floor((left % 60000) / 1000)).padStart(2, '0')}.`
+          : `Сообщений: ${n}. Таймер выключен — только «Показать сейчас».`) + chat;
+  }
 }
 
 setInterval(() => {
-  const a = settings.announce;
-  if (a.on && Date.now() - annLast >= a.every * 60000) fireAnnounce();
-  renderAnnounceNote();
+  for (const a of settings.announce.items) if (a.on && Date.now() - annRun(a).last >= a.every * 60000) fireAnnounce(a);
+  renderAnnounce();
 }, 1000);
 
-$('announceOn').onchange = (e) => {
-  settings.announce.on = e.target.checked;
-  // включили — отсчёт с этого момента, а не с открытия дока
-  annLast = Date.now();
+const annInput = (e) => {
+  const f = e.target;
+  const a = annOf(f.closest('[data-ann]')?.dataset.ann);
+  if (!a || !f.dataset.k) return;
+  a[f.dataset.k] = f.type === 'checkbox' ? f.checked : f.type === 'range' ? +f.value : f.value;
+  // включили таймер — отсчёт с этого момента, а не с открытия дока
+  if (f.dataset.k === 'on') annRun(a).last = Date.now();
   commit();
 };
-$('announceOutput').onchange = (e) => {
-  settings.announce.output = e.target.value;
-  commit();
-};
-$('announceMessages').oninput = (e) => {
-  settings.announce.messages = e.target.value;
-  commit();
-};
-$('announceEvery').oninput = (e) => {
-  settings.announce.every = +e.target.value;
+// input приходит и от галочки, и от списка — отдельный change не нужен
+$('annItems').addEventListener('input', annInput);
+$('annItems').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]');
+  const a = b && annOf(b.closest('[data-ann]').dataset.ann);
+  if (!a) return;
+  if (b.dataset.act === 'now') fireAnnounce(a);
+  else if (b.dataset.act === 'del' && confirm(`Удалить анонс «${a.name}»?`)) {
+    settings.announce.items = settings.announce.items.filter((x) => x !== a);
+    annState.delete(a.id);
+    commit();
+  }
+});
+$('annAdd').onclick = () => {
+  settings.announce.items.push(announceItem(`Анонс ${settings.announce.items.length + 1}`));
   commit();
 };
 $('announceTitle').oninput = (e) => {
@@ -349,7 +385,6 @@ $('announcePos').onclick = (e) => {
   settings.announce.pos = pos;
   commit();
 };
-$('announceNow').onclick = () => fireAnnounce();
 
 const names = ['LapizWCG', 'котик_в_тапках', 'Neformalization_Official', 'xXSlayerXx'];
 let nameN = 0;
@@ -516,7 +551,7 @@ function renderLook(part) {
   for (const c of box.querySelectorAll('[data-at]')) c.checked = lk.fx.at.includes(c.dataset.at);
   box.querySelector('[data-set]').value = lk.fx.set;
   // образцы: заголовок — заголовком окошка, текст — ником или первым анонсом
-  const sample = { head: settings[part].title || 'ЗАГОЛОВОК', font: part === 'announce' ? (settings.announce.messages || '').split('\n')[0] || 'Текст анонса' : part === 'goal' ? '63/100' : 'LapizWCG' };
+  const sample = { head: settings[part].title || 'ЗАГОЛОВОК', font: part === 'announce' ? (settings.announce.items[0]?.messages || '').split('\n')[0] || 'Текст анонса' : part === 'goal' ? '63/100' : 'LapizWCG' };
   for (const k of ['head', 'font']) {
     const id = lk[k] || 'noto';
     const sel = box.querySelector(`[data-font="${k}"]`);
@@ -688,16 +723,14 @@ function renderFrame() {
 buildFrame();
 
 // ---------- челлендж «Соло Левелинг без рынка» ----------
-// ранг (выбирается вручную, повышение — карточкой), счётчики, достижения и нарушения — в журнал и карточкой окошком анонса (со своим
-// заголовком). Задания рангов — только на странице правил (rules.html): переходы между рангами док не ведёт
+// по правилам на странице rules.html: счётчики, достижения и нарушения — в журнал и карточкой окошком анонса (со своим заголовком)
 
 // частые нарушения — по правилам (rules.html); помощь в бою — не нарушение
 const VIO_PRESETS = ['Покупка на рынке', 'Продажа на рынке', 'Группа вне города', 'Обмен с игроком', 'Подарок от игрока', 'Не своя вещь, еда или зелье'];
-const CARD_TITLE = { ach: 'achTitle', vio: 'vioTitle', rank: 'rankTitle', death: 'deathTitle', kill: 'killTitle' };
+const CARD_TITLE = { ach: 'achTitle', vio: 'vioTitle', death: 'deathTitle', kill: 'killTitle' };
 // поля заголовков карточек: id поля — ключ в настройках
-const CH_TITLES = [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chRankTitle', 'rankTitle'], ['chDeathTitle', 'deathTitle'], ['chKillTitle', 'killTitle']];
+const CH_TITLES = [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chDeathTitle', 'deathTitle'], ['chKillTitle', 'killTitle']];
 const ch = () => settings.challenge;
-const rankOf = (i = ch().rank) => RANKS[Math.max(0, Math.min(i, RANKS.length - 1))];
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 function chCard(kind, text) {
@@ -712,19 +745,14 @@ function chLog(kind, text) {
 }
 function buildChallenge() {
   $('chVioPresets').innerHTML = VIO_PRESETS.map((t) => `<button class="btn ghost small" type="button" data-preset="${esc(t)}">${esc(t)}</button>`).join('');
-  $('chRank').innerHTML = RANKS.map((x, i) => `<option value="${i}">${esc(x.id)} · ${esc(x.name)}</option>`).join('');
 }
 
 function renderChallenge() {
   const c = ch();
-  const r = rankOf();
-  $('chRank').value = String(RANKS.indexOf(r));
-  $('chRankBadge').textContent = r.id;
-  $('chRankName').textContent = `«${r.name}»`;
   for (const b of document.querySelectorAll('[data-val-stat]')) b.textContent = c[b.dataset.valStat];
   $('chVioCount').textContent = c.log.filter((e) => e.kind === 'vio').length;
   const when = (t) => new Date(t).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-  const mark = { vio: '⚠', ach: '★', rank: '▲' };
+  const mark = { vio: '⚠', ach: '★' };
   $('chLog').innerHTML = c.log.length
     ? c.log.slice(0, 100).map((e, i) => `<li class="${e.kind}"><i>${mark[e.kind] || ''}</i><span><b>${esc(e.text)}</b><small>день ${e.day} · ${when(e.t)}</small></span><button type="button" class="del" data-del="${i}" title="Убрать из журнала">×</button></li>`).join('')
     : '<li class="empty">Пока пусто</li>';
@@ -737,19 +765,6 @@ function renderChallenge() {
     if (document.activeElement !== $(id)) $(id).value = c[k];
 }
 
-// ранг — вручную; выше прежнего — в журнал и карточкой «НОВЫЙ РАНГ», ниже (поправили ошибку) — тихо
-$('chRank').onchange = (e) => {
-  const c = ch();
-  const up = +e.target.value > c.rank;
-  c.rank = +e.target.value;
-  if (up) {
-    const r = rankOf();
-    const text = `${r.id} · «${r.name}»`;
-    chLog('rank', `Ранг ${text}`);
-    chCard('rank', text);
-  }
-  commit();
-};
 $('tab-challenge').addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (!b) return;
@@ -791,10 +806,10 @@ for (const [id, k] of CH_TITLES)
     ch()[k] = e.target.value;
     commit();
   };
-// заново: ранг, счётчики и журнал — с нуля; заголовки карточек остаются
+// заново: счётчики и журнал — с нуля; заголовки карточек остаются
 $('chReset').onclick = () => {
-  if (!confirm('Начать челлендж заново? Ранг, счётчики и журнал сбросятся.')) return;
-  Object.assign(ch(), { rank: 0, day: 1, deaths: 0, kills: 0, log: [] });
+  if (!confirm('Начать челлендж заново? Счётчики и журнал сбросятся.')) return;
+  Object.assign(ch(), { day: 1, deaths: 0, kills: 0, log: [] });
   commit();
 };
 // ---------- статистика из игры: AoMarket --stats-port (AO-Auras) на этом компьютере ----------

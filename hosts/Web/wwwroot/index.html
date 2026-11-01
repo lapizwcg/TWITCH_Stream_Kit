@@ -97,8 +97,9 @@ const apply = (s) => {
   if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100, s.follow.inner ?? 1);
   if (s.goal) B.GoalSize(s.goal.pad ?? 50, (s.goal.sx ?? 100) / 100, (s.goal.sy ?? 100) / 100, s.goal.inner ?? 1);
   if (s.announce) {
-    // карточка в оверлее — при выводе «оверлей» или «оба»; таймер живёт в доке, «Показать сейчас» работает и без него
-    B.Announce(s.announce.output !== 'chat', s.announce.pos, s.announce.title, s.announce.seconds);
+    // анонсов несколько, у каждого свой вывод и таймер — живут в доке и присылают карточку со своим заголовком (bus 'card');
+    // окошко здесь общее: место, заголовок по умолчанию, время
+    B.Announce(true, s.announce.pos, s.announce.title, s.announce.seconds);
     B.AnnounceSize(s.announce.pad ?? 70, (s.announce.sx ?? 100) / 100, (s.announce.sy ?? 100) / 100, s.announce.inner ?? 1);
   }
   // оформление: размер частиц в доке — проценты, в показе — доля
