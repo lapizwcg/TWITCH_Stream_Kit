@@ -78,6 +78,10 @@ select { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-ra
 .styles .ring { fill: none; stroke: #3a3d46; stroke-width: 3; }
 .styles .arc { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
 .row2 { display: flex; gap: 6px; }
+/* образец логотипа: векторный рисунок на шахматке — видно прозрачные края */
+.logo-preview { display: flex; justify-content: center; padding: 8px; border: 1px solid var(--line); border-radius: 8px;
+  background: repeating-conic-gradient(#1b1c21 0 25%, #24262d 0 50%) 0 0 / 16px 16px; }
+.logo-preview img { max-width: 100%; max-height: 140px; }
 
 /* оформление окошка: свёрнутый раздел */
 .look { border: 1px solid var(--line); border-radius: 8px; background: #1b1c21; }
