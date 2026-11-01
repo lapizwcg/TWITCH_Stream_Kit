@@ -6,26 +6,26 @@
 <title>Stream Kit — оповещения</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.7d2kh1ypm5.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.97gfhu6tgi.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./dock.js": "./dock.28v1x9bgoj.js",
-    "./kit.js": "./kit.bp4d0hlgd7.js",
+    "./dock.js": "./dock.il86oxzml7.js",
+    "./kit.js": "./kit.7d3i1q2ljx.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.7d2kh1ypm5.js": "sha256-+/06sD7sGRlJ/3TIj6f5ruEK9OYCkOkTnacabyxQMDI=",
-    "./_framework/dotnet.js": "sha256-+/06sD7sGRlJ/3TIj6f5ruEK9OYCkOkTnacabyxQMDI=",
+    "./_framework/dotnet.97gfhu6tgi.js": "sha256-xYiN5lXzkHJj6m0se9BnRUSdISyJ4TwiCGXuP1InjqA=",
+    "./_framework/dotnet.js": "sha256-xYiN5lXzkHJj6m0se9BnRUSdISyJ4TwiCGXuP1InjqA=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./dock.28v1x9bgoj.js": "sha256-UolskE5wMKYnel13S/BJxPR52pOjFeSxfxhFe/sipfg=",
-    "./dock.js": "sha256-UolskE5wMKYnel13S/BJxPR52pOjFeSxfxhFe/sipfg=",
-    "./kit.bp4d0hlgd7.js": "sha256-D42H0z+tw90/2se8dzCdb6dEQ3Ufs3X5vR6oC/RVpow=",
-    "./kit.js": "sha256-D42H0z+tw90/2se8dzCdb6dEQ3Ufs3X5vR6oC/RVpow=",
+    "./dock.il86oxzml7.js": "sha256-+qKb1OOS5v215l5di0aKLOPORBttf34TJzeutLIahv4=",
+    "./dock.js": "sha256-+qKb1OOS5v215l5di0aKLOPORBttf34TJzeutLIahv4=",
+    "./kit.7d3i1q2ljx.js": "sha256-i4qrWqDNL/xrSKwt7eFeQxS0E0vx5ddLhHGPaqxsIXY=",
+    "./kit.js": "sha256-i4qrWqDNL/xrSKwt7eFeQxS0E0vx5ddLhHGPaqxsIXY=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261101-085617-5b14c11';
+  var CURRENT = '20261101-091948-9e8c785';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -65,7 +65,7 @@ canvas { display: block; width: 100vw; height: 100vh; }
 <script type="module">
 // ключи — из адреса (?demo → --demo)
 import { boot } from './wcg.js';
-import { loadSettings, createBus, logoOf, frameInset } from './kit.js';
+import { loadSettings, createBus, logoOf, frameInset, boardRows } from './kit.js';
 const q = new URLSearchParams(location.search);
 const args = [...q].map(([k, v]) => v === '' ? '--' + k : '--' + k + '=' + v);
 // maxDpr 1: в OBS источник и так рисуется в своём размере (1920×1080), лишние точки — лишняя работа видеокарте
@@ -79,7 +79,7 @@ const B = (await rt.getAssemblyExports('KitWeb.dll')).KitWeb.Bridge;
 const fontsIn = new Set(['noto']);
 async function ensureFonts(s) {
   const ids = new Set();
-  for (const part of ['follow', 'announce', 'goal']) for (const k of ['head', 'font']) if (s[part]?.look?.[k]) ids.add(s[part].look[k]);
+  for (const part of ['follow', 'announce', 'goal', 'badge', 'stats']) for (const k of ['head', 'font']) if (s[part]?.look?.[k]) ids.add(s[part].look[k]);
   await Promise.all([...ids].filter((id) => !fontsIn.has(id) && /^[a-z0-9_-]+$/.test(id)).map(async (id) => {
     try {
       const got = await Promise.all(['font.bin', 'font.png'].map(async (f) => {
@@ -130,11 +130,23 @@ const apply = (s) => {
     B.AnnounceSize(s.announce.pad ?? 70, (s.announce.sx ?? 100) / 100, (s.announce.sy ?? 100) / 100, s.announce.inner ?? 1);
   }
   // оформление: размер частиц в доке — проценты, в показе — доля
-  for (const part of ['follow', 'announce', 'goal'])
+  for (const part of ['follow', 'announce', 'goal', 'badge', 'stats'])
     if (s[part]?.look) B.Style(part, JSON.stringify({ ...s[part].look, fx: { ...s[part].look.fx, size: (s[part].look.fx?.size ?? 100) / 100 } }));
   if (s.frame) B.Frame(JSON.stringify(s.frame));
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
+  if (s.badge && s.stats) { last = s; boards(); }
 };
+// таблички челленджа: строки — из счётчиков челленджа (настройки) и счёта сессии AoMarket (его шлёт док, bus 'game')
+let last = null, game = null;
+function boards() {
+  if (!last) return;
+  const rows = boardRows(last, game);
+  for (const k of ['badge', 'stats']) {
+    const p = last[k];
+    B.BoardSize(k, p.pad ?? 20, (p.sx ?? 100) / 100, (p.sy ?? 100) / 100, p.inner ?? 1);
+    B.Board(k, p.on, p.pos, p.title || '', rows[k]);
+  }
+}
 settle(loadSettings());
 const bus = createBus((msg) => {
   if (msg.type === 'settings') settle(msg.settings);
@@ -142,6 +154,7 @@ const bus = createBus((msg) => {
   else if (msg.type === 'alert' && msg.kind === 'announce') B.ShowAnnounce(msg.name);
   else if (msg.type === 'card') B.ShowCard(msg.title || '', msg.text);
   else if (msg.type === 'goalTest') B.PreviewGoal(msg.frac);
+  else if (msg.type === 'game') { game = msg.game; boards(); }
   else if (msg.type === 'ping') bus.send('pong', { page: 'alerts' });
 });
 </script>
