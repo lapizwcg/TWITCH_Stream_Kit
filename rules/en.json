@@ -1,0 +1,142 @@
+{
+  "code": "en",
+  "name": "English",
+  "pageTitle": "Albion: Solo Leveling — rules",
+  "title": { "pre": "Albion: ", "accent": "Solo Leveling", "post": "" },
+  "lead": "Take a brand-new character all the way to a full Tier 8 set on your own — without ever using the marketplace and without receiving anything from other players.",
+  "note": "This challenge is just for fun. Nobody checks anyone: anyone can join, and honesty is a personal challenge to yourself.",
+  "language": "Language",
+  "footer": "Channel {channel} · Albion Online",
+  "sections": [
+    {
+      "h": "How to join",
+      "ul": [
+        "Create a new character. Starting with an already leveled character is not allowed.",
+        "Play by the rules below. If a situation is not covered, decide by the two principles.",
+        "Share your progress in the {twitch} chat."
+      ]
+    },
+    {
+      "h": "Two principles",
+      "principles": [
+        ["Source — the game only", "Everything the game itself gives you is allowed. Everything that comes through the marketplace or from other players is forbidden."],
+        ["Use — only your own", "Everything your character wears, eats, drinks and rides is made by that character. Upgrades also come only from your own crafting."]
+      ]
+    },
+    {
+      "h": "1. Marketplace and Premium",
+      "p": ["The marketplace is completely forbidden. You may buy gold, but you may not exchange it back to silver: that way no silver can be brought in from outside."],
+      "cols": [
+        { "kind": "no", "h": "Forbidden", "ul": [
+          "Buying anything on the marketplace: from sell orders or through buy orders",
+          "Selling anything on the marketplace: to other players' buy orders or through your own sell orders",
+          "Selling to the Black Market in Caerleon",
+          "Exchanging gold for silver"
+        ] },
+        { "kind": "yes", "h": "Allowed", "ul": [
+          "Buying gold with silver or with real money",
+          "Transferring silver from your main account, but only for Premium: exactly the gold price of Premium at the exchange rate at the time of purchase, spent right away",
+          "Premium and all of its bonuses",
+          "Buying an island and its upgrades with silver — that is not the marketplace",
+          "Paying silver for repairs, station fees and other game services"
+        ] }
+      ]
+    },
+    {
+      "h": "2. Other players",
+      "p": ["Any activity with other players is allowed, including large-scale content, and help in combat is fine. The only thing forbidden is receiving valuables from players, directly or indirectly. Guilds and parties are forbidden because shared fame and silver flow through them. Loot from killed players is game loot and is allowed."],
+      "cols": [
+        { "kind": "no", "h": "Forbidden", "ul": [
+          "Trading with players in any form",
+          "Accepting gifts: items, resources, silver",
+          "Picking up silver that players drop on the ground",
+          "Dueling for silver: it is hidden trading",
+          "Using alts or transferring anything from other characters (except silver for Premium)",
+          "Joining a guild",
+          "Being in a party outside of a city"
+        ] },
+        { "kind": "yes", "h": "Allowed", "ul": [
+          "Talking to players",
+          "Taking part in large-scale and open-world activities without joining a party",
+          "Helping others and accepting help in combat",
+          "Fighting players and taking loot from the ones you kill",
+          "Using other players' stations for the normal usage fee"
+        ] }
+      ]
+    },
+    {
+      "h": "3. Equipment and consumables",
+      "p": ["Everything your character wears or uses is crafted by that character. You may not equip a finished item you found, even if you can craft it yourself. The starting equipment is crafted by the player in the tutorial, so it is allowed."],
+      "cols": [
+        { "kind": "yes", "h": "Only your own craft", "ul": [
+          "Weapon, off-hand, head, armor, shoes",
+          "Bag and cape",
+          "Tools and gathering gear",
+          "Food and potions",
+          "Mounts (section 6)"
+        ] },
+        { "kind": "no", "h": "Forbidden", "ul": [
+          "Wearing or using finished equipment that you found, looted or received as a reward",
+          "Eating or drinking food and potions you found",
+          "Using tools you found"
+        ] }
+      ]
+    },
+    {
+      "h": "4. Loot and rewards",
+      "p": ["Any game loot is allowed as raw material for your own crafting: mobs and bosses, chests in the open world, dungeons and mists, faction and seasonal chests, killed players, rewards for quests and journals."],
+      "cols": [
+        { "kind": "yes", "h": "Can be used directly", "ul": [
+          "Resources — raw and refined, including enchanted ones",
+          "Artifacts; runes, souls and relics — only to make artifacts",
+          "Tomes of insight",
+          "Silver bags and silver from mobs",
+          "Baby animals and seeds"
+        ] },
+        { "kind": "no", "h": "Salvage only", "ul": [
+          "Finished equipment, tools, bags, capes",
+          "Finished food, potions and mounts"
+        ], "p": "Salvage them for resources or for silver at the repair station." }
+      ]
+    },
+    {
+      "h": "5. Crafting and upgrades",
+      "p": ["An item only gets better if you craft it again from better materials — never by upgrading it at an NPC."],
+      "cols": [
+        { "kind": "yes", "h": "Allowed", "ul": [
+          "Any crafting and refining stations: in cities, on islands, in hideouts and in black zone cities, including other players' stations",
+          "Focus for crafting and refining",
+          "Turning runes, souls and relics into artifacts",
+          "Crafting enchanted items from enchanted resources",
+          "Repairing items at the repair station"
+        ] },
+        { "kind": "no", "h": "Forbidden", "ul": [
+          "Raising item quality at the repair station: quality is only what you got when crafting",
+          "Enchanting finished items with runes, souls and relics",
+          "Upgrading the enchantment of resources (for example, from .0 to .1)"
+        ] }
+      ]
+    },
+    {
+      "h": "6. Island, farm and mounts",
+      "p": ["At the start you only have the starter mule. Every other mount has to be raised or tamed and saddled by yourself."],
+      "cols": [
+        { "kind": "yes", "h": "Allowed", "ul": [
+          "An island and its upgrades for silver; farms, pastures and stations on the island",
+          "Seeds and baby animals from game sources: your own farm, gathering, loot, rewards",
+          "The starter mule",
+          "Mounts you raised or tamed yourself: oxen, horses, wild mounts",
+          "Faction mounts: they are also raised and saddled by yourself"
+        ] },
+        { "kind": "no", "h": "Forbidden", "ul": [
+          "Seasonal mounts: they come already saddled",
+          "Finished mounts that were bought, gifted or found"
+        ] }
+      ]
+    },
+    {
+      "h3": "Losing your set",
+      "p": ["There is no penalty: lose your set — craft a new one. You make your own gear anyway; that is the whole point of the challenge."]
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "code": "es",
+  "name": "Español",
+  "pageTitle": "Albion: Solo Leveling — reglas",
+  "title": { "pre": "Albion: ", "accent": "Solo Leveling", "post": "" },
+  "lead": "Lleva a un personaje nuevo hasta un set completo de T8 por tu cuenta, sin usar nunca el mercado y sin recibir nada de otros jugadores.",
+  "note": "Este reto es solo por diversión. Nadie vigila a nadie: cualquiera puede unirse, y la honestidad es un desafío personal contigo mismo.",
+  "language": "Idioma",
+  "footer": "Canal {channel} · Albion Online",
+  "sections": [
+    {
+      "h": "Cómo unirse",
+      "ul": [
+        "Crea un personaje nuevo. No se permite empezar con un personaje ya subido de nivel.",
+        "Juega según las reglas de abajo. Si una situación no está cubierta, decide con los dos principios.",
+        "Comparte tu progreso en el chat de {twitch}."
+      ]
+    },
+    {
+      "h": "Dos principios",
+      "principles": [
+        ["Origen: solo el juego", "Todo lo que te da el propio juego está permitido. Todo lo que llega por el mercado o de otros jugadores está prohibido."],
+        ["Uso: solo lo tuyo", "Todo lo que tu personaje viste, come, bebe y monta lo ha fabricado él mismo. Las mejoras también salen solo de tu propio crafteo."]
+      ]
+    },
+    {
+      "h": "1. Mercado y Premium",
+      "p": ["El mercado está totalmente prohibido. Puedes comprar oro, pero no puedes cambiarlo de nuevo por plata: así no se puede meter plata desde fuera."],
+      "cols": [
+        { "kind": "no", "h": "Prohibido", "ul": [
+          "Comprar cualquier cosa en el mercado: de órdenes de venta o mediante órdenes de compra",
+          "Vender cualquier cosa en el mercado: a órdenes de compra de otros jugadores o mediante tus propias órdenes de venta",
+          "Vender en el Mercado Negro de Caerleon",
+          "Cambiar oro por plata"
+        ] },
+        { "kind": "yes", "h": "Permitido", "ul": [
+          "Comprar oro con plata o con dinero real",
+          "Pasar plata desde tu cuenta principal, pero solo para el Premium: exactamente el precio en oro del Premium al cambio del momento de la compra, y gastarla enseguida",
+          "El Premium y todas sus bonificaciones",
+          "Comprar una isla y sus mejoras con plata: eso no es el mercado",
+          "Pagar plata por reparaciones, tasas de estaciones y otros servicios del juego"
+        ] }
+      ]
+    },
+    {
+      "h": "2. Otros jugadores",
+      "p": ["Cualquier actividad con otros jugadores está permitida, incluido el contenido masivo, y la ayuda en combate está bien. Lo único prohibido es recibir objetos de valor de otros jugadores, directa o indirectamente. Los gremios y los grupos están prohibidos porque a través de ellos fluyen la fama y la plata compartidas. El botín de jugadores abatidos es botín del juego y está permitido."],
+      "cols": [
+        { "kind": "no", "h": "Prohibido", "ul": [
+          "Comerciar con jugadores de cualquier forma",
+          "Aceptar regalos: objetos, recursos, plata",
+          "Recoger la plata que los jugadores tiran al suelo",
+          "Hacer duelos por plata: es comercio encubierto",
+          "Usar personajes secundarios o traspasar algo desde otros personajes (salvo plata para el Premium)",
+          "Unirte a un gremio",
+          "Estar en un grupo fuera de una ciudad"
+        ] },
+        { "kind": "yes", "h": "Permitido", "ul": [
+          "Hablar con los jugadores",
+          "Participar en actividades masivas y del mundo abierto sin unirte a un grupo",
+          "Ayudar a otros y aceptar ayuda en combate",
+          "Combatir contra jugadores y quedarte con el botín de los que abatas",
+          "Usar las estaciones de otros jugadores pagando la tasa de uso normal"
+        ] }
+      ]
+    },
+    {
+      "h": "3. Equipo y consumibles",
+      "p": ["Todo lo que tu personaje viste o usa lo ha fabricado él mismo. No puedes equiparte un objeto terminado que hayas encontrado, aunque tú mismo sepas fabricarlo. El equipo inicial lo fabrica el jugador en el tutorial, así que está permitido."],
+      "cols": [
+        { "kind": "yes", "h": "Solo de tu propio crafteo", "ul": [
+          "Arma, mano izquierda, casco, armadura, botas",
+          "Bolsa y capa",
+          "Herramientas y equipo de recolección",
+          "Comida y pociones",
+          "Monturas (sección 6)"
+        ] },
+        { "kind": "no", "h": "Prohibido", "ul": [
+          "Llevar o usar equipo terminado que hayas encontrado, saqueado o recibido como recompensa",
+          "Comer o beber comida y pociones que hayas encontrado",
+          "Usar herramientas que hayas encontrado"
+        ] }
+      ]
+    },
+    {
+      "h": "4. Botín y recompensas",
+      "p": ["Todo el botín del juego está permitido como materia prima para tu propio crafteo: mobs y jefes, cofres del mundo abierto, mazmorras y nieblas, cofres de facción y de temporada, jugadores abatidos, recompensas de misiones y diarios."],
+      "cols": [
+        { "kind": "yes", "h": "Se puede usar directamente", "ul": [
+          "Recursos: en bruto y refinados, incluidos los encantados",
+          "Artefactos; runas, almas y reliquias: solo para fabricar artefactos",
+          "Tomos de conocimiento",
+          "Bolsas de plata y la plata de los mobs",
+          "Crías de animales y semillas"
+        ] },
+        { "kind": "no", "h": "Solo para desguazar", "ul": [
+          "Equipo terminado, herramientas, bolsas, capas",
+          "Comida, pociones y monturas terminadas"
+        ], "p": "Desguázalos para obtener recursos o plata en la estación de reparación." }
+      ]
+    },
+    {
+      "h": "5. Crafteo y mejoras",
+      "p": ["Un objeto solo mejora si lo vuelves a fabricar con mejores materiales, nunca mejorándolo en un PNJ."],
+      "cols": [
+        { "kind": "yes", "h": "Permitido", "ul": [
+          "Cualquier estación de crafteo y refinado: en ciudades, en islas, en guaridas y en ciudades de la zona negra, incluidas las de otros jugadores",
+          "Enfoque para craftear y refinar",
+          "Convertir runas, almas y reliquias en artefactos",
+          "Craftear objetos encantados con recursos encantados",
+          "Reparar objetos en la estación de reparación"
+        ] },
+        { "kind": "no", "h": "Prohibido", "ul": [
+          "Subir la calidad de un objeto en la estación de reparación: la calidad es solo la que obtuviste al craftearlo",
+          "Encantar objetos terminados con runas, almas y reliquias",
+          "Subir el encantamiento de los recursos (por ejemplo, de .0 a .1)"
+        ] }
+      ]
+    },
+    {
+      "h": "6. Isla, granja y monturas",
+      "p": ["Al empezar solo tienes la mula inicial. Cualquier otra montura tienes que criarla o domarla y ensillarla tú mismo."],
+      "cols": [
+        { "kind": "yes", "h": "Permitido", "ul": [
+          "Una isla y sus mejoras con plata; granjas, pastos y estaciones en la isla",
+          "Semillas y crías de fuentes del juego: tu propia granja, recolección, botín, recompensas",
+          "La mula inicial",
+          "Monturas que hayas criado o domado tú mismo: bueyes, caballos, monturas salvajes",
+          "Monturas de facción: también las crías y ensillas tú mismo"
+        ] },
+        { "kind": "no", "h": "Prohibido", "ul": [
+          "Monturas de temporada: vienen ya ensilladas",
+          "Monturas terminadas que se hayan comprado, regalado o encontrado"
+        ] }
+      ]
+    },
+    {
+      "h3": "Perder tu set",
+      "p": ["No hay penalización: si pierdes tu set, fabrica uno nuevo. De todos modos tu equipo lo haces tú; de eso trata el reto."]
+    }
+  ]
+}

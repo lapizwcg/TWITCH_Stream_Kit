@@ -1,0 +1,142 @@
+{
+  "code": "fr",
+  "name": "Français",
+  "pageTitle": "Albion : Solo Leveling — règles",
+  "title": { "pre": "Albion : ", "accent": "Solo Leveling", "post": "" },
+  "lead": "Menez un tout nouveau personnage jusqu'à un set complet de tier 8 en solo — sans jamais utiliser le marché et sans rien recevoir des autres joueurs.",
+  "note": "Ce challenge est juste pour le plaisir. Personne ne vérifie personne : tout le monde peut participer, et l'honnêteté est un défi personnel envers soi-même.",
+  "language": "Langue",
+  "footer": "Chaîne {channel} · Albion Online",
+  "sections": [
+    {
+      "h": "Comment participer",
+      "ul": [
+        "Créez un nouveau personnage. Commencer avec un personnage déjà monté en niveau est interdit.",
+        "Jouez selon les règles ci-dessous. Si une situation n'est pas couverte, décidez avec les deux principes.",
+        "Partagez votre progression dans le chat {twitch}."
+      ]
+    },
+    {
+      "h": "Deux principes",
+      "principles": [
+        ["Source — le jeu uniquement", "Tout ce que le jeu vous donne est autorisé. Tout ce qui passe par le marché ou vient d'autres joueurs est interdit."],
+        ["Usage — uniquement le vôtre", "Tout ce que votre personnage porte, mange, boit et monte est fabriqué par ce personnage. Les améliorations viennent aussi uniquement de votre propre artisanat."]
+      ]
+    },
+    {
+      "h": "1. Marché et Premium",
+      "p": ["Le marché est totalement interdit. Vous pouvez acheter de l'or, mais pas le rééchanger contre de l'argent : ainsi, aucun argent ne peut être apporté de l'extérieur."],
+      "cols": [
+        { "kind": "no", "h": "Interdit", "ul": [
+          "Acheter quoi que ce soit sur le marché : via des ordres de vente ou des ordres d'achat",
+          "Vendre quoi que ce soit sur le marché : aux ordres d'achat des autres joueurs ou via vos propres ordres de vente",
+          "Vendre au marché noir de Caerleon",
+          "Échanger de l'or contre de l'argent"
+        ] },
+        { "kind": "yes", "h": "Autorisé", "ul": [
+          "Acheter de l'or avec de l'argent ou de l'argent réel",
+          "Transférer de l'argent depuis votre compte principal, mais uniquement pour le Premium : exactement le prix en or du Premium au taux de change du moment, dépensé aussitôt",
+          "Le Premium et tous ses bonus",
+          "Acheter une île et ses améliorations avec de l'argent — ce n'est pas le marché",
+          "Payer en argent les réparations, les frais de station et les autres services du jeu"
+        ] }
+      ]
+    },
+    {
+      "h": "2. Autres joueurs",
+      "p": ["Toute activité avec d'autres joueurs est autorisée, y compris le contenu à grande échelle, et l'aide au combat est permise. La seule chose interdite est de recevoir des objets de valeur de joueurs, directement ou indirectement. Les guildes et les groupes sont interdits, car la renommée et l'argent partagés y circulent. Le butin des joueurs tués est du butin du jeu et il est autorisé."],
+      "cols": [
+        { "kind": "no", "h": "Interdit", "ul": [
+          "Échanger avec des joueurs sous quelque forme que ce soit",
+          "Accepter des cadeaux : objets, ressources, argent",
+          "Ramasser l'argent que des joueurs laissent tomber au sol",
+          "Se battre en duel pour de l'argent : c'est un échange déguisé",
+          "Utiliser des personnages secondaires ou transférer quoi que ce soit depuis d'autres personnages (sauf l'argent pour le Premium)",
+          "Rejoindre une guilde",
+          "Être en groupe en dehors d'une ville"
+        ] },
+        { "kind": "yes", "h": "Autorisé", "ul": [
+          "Parler aux joueurs",
+          "Participer à des activités à grande échelle et en monde ouvert sans rejoindre de groupe",
+          "Aider les autres et accepter de l'aide au combat",
+          "Combattre des joueurs et prendre le butin de ceux que vous tuez",
+          "Utiliser les stations des autres joueurs contre les frais d'utilisation normaux"
+        ] }
+      ]
+    },
+    {
+      "h": "3. Équipement et consommables",
+      "p": ["Tout ce que votre personnage porte ou utilise est fabriqué par ce personnage. Vous ne pouvez pas équiper un objet fini trouvé, même si vous pouvez le fabriquer vous-même. L'équipement de départ est fabriqué par le joueur dans le tutoriel, il est donc autorisé."],
+      "cols": [
+        { "kind": "yes", "h": "Uniquement votre fabrication", "ul": [
+          "Arme, main gauche, tête, armure, chaussures",
+          "Sac et cape",
+          "Outils et équipement de récolte",
+          "Nourriture et potions",
+          "Montures (section 6)"
+        ] },
+        { "kind": "no", "h": "Interdit", "ul": [
+          "Porter ou utiliser un équipement fini que vous avez trouvé, looté ou reçu en récompense",
+          "Manger ou boire de la nourriture et des potions trouvées",
+          "Utiliser des outils trouvés"
+        ] }
+      ]
+    },
+    {
+      "h": "4. Butin et récompenses",
+      "p": ["Tout butin du jeu est autorisé comme matière première pour votre propre artisanat : monstres et boss, coffres du monde ouvert, donjons et brumes, coffres de faction et saisonniers, joueurs tués, récompenses de quêtes et de journaux."],
+      "cols": [
+        { "kind": "yes", "h": "Utilisable directement", "ul": [
+          "Ressources — brutes et raffinées, y compris enchantées",
+          "Artefacts ; runes, âmes et reliques — uniquement pour fabriquer des artefacts",
+          "Tomes de perspicacité",
+          "Sacs d'argent et argent des monstres",
+          "Petits animaux et graines"
+        ] },
+        { "kind": "no", "h": "Recyclage uniquement", "ul": [
+          "Équipement fini, outils, sacs, capes",
+          "Nourriture, potions et montures finies"
+        ], "p": "Recyclez-les en ressources ou contre de l'argent à la station de réparation." }
+      ]
+    },
+    {
+      "h": "5. Artisanat et améliorations",
+      "p": ["Un objet ne s'améliore que si vous le fabriquez à nouveau avec de meilleurs matériaux — jamais en l'améliorant chez un PNJ."],
+      "cols": [
+        { "kind": "yes", "h": "Autorisé", "ul": [
+          "Toutes les stations de fabrication et de raffinage : en ville, sur les îles, dans les repaires et dans les villes des zones noires, y compris les stations des autres joueurs",
+          "La concentration pour la fabrication et le raffinage",
+          "Transformer des runes, des âmes et des reliques en artefacts",
+          "Fabriquer des objets enchantés à partir de ressources enchantées",
+          "Réparer les objets à la station de réparation"
+        ] },
+        { "kind": "no", "h": "Interdit", "ul": [
+          "Augmenter la qualité d'un objet à la station de réparation : la qualité est uniquement celle obtenue à la fabrication",
+          "Enchanter des objets finis avec des runes, des âmes et des reliques",
+          "Améliorer l'enchantement des ressources (par exemple, de .0 à .1)"
+        ] }
+      ]
+    },
+    {
+      "h": "6. Île, ferme et montures",
+      "p": ["Au départ, vous n'avez que la mule de départ. Toute autre monture doit être élevée ou apprivoisée, puis sellée par vous-même."],
+      "cols": [
+        { "kind": "yes", "h": "Autorisé", "ul": [
+          "Une île et ses améliorations contre de l'argent ; fermes, pâturages et stations sur l'île",
+          "Graines et petits animaux issus de sources du jeu : votre ferme, la récolte, le butin, les récompenses",
+          "La mule de départ",
+          "Les montures que vous avez élevées ou apprivoisées : bœufs, chevaux, montures sauvages",
+          "Montures de faction : elles aussi sont élevées et sellées par vous-même"
+        ] },
+        { "kind": "no", "h": "Interdit", "ul": [
+          "Montures saisonnières : elles arrivent déjà sellées",
+          "Montures finies achetées, offertes ou trouvées"
+        ] }
+      ]
+    },
+    {
+      "h3": "Perte de votre set",
+      "p": ["Il n'y a aucune pénalité : vous perdez votre set — fabriquez-en un nouveau. Vous fabriquez de toute façon votre équipement ; c'est tout l'intérêt du challenge."]
+    }
+  ]
+}
