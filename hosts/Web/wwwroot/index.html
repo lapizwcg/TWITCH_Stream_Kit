@@ -38,7 +38,7 @@ canvas { display: block; width: 100vw; height: 100vh; }
 <script type="module">
 // ключи — из адреса (?demo → --demo)
 import { boot } from './wcg.js';
-import { loadSettings, createBus, logoOf, frameInset } from './kit.js';
+import { loadSettings, createBus, logoOf, frameInset, boardRows } from './kit.js';
 const q = new URLSearchParams(location.search);
 const args = [...q].map(([k, v]) => v === '' ? '--' + k : '--' + k + '=' + v);
 // maxDpr 1: в OBS источник и так рисуется в своём размере (1920×1080), лишние точки — лишняя работа видеокарте
@@ -52,7 +52,7 @@ const B = (await rt.getAssemblyExports('KitWeb.dll')).KitWeb.Bridge;
 const fontsIn = new Set(['noto']);
 async function ensureFonts(s) {
   const ids = new Set();
-  for (const part of ['follow', 'announce', 'goal']) for (const k of ['head', 'font']) if (s[part]?.look?.[k]) ids.add(s[part].look[k]);
+  for (const part of ['follow', 'announce', 'goal', 'badge', 'stats']) for (const k of ['head', 'font']) if (s[part]?.look?.[k]) ids.add(s[part].look[k]);
   await Promise.all([...ids].filter((id) => !fontsIn.has(id) && /^[a-z0-9_-]+$/.test(id)).map(async (id) => {
     try {
       const got = await Promise.all(['font.bin', 'font.png'].map(async (f) => {
@@ -103,11 +103,23 @@ const apply = (s) => {
     B.AnnounceSize(s.announce.pad ?? 70, (s.announce.sx ?? 100) / 100, (s.announce.sy ?? 100) / 100, s.announce.inner ?? 1);
   }
   // оформление: размер частиц в доке — проценты, в показе — доля
-  for (const part of ['follow', 'announce', 'goal'])
+  for (const part of ['follow', 'announce', 'goal', 'badge', 'stats'])
     if (s[part]?.look) B.Style(part, JSON.stringify({ ...s[part].look, fx: { ...s[part].look.fx, size: (s[part].look.fx?.size ?? 100) / 100 } }));
   if (s.frame) B.Frame(JSON.stringify(s.frame));
   if (s.goal) B.Goal(s.goal.on, s.goal.pos, s.goal.title, s.goal.current, s.goal.target, s.goal.style || 'ltr');
+  if (s.badge && s.stats) { last = s; boards(); }
 };
+// таблички челленджа: строки — из счётчиков челленджа (настройки) и счёта сессии AoMarket (его шлёт док, bus 'game')
+let last = null, game = null;
+function boards() {
+  if (!last) return;
+  const rows = boardRows(last, game);
+  for (const k of ['badge', 'stats']) {
+    const p = last[k];
+    B.BoardSize(k, p.pad ?? 20, (p.sx ?? 100) / 100, (p.sy ?? 100) / 100, p.inner ?? 1);
+    B.Board(k, p.on, p.pos, p.title || '', rows[k]);
+  }
+}
 settle(loadSettings());
 const bus = createBus((msg) => {
   if (msg.type === 'settings') settle(msg.settings);
@@ -115,6 +127,7 @@ const bus = createBus((msg) => {
   else if (msg.type === 'alert' && msg.kind === 'announce') B.ShowAnnounce(msg.name);
   else if (msg.type === 'card') B.ShowCard(msg.title || '', msg.text);
   else if (msg.type === 'goalTest') B.PreviewGoal(msg.frac);
+  else if (msg.type === 'game') { game = msg.game; boards(); }
   else if (msg.type === 'ping') bus.send('pong', { page: 'alerts' });
 });
 </script>

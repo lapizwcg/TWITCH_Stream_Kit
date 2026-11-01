@@ -72,15 +72,20 @@ export const DEFAULTS = {
     look: { bg: 'obsidian@0.12', border: 'citrine@0.75' },
   },
   goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr', pad: 50, sx: 100, sy: 100, inner: 1, look: style() },
-  // челлендж «Альбион: Соло Левелинг без рынка» (правила — rules.html): счётчики; log — журнал, новые сверху:
-  // { t: время, day, kind: 'vio' | 'ach', text }. Карточки — окошком анонса со своим заголовком
+  // челлендж «Альбион: Соло Левелинг без рынка» (правила — rules.html): счётчики дня, смертей и убийств
   challenge: {
     day: 1, deaths: 0, kills: 0,
-    log: [],
-    cards: true, achTitle: 'ДОСТИЖЕНИЕ', vioTitle: 'НАРУШЕНИЕ',
     // статистика из игры: AoMarket --stats-port (AO-Auras) на этом компьютере; смерти и убийства прибавляются к счётчикам сами,
     // карточки «СМЕРТЬ» / «УБИЙСТВО»; sync — последние увиденные счёты AoMarket ({ since, deaths, kills }), от них считается прибавка
     statsOn: true, statsPort: 8790, gameCards: true, deathTitle: 'СМЕРТЬ', killTitle: 'УБИЙСТВО', sync: null,
+  },
+  // таблички в оверлее (src/Kit/Board.cs). badge — карточка челленджа, всегда на экране: заголовок и текст, в тексте {day} {deaths}
+  // {kills} — счётчики челленджа, строки — через перевод строки. stats — статистика, показывают и прячут кнопкой: rows — какие строки
+  // (ключи STAT_ROWS) по порядку
+  badge: { on: true, pos: 'tl', title: 'СОЛО ЛЕВЕЛИНГ', text: 'ДЕНЬ {day}', pad: 20, sx: 100, sy: 100, inner: 1, look: style() },
+  stats: {
+    on: false, pos: 'r', title: 'СТАТИСТИКА', rows: ['kills', 'deaths', 'silverEarned', 'silverSpent', 'fameCrafting', 'fameGathering', 'famePve', 'famePvp'],
+    pad: 20, sx: 100, sy: 100, inner: 1, look: style(),
   },
 };
 
@@ -99,9 +104,33 @@ export function loadSettings() {
     an.items = [{ ...announceItem('Анонс', old.output, old.messages, old.every), on: !!old.on }, announceItem('Правила челленджа', 'chat', RULES_MSG, 20)];
   }
   for (const k of ['on', 'output', 'messages', 'every']) delete an[k];
-  // ранги челленджа убраны — их поля из прежних версий не храним
-  for (const k of ['rank', 'ranks', 'ranksVer', 'done', 'goal', 'rankTitle']) delete out.challenge[k];
+  // ранги, достижения, нарушения и журнал челленджа убраны — их поля из прежних версий не храним
+  for (const k of ['rank', 'ranks', 'ranksVer', 'done', 'goal', 'rankTitle', 'log', 'cards', 'achTitle', 'vioTitle']) delete out.challenge[k];
   return out;
+}
+
+// строки статистики: ключ, подпись, откуда значение — счётчик челленджа (c) или счёт сессии AoMarket (g, путь в ответе)
+export const STAT_ROWS = [
+  ['kills', 'Убийства', 'c'], ['deaths', 'Смерти', 'c'], ['day', 'День', 'c'],
+  ['silverEarned', 'Серебро получено', 'g'], ['silverSpent', 'Серебро потрачено', 'g'], ['silver', 'Серебро итого', 'g'],
+  ['fame', 'Слава за сессию', 'g'], ['fameCrafting', 'Слава крафта', 'g'], ['fameGathering', 'Слава сбора', 'g'],
+  ['famePve', 'Слава PvE', 'g'], ['famePvp', 'Слава PvP', 'g'], ['crafts', 'Крафтов', 'g'], ['harvests', 'Сборов', 'g'],
+  ['totals.fame', 'Слава персонажа', 'g'],
+];
+
+// число с пробелами между тысячами (обычный пробел: в шрифтах движка узкого может не быть); нет значения — прочерк
+export const fmtNum = (v) => (v == null || !Number.isFinite(+v) ? '—' : (Math.round(v) < 0 ? '-' : '') + String(Math.abs(Math.round(v))).replace(/\B(?=(\d{3})+(?!\d))/g, ' '));
+
+// строки табличек для оверлея (Board.cs): название и значение через табуляцию, строки — через перевод строки
+export function boardRows(s, game) {
+  const c = s.challenge;
+  const badge = String(s.badge.text || '').replace(/\{(day|deaths|kills)\}/g, (_, k) => fmtNum(c[k]));
+  const stats = (s.stats.rows || [])
+    .map((k) => STAT_ROWS.find((r) => r[0] === k))
+    .filter(Boolean)
+    .map(([k, label, from]) => `${label}\t${fmtNum(from === 'c' ? c[k] : game ? k.split('.').reduce((o, p) => o?.[p], game) : null)}`)
+    .join('\n');
+  return { badge, stats };
 }
 
 export function saveSettings(s) {
@@ -111,7 +140,8 @@ export function saveSettings(s) {
 }
 
 // сообщения: { type: 'settings', settings } | { type: 'alert', kind, name } — настоящее событие канала или тест из дока |
-// { type: 'card', title, text } — карточка челленджа окошком анонса |
+// { type: 'card', title, text } — карточка окошком анонса со своим заголовком | { type: 'game', game } — счёт сессии AoMarket из дока
+// (для статистики в оверлее) |
 // { type: 'goalTest', frac } — тест цели | { type: 'ping' } | { type: 'pong', page }
 export function createBus(onMessage) {
   const seen = new Set();

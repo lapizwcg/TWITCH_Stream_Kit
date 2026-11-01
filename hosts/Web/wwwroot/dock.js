@@ -1,6 +1,6 @@
 // ДОК-ПАНЕЛЬ: поля ↔ настройки. Каждое изменение сразу сохраняется и уходит в открытые оверлеи — в OBS видно без перезагрузки.
 // Здесь же — связь с Twitch: вход, события канала (новые фолловеры → оповещение в показ), счёт цели по фолловерам или сабам
-import { DEFAULTS, STYLE, LOGOS, announceItem, logoOf, loadSettings, saveSettings, createBus } from './kit.js';
+import { DEFAULTS, STYLE, LOGOS, STAT_ROWS, announceItem, logoOf, loadSettings, saveSettings, createBus } from './kit.js';
 import * as Twitch from './twitch.js';
 
 const $ = (id) => document.getElementById(id);
@@ -12,6 +12,8 @@ const bus = createBus((msg) => {
   if (msg.type === 'pong') {
     lastPong = Date.now();
     renderLink();
+    // счёт сессии AoMarket — оверлею для статистики (открытый позже дока оверлей получает его с первым ответом)
+    if (game) bus.send('game', { game });
   }
 });
 const renderLink = () => {
@@ -74,6 +76,7 @@ function render() {
         ? 'Считает Twitch: все сабы канала, новые прибавляются сами.'
         : 'Считает Twitch: все фолловеры канала, новые прибавляются сами.';
   renderChallenge();
+  renderBoards();
 }
 
 // ---------- Twitch ----------
@@ -179,7 +182,7 @@ function renderSize(pre, part) {
     $(id + 'Val').textContent = part[key] + unit;
   }
 }
-for (const pre of ['follow', 'goal', 'announce']) {
+for (const pre of ['follow', 'goal', 'announce', 'badge', 'stats']) {
   for (const key of ['pad', 'sx', 'sy', 'inner'])
     $(pre + key[0].toUpperCase() + key.slice(1)).oninput = (e) => {
       settings[pre][key] = +e.target.value;
@@ -423,7 +426,7 @@ const parseMt = (v) => {
   return { mat, tone: t === undefined ? 0.6 : +t };
 };
 
-const LOOK_PARTS = ['follow', 'goal', 'announce'];
+const LOOK_PARTS = ['follow', 'goal', 'announce', 'badge', 'stats'];
 const COLORS = [['accent', 'Акцент (заголовок)'], ['text', 'Текст'], ['bg', 'Фон'], ['border', 'Рамка'], ['fill', 'Заливка']];
 const FX_AT = [['l+r', 'слева и справа'], ['tl+br', '↖ и ↘'], ['bl+tr', '↙ и ↗'], ['t+b', 'сверху и снизу'], ['center', 'в центре'], ['circle', 'по контуру']];
 const FX_SET = [['boom', 'Взрыв'], ['sparks', 'Искры'], ['ring', 'Кольцо'], ['fire', 'Огонь'], ['none', 'Без частиц']];
@@ -551,7 +554,8 @@ function renderLook(part) {
   for (const c of box.querySelectorAll('[data-at]')) c.checked = lk.fx.at.includes(c.dataset.at);
   box.querySelector('[data-set]').value = lk.fx.set;
   // образцы: заголовок — заголовком окошка, текст — ником или первым анонсом
-  const sample = { head: settings[part].title || 'ЗАГОЛОВОК', font: part === 'announce' ? (settings.announce.items[0]?.messages || '').split('\n')[0] || 'Текст анонса' : part === 'goal' ? '63/100' : 'LapizWCG' };
+  const fonts = { announce: (settings.announce.items[0]?.messages || '').split('\n')[0] || 'Текст анонса', goal: '63/100', badge: 'ДЕНЬ 12', stats: 'Слава крафта 12 345' };
+  const sample = { head: settings[part].title || 'ЗАГОЛОВОК', font: fonts[part] || 'LapizWCG' };
   for (const k of ['head', 'font']) {
     const id = lk[k] || 'noto';
     const sel = box.querySelector(`[data-font="${k}"]`);
@@ -723,40 +727,23 @@ function renderFrame() {
 buildFrame();
 
 // ---------- челлендж «Соло Левелинг без рынка» ----------
-// по правилам на странице rules.html: счётчики, достижения и нарушения — в журнал и карточкой окошком анонса (со своим заголовком)
+// по правилам на странице rules.html: счётчики дня, смертей и убийств; смерть и убийство из игры — карточкой окошком анонса. Карточка
+// челленджа и статистика — таблички в оверлее (renderBoards ниже)
 
-// частые нарушения — по правилам (rules.html); помощь в бою — не нарушение
-const VIO_PRESETS = ['Покупка на рынке', 'Продажа на рынке', 'Группа вне города', 'Обмен с игроком', 'Подарок от игрока', 'Не своя вещь, еда или зелье'];
-const CARD_TITLE = { ach: 'achTitle', vio: 'vioTitle', death: 'deathTitle', kill: 'killTitle' };
+const CARD_TITLE = { death: 'deathTitle', kill: 'killTitle' };
 // поля заголовков карточек: id поля — ключ в настройках
-const CH_TITLES = [['chAchTitle', 'achTitle'], ['chVioTitle', 'vioTitle'], ['chDeathTitle', 'deathTitle'], ['chKillTitle', 'killTitle']];
+const CH_TITLES = [['chDeathTitle', 'deathTitle'], ['chKillTitle', 'killTitle']];
 const ch = () => settings.challenge;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 function chCard(kind, text) {
   const c = ch();
-  // смерть и убийство из игры — своим переключателем
-  if (kind === 'death' || kind === 'kill' ? c.gameCards : c.cards) bus.send('card', { title: c[CARD_TITLE[kind]] || DEFAULTS.challenge[CARD_TITLE[kind]], text });
-}
-function chLog(kind, text) {
-  const c = ch();
-  c.log.unshift({ t: Date.now(), day: c.day, kind, text });
-  c.log.length = Math.min(c.log.length, 500);
-}
-function buildChallenge() {
-  $('chVioPresets').innerHTML = VIO_PRESETS.map((t) => `<button class="btn ghost small" type="button" data-preset="${esc(t)}">${esc(t)}</button>`).join('');
+  if (c.gameCards) bus.send('card', { title: c[CARD_TITLE[kind]] || DEFAULTS.challenge[CARD_TITLE[kind]], text });
 }
 
 function renderChallenge() {
   const c = ch();
   for (const b of document.querySelectorAll('[data-val-stat]')) b.textContent = c[b.dataset.valStat];
-  $('chVioCount').textContent = c.log.filter((e) => e.kind === 'vio').length;
-  const when = (t) => new Date(t).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-  const mark = { vio: '⚠', ach: '★' };
-  $('chLog').innerHTML = c.log.length
-    ? c.log.slice(0, 100).map((e, i) => `<li class="${e.kind}"><i>${mark[e.kind] || ''}</i><span><b>${esc(e.text)}</b><small>день ${e.day} · ${when(e.t)}</small></span><button type="button" class="del" data-del="${i}" title="Убрать из журнала">×</button></li>`).join('')
-    : '<li class="empty">Пока пусто</li>';
-  $('chCards').checked = c.cards;
   $('chGameCards').checked = c.gameCards;
   $('chStatsOn').checked = c.statsOn;
   if (document.activeElement !== $('chStatsPort')) $('chStatsPort').value = c.statsPort;
@@ -772,44 +759,67 @@ $('tab-challenge').addEventListener('click', (e) => {
   if (b.dataset.stat) {
     c[b.dataset.stat] = Math.max(b.dataset.stat === 'day' ? 1 : 0, c[b.dataset.stat] + +b.dataset.d);
     commit();
-  } else if (b.dataset.preset) {
-    $('chVioText').value = b.dataset.preset;
-    $('chVioText').focus();
-  } else if (b.dataset.del !== undefined) {
-    c.log.splice(+b.dataset.del, 1);
-    commit();
   }
 });
-$('chAch').onsubmit = (e) => {
-  e.preventDefault();
-  const t = $('chAchText').value.trim();
-  if (!t) return $('chAchText').focus();
-  chLog('ach', t);
-  chCard('ach', t);
-  $('chAchText').value = '';
-  commit();
-};
-$('chVio').onsubmit = (e) => {
-  e.preventDefault();
-  const t = $('chVioText').value.trim() || 'Нарушение правил';
-  chLog('vio', t);
-  chCard('vio', t);
-  $('chVioText').value = '';
-  commit();
-};
-$('chCards').onchange = (e) => {
-  ch().cards = e.target.checked;
-  commit();
-};
 for (const [id, k] of CH_TITLES)
   $(id).oninput = (e) => {
     ch()[k] = e.target.value;
     commit();
   };
-// заново: счётчики и журнал — с нуля; заголовки карточек остаются
+// заново: счётчики — с нуля; заголовки карточек остаются
 $('chReset').onclick = () => {
-  if (!confirm('Начать челлендж заново? Счётчики и журнал сбросятся.')) return;
-  Object.assign(ch(), { day: 1, deaths: 0, kills: 0, log: [] });
+  if (!confirm('Начать челлендж заново? День, смерти и убийства сбросятся.')) return;
+  Object.assign(ch(), { day: 1, deaths: 0, kills: 0 });
+  commit();
+};
+
+// ---------- таблички в оверлее: карточка челленджа и статистика ----------
+// обе — Board в движке; строки собирает оверлей (kit.js, boardRows) из счётчиков челленджа и счёта сессии AoMarket, который
+// шлёт ему док (bus 'game'). Здесь — настройки: место, размер, оформление (общие с остальными окошками), заголовок, текст, строки
+
+function renderBoards() {
+  const b = settings.badge, st = settings.stats;
+  $('badgeOn').checked = b.on;
+  for (const [id, v] of [['badgeTitle', b.title], ['badgeText', b.text], ['statsTitle', st.title]]) if (document.activeElement !== $(id)) $(id).value = v;
+  $('statsToggle').textContent = st.on ? 'Скрыть статистику' : 'Показать статистику';
+  $('statsToggle').classList.toggle('ghost', st.on);
+  for (const [pre, part] of [['badge', b], ['stats', st]]) {
+    for (const x of $(pre + 'Pos').children) x.classList.toggle('active', x.dataset.pos === part.pos);
+    renderSize(pre, part);
+  }
+  if (!$('statsRows').children.length)
+    $('statsRows').innerHTML = STAT_ROWS.map(([k, label]) => `<label><input type="checkbox" data-row="${k}"><span>${esc(label)}</span></label>`).join('');
+  for (const c of $('statsRows').querySelectorAll('[data-row]')) c.checked = st.rows.includes(c.dataset.row);
+}
+
+$('badgeOn').onchange = (e) => {
+  settings.badge.on = e.target.checked;
+  commit();
+};
+$('statsToggle').onclick = () => {
+  settings.stats.on = !settings.stats.on;
+  commit();
+};
+for (const [id, part, key] of [['badgeTitle', 'badge', 'title'], ['badgeText', 'badge', 'text'], ['statsTitle', 'stats', 'title']])
+  $(id).oninput = (e) => {
+    settings[part][key] = e.target.value;
+    commit();
+  };
+for (const pre of ['badge', 'stats'])
+  $(pre + 'Pos').onclick = (e) => {
+    const pos = e.target.dataset?.pos;
+    if (!pos) return;
+    settings[pre].pos = pos;
+    commit();
+  };
+// строки — в порядке списка STAT_ROWS, а не в порядке щелчков
+$('statsRows').onchange = (e) => {
+  const k = e.target.dataset.row;
+  if (!k) return;
+  const on = new Set(settings.stats.rows);
+  if (e.target.checked) on.add(k);
+  else on.delete(k);
+  settings.stats.rows = STAT_ROWS.map(([key]) => key).filter((key) => on.has(key));
   commit();
 };
 // ---------- статистика из игры: AoMarket --stats-port (AO-Auras) на этом компьютере ----------
@@ -848,6 +858,7 @@ function connectGame() {
 function onGameStats(s) {
   game = s;
   gameState = 'on';
+  bus.send('game', { game });
   const c = ch();
   const sy = c.sync;
   if (sy && sy.since === s.since) {
@@ -869,7 +880,7 @@ function renderGame() {
   // ключ — путь в ответе AoMarket («totals.fame»); общей славы персонажа может ещё не быть — прочерк, а не 0
   for (const b of document.querySelectorAll('[data-game]')) {
     const v = b.dataset.game.split('.').reduce((o, k) => o?.[k], game);
-    b.textContent = v == null && b.dataset.game.includes('.') ? '—' : num(v ?? 0);
+    b.textContent = v == null ? '—' : num(v);
   }
   $('chStatsReset').disabled = gameState !== 'on';
   $('chStatsNote').textContent =
@@ -901,7 +912,6 @@ $('chGameCards').onchange = (e) => {
   ch().gameCards = e.target.checked;
   commit();
 };
-buildChallenge();
 
 // ---------- логотип ----------
 

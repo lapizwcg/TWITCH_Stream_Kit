@@ -15,16 +15,24 @@ public static partial class Bridge
 	[JSExport] public static void Announce(bool on, string pos, string title, double seconds) => Kit.Boot.Stage?.Announce.Configure(on, pos, title, seconds);
 	[JSExport] public static void AnnounceSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Announce.Size(pad, sx, sy, inner);
 	[JSExport] public static void ShowAnnounce(string text) => Kit.Boot.Stage?.Announce.Show(text);
-	// карточка окошком анонса со своим заголовком — челлендж: достижение, нарушение, новый ранг
+	// карточка окошком анонса со своим заголовком — анонсы из дока, смерть и убийство из игры
 	[JSExport] public static void ShowCard(string title, string text) => Kit.Boot.Stage?.Announce.Show(text, title);
-	// оформление окошка (follow | announce | goal): JSON как в доке — Style.Load
+	// оформление окошка (follow | announce | goal | badge | stats): JSON как в доке — Style.Load
 	[JSExport]
 	public static void Style(string widget, string json)
 	{
-		var st = widget switch { "follow" => Kit.Boot.Stage?.Alerts.Style, "announce" => Kit.Boot.Stage?.Announce.Style, "goal" => Kit.Boot.Stage?.Goal.Style, _ => null };
+		var st = widget switch
+		{
+			"follow" => Kit.Boot.Stage?.Alerts.Style, "announce" => Kit.Boot.Stage?.Announce.Style, "goal" => Kit.Boot.Stage?.Goal.Style,
+			"badge" => Kit.Boot.Stage?.Badge.Style, "stats" => Kit.Boot.Stage?.Stats.Style, _ => null,
+		};
 		st?.Load(Wcg.Data.Parse(System.Text.Encoding.UTF8.GetBytes(json)));
 	}
 	// рамка эфира: JSON как в доке (Frame.Load)
 	[JSExport] public static void Frame(string json) { if (Kit.Boot.Stage != null) Kit.Boot.Stage.Frame.Load(Wcg.Data.Parse(System.Text.Encoding.UTF8.GetBytes(json))); }
+	// таблички челленджа (badge — карточка челленджа, stats — статистика): строки через перевод строки, название и значение — через табуляцию
+	[JSExport] public static void Board(string which, bool on, string pos, string title, string rows) => BoardOf(which)?.Configure(on, pos, title, rows);
+	[JSExport] public static void BoardSize(string which, double pad, double sx, double sy, double inner) => BoardOf(which)?.Size(pad, sx, sy, inner);
+	static Kit.Board BoardOf(string which) => which == "stats" ? Kit.Boot.Stage?.Stats : which == "badge" ? Kit.Boot.Stage?.Badge : null;
 	[JSExport] public static void GoalSize(double pad, double sx, double sy, double inner) => Kit.Boot.Stage?.Goal.Size(pad, sx, sy, inner);
 }

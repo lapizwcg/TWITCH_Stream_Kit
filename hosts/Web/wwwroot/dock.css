@@ -136,26 +136,13 @@ select { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-ra
 .ann-head input { flex: 1; min-width: 0; font-weight: 600; }
 .ann textarea, .ann input[type="text"], .ann select { background: var(--bg); }
 
-/* челлендж: счётчики, журнал */
+/* челлендж и статистика: счётчики, счёт из игры */
 .tabs { flex-wrap: wrap; }
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .stat { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
 .stat > span { color: var(--muted); font-size: 11px; }
 .stat .counter { justify-content: space-between; }
 .stat .counter b { font-size: 16px; }
-.btn.ok { background: var(--ok); }
-.btn.bad { background: #d6455a; }
-.log { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; max-height: 260px; overflow: auto; }
-.log li { display: flex; align-items: flex-start; gap: 6px; padding: 5px 6px; border-radius: 6px; background: var(--panel); }
-.log li i { flex: none; width: 14px; font-style: normal; text-align: center; }
-.log li.vio i { color: #ff7b8c; }
-.log li.ach i { color: #e9b95a; }
-.log li span { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.log li b { font-weight: 500; word-break: break-word; }
-.log li small { color: var(--muted); font-size: 11px; }
-.log li.empty { color: var(--muted); justify-content: center; }
-.log .del { flex: none; border: 0; background: none; color: var(--muted); font-size: 15px; line-height: 1; cursor: pointer; }
-.log .del:hover { color: var(--text); }
 /* статистика из игры: связь с AoMarket и четыре числа сессии */
 .game-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
 .stats.game .stat b { font-size: 15px; }

@@ -56,6 +56,7 @@
   <button class="tab" data-tab="announce">Анонсы</button>
   <button class="tab" data-tab="frame">Рамка</button>
   <button class="tab" data-tab="challenge">Челлендж</button>
+  <button class="tab" data-tab="stats">Статистика</button>
   <button class="tab" data-tab="logo">Логотип</button>
 </nav>
 
@@ -224,9 +225,21 @@
     </label>
     <div class="frame-body look-body"></div>
   </section>
-  <!-- челлендж «Соло Левелинг без рынка» по правилам (rules.html): счётчики, достижения и нарушения — карточками окошком анонса,
-       журнал -->
+  <!-- челлендж «Соло Левелинг без рынка» по правилам (rules.html): карточка челленджа — табличка в оверлее (Board), всегда на
+       экране; счётчики дня, смертей и убийств; смерть и убийство из игры — карточкой окошком анонса -->
   <section id="tab-challenge" class="pane" hidden>
+    <label class="row switch">
+      <input type="checkbox" id="badgeOn">
+      <span>Показывать карточку челленджа</span>
+    </label>
+    <label class="field">
+      <div class="label">Заголовок</div>
+      <input id="badgeTitle" type="text" maxlength="60" placeholder="СОЛО ЛЕВЕЛИНГ">
+    </label>
+    <label class="field">
+      <div class="label">Текст — {day} день, {deaths} смерти, {kills} убийства; можно в несколько строк</div>
+      <textarea id="badgeText" rows="2" maxlength="300" placeholder="ДЕНЬ {day}"></textarea>
+    </label>
 
     <div class="field">
       <div class="label">Счётчики</div>
@@ -234,15 +247,56 @@
         <div class="stat"><span>День</span><div class="counter"><button class="btn ghost small" data-stat="day" data-d="-1">−</button><b data-val-stat="day"></b><button class="btn ghost small" data-stat="day" data-d="1">+</button></div></div>
         <div class="stat"><span>Смерти</span><div class="counter"><button class="btn ghost small" data-stat="deaths" data-d="-1">−</button><b data-val-stat="deaths"></b><button class="btn ghost small" data-stat="deaths" data-d="1">+</button></div></div>
         <div class="stat"><span>Убийства</span><div class="counter"><button class="btn ghost small" data-stat="kills" data-d="-1">−</button><b data-val-stat="kills"></b><button class="btn ghost small" data-stat="kills" data-d="1">+</button></div></div>
-        <div class="stat"><span>Нарушения</span><div class="counter"><b id="chVioCount"></b></div></div>
       </div>
     </div>
+
+
+    <div class="field">
+      <div class="label">Место на экране</div>
+      <div id="badgePos" class="screen" role="radiogroup" aria-label="Место карточки челленджа на экране">
+        <button data-pos="tl" title="слева сверху"></button><button data-pos="t" title="сверху"></button><button data-pos="tr" title="справа сверху"></button>
+        <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
+        <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
+      </div>
+    </div>
+
+    <div class="field sizes">
+      <label><span class="label">Отступ от края: <b id="badgePadVal"></b></span><input id="badgePad" type="range" min="0" max="300" step="5"></label>
+      <label><span class="label">Размер по X: <b id="badgeSxVal"></b></span><input id="badgeSx" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Размер по Y: <b id="badgeSyVal"></b></span><input id="badgeSy" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Внутренний отступ: <b id="badgeInnerVal"></b></span><input id="badgeInner" type="range" min="0" max="6" step="0.25"></label>
+      <button class="btn ghost small" id="badgeSizeReset" type="button">Сбросить размер</button>
+    </div>
+    <details class="look" data-look="badge">
+      <summary>Оформление</summary>
+      <div class="look-body"></div>
+    </details>
+
+    <details class="look">
+      <summary>Смерть и убийство — карточкой</summary>
+      <div class="look-body">
+        <label class="row switch"><input type="checkbox" id="chGameCards"><span>Смерть и убийство из игры — карточкой</span></label>
+        <label class="field"><span class="label">Заголовок смерти</span><input id="chDeathTitle" type="text" maxlength="40" placeholder="СМЕРТЬ"></label>
+        <label class="field"><span class="label">Заголовок убийства</span><input id="chKillTitle" type="text" maxlength="40" placeholder="УБИЙСТВО"></label>
+        <div class="note">Карточки выходят окошком анонса: место, время и оформление — во вкладке «Анонсы».</div>
+      </div>
+    </details>
+
+    <!-- страница правил для зрителей — та же папка, что и док (на сайте и локально) -->
+    <p class="note">Правила челленджа для зрителей: <a href="rules.html" target="_blank" rel="noopener">rules.html</a> — ссылку можно дать в чат.</p>
+    <button class="btn ghost small" id="chReset" type="button">Начать челлендж заново</button>
+  </section>
+  <!-- статистика: табличка в оверлее (Board) — показывают и прячут кнопкой; значения — счётчики челленджа и счёт сессии AoMarket -->
+  <section id="tab-stats" class="pane" hidden>
+    <button class="btn" id="statsToggle" type="button"></button>
 
     <!-- статистика из игры: AoMarket (AO-Auras) на этом компьютере, http://127.0.0.1:<порт> -->
     <div class="field">
       <div class="label game-head">Из игры за сессию <span id="chStatsLink" class="link off"></span></div>
       <div class="stats game">
-        <div class="stat"><span>Серебро</span><b data-game="silver">—</b></div>
+        <div class="stat"><span>Серебро получено</span><b data-game="silverEarned">—</b></div>
+        <div class="stat"><span>Серебро потрачено</span><b data-game="silverSpent">—</b></div>
+        <div class="stat"><span>Серебро итого</span><b data-game="silver">—</b></div>
         <div class="stat"><span>Слава</span><b data-game="fame">—</b></div>
         <div class="stat"><span>Слава сбора</span><b data-game="fameGathering">—</b></div>
         <div class="stat"><span>Слава крафта</span><b data-game="fameCrafting">—</b></div>
@@ -257,39 +311,35 @@
       <button class="btn ghost small" id="chStatsReset" type="button">Новая сессия</button>
     </div>
 
-    <form id="chAch" class="field">
-      <div class="label">Достижение</div>
-      <div class="test">
-        <input id="chAchText" type="text" maxlength="80" placeholder="например: первый соло-данж">
-        <button class="btn ok">Достижение</button>
-      </div>
-    </form>
-
-    <form id="chVio" class="field">
-      <div class="label">Нарушение правил</div>
-      <div class="chips" id="chVioPresets"></div>
-      <div class="test">
-        <input id="chVioText" type="text" maxlength="80" placeholder="что нарушено">
-        <button class="btn bad">Нарушение</button>
-      </div>
-    </form>
 
     <div class="field">
-      <div class="label">Журнал</div>
-      <ol id="chLog" class="log"></ol>
+      <div class="label">Что показывать — по порядку списка</div>
+      <div class="chips" id="statsRows"></div>
+    </div>
+    <label class="field">
+      <div class="label">Заголовок</div>
+      <input id="statsTitle" type="text" maxlength="60" placeholder="СТАТИСТИКА">
+    </label>
+
+    <div class="field">
+      <div class="label">Место на экране</div>
+      <div id="statsPos" class="screen" role="radiogroup" aria-label="Место статистики на экране">
+        <button data-pos="tl" title="слева сверху"></button><button data-pos="t" title="сверху"></button><button data-pos="tr" title="справа сверху"></button>
+        <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
+        <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
+      </div>
     </div>
 
-    <details class="look">
-      <summary>Карточки в оверлее</summary>
-      <div class="look-body">
-        <label class="row switch"><input type="checkbox" id="chCards"><span>Показывать карточки</span></label>
-        <label class="field"><span class="label">Заголовок достижения</span><input id="chAchTitle" type="text" maxlength="40" placeholder="ДОСТИЖЕНИЕ"></label>
-        <label class="field"><span class="label">Заголовок нарушения</span><input id="chVioTitle" type="text" maxlength="40" placeholder="НАРУШЕНИЕ"></label>
-        <label class="row switch"><input type="checkbox" id="chGameCards"><span>Смерть и убийство из игры — карточкой</span></label>
-        <label class="field"><span class="label">Заголовок смерти</span><input id="chDeathTitle" type="text" maxlength="40" placeholder="СМЕРТЬ"></label>
-        <label class="field"><span class="label">Заголовок убийства</span><input id="chKillTitle" type="text" maxlength="40" placeholder="УБИЙСТВО"></label>
-        <div class="note">Карточки выходят окошком анонса: место, время и оформление — во вкладке «Анонсы».</div>
-      </div>
+    <div class="field sizes">
+      <label><span class="label">Отступ от края: <b id="statsPadVal"></b></span><input id="statsPad" type="range" min="0" max="300" step="5"></label>
+      <label><span class="label">Размер по X: <b id="statsSxVal"></b></span><input id="statsSx" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Размер по Y: <b id="statsSyVal"></b></span><input id="statsSy" type="range" min="30" max="300" step="5"></label>
+      <label><span class="label">Внутренний отступ: <b id="statsInnerVal"></b></span><input id="statsInner" type="range" min="0" max="6" step="0.25"></label>
+      <button class="btn ghost small" id="statsSizeReset" type="button">Сбросить размер</button>
+    </div>
+    <details class="look" data-look="stats">
+      <summary>Оформление</summary>
+      <div class="look-body"></div>
     </details>
 
     <details class="look">
@@ -299,13 +349,10 @@
         <label class="field"><span class="label">Порт</span><input id="chStatsPort" type="text" inputmode="numeric" maxlength="5" placeholder="8790"></label>
         <div class="note">AoMarket из AO-Auras читает трафик игры и отдаёт статистику только на этот компьютер. AO-Profiter (start.ps1)
           запускает его сам с портом 8790; вручную — <code>AoMarket --stats-port 8790</code>. Смерти и убийства прибавляются к
-          счётчикам выше, их по-прежнему можно поправить кнопками.</div>
+          счётчикам во вкладке «Челлендж», их по-прежнему можно поправить кнопками.</div>
       </div>
     </details>
 
-    <!-- страница правил для зрителей — та же папка, что и док (на сайте и локально) -->
-    <p class="note">Правила челленджа для зрителей: <a href="rules.html" target="_blank" rel="noopener">rules.html</a> — ссылку можно дать в чат.</p>
-    <button class="btn ghost small" id="chReset" type="button">Начать челлендж заново</button>
   </section>
   <!-- логотип канала поверх кадра: например, закрыть мини-карту -->
   <section id="tab-logo" class="pane" hidden>
