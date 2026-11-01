@@ -55,6 +55,7 @@
   <button class="tab" data-tab="goals">Цели</button>
   <button class="tab" data-tab="announce">Анонсы</button>
   <button class="tab" data-tab="frame">Рамка</button>
+  <button class="tab" data-tab="logo">Логотип</button>
 </nav>
 
 <main>
@@ -244,6 +245,32 @@
       <span>Показывать рамку</span>
     </label>
     <div class="frame-body look-body"></div>
+  </section>
+  <!-- логотип канала поверх кадра: например, закрыть мини-карту -->
+  <section id="tab-logo" class="pane" hidden>
+    <label class="row switch">
+      <input type="checkbox" id="logoOn">
+      <span>Показывать логотип</span>
+    </label>
+    <label class="field"><span class="label">Рисунок</span><select id="logoFile"></select></label>
+    <div class="logo-preview"><img id="logoPreview" alt=""></div>
+    <div class="field">
+      <div class="label">Место на экране</div>
+      <div id="logoPos" class="screen" role="radiogroup" aria-label="Место логотипа на экране">
+        <button data-pos="tl" title="слева сверху"></button><button data-pos="t" title="сверху"></button><button data-pos="tr" title="справа сверху"></button>
+        <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
+        <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
+      </div>
+    </div>
+    <div class="field sizes">
+      <label><span class="label">Ширина: <b id="logoSizeVal"></b></span><input id="logoSize" type="range" min="80" max="1200" step="2"></label>
+      <label><span class="label">Сдвиг по X: <b id="logoDxVal"></b></span><input id="logoDx" type="range" min="-600" max="600" step="1"></label>
+      <label><span class="label">Сдвиг по Y: <b id="logoDyVal"></b></span><input id="logoDy" type="range" min="-600" max="600" step="1"></label>
+      <label><span class="label">Непрозрачность: <b id="logoOpacityVal"></b></span><input id="logoOpacity" type="range" min="10" max="100" step="1"></label>
+      <button class="btn ghost small" id="logoReset" type="button">Сбросить место и размер</button>
+    </div>
+    <p class="note">Ширина и сдвиг — в точках кадра 1920×1080, как в OBS. Мини-карта Albion — справа снизу: ставьте «справа снизу» и
+      подгоняйте шириной и сдвигом. Рамка эфира логотип не сдвигает.</p>
   </section>
 </main>
 

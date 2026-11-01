@@ -1,5 +1,7 @@
 // РАМКА ЭФИРА (Stream Frame) — рамка по краям кадра, все окошки живут внутри неё (Layout.Inset). Настраивается в доке:
-// - толщина, отступ от края экрана, непрозрачность фона полосы (для стилей с линиями обычно низкая: видно игру);
+// - толщина — сколько места рамка забирает у кадра (окошки встают внутри), отступ от края экрана, непрозрачность фона полосы;
+// - размер узора — сам по себе, не от толщины: при тонкой рамке (и даже нулевой) узор не пропадает — линия с узором отходит от
+//   края экрана настолько, чтобы узор поместился;
 // - внутренние углы выреза, у каждого свой вид: round (скруглён), bevel (срез), rect (прямой), scoop (вогнутый — рамка
 //   четвертью круга заходит в кадр), notch (ступенька — квадратный выступ рамки), и общий размер;
 // - стиль — Sci-Fi или простая: только чёткие фигуры (линии, многоугольники), без свечения и размытия; тонкая линия по вырезу и
@@ -23,6 +25,8 @@ public sealed class Frame
 	public bool On;
 	// точки при высоте 1080
 	public float Width = 36, Margin, Line = 2, Corner = 24;
+	// размер узора, доля обычного
+	public float Scale = 1;
 	public float Opacity = 0.35f;
 	public (string mat, double tone) Bg = ("obsidian", 0.12), Border = ("citrine", 0.75);
 	// углы выреза по часовой: tl, tr, br, bl
@@ -39,14 +43,14 @@ public sealed class Frame
 	bool dirty = true;
 	int lastW, lastH;
 
-	// из JSON дока: { on, width, margin, opacity (%), line, corner, corners: [..4], style, look: { bg, border } }
+	// из JSON дока: { on, width, margin, opacity (%), line, corner, corners: [..4], style, scale (%), look: { bg, border } }
 	public void Load(JVal j)
 	{
 		var d = j.Dict();
 		float F(string k, float def, float lo, float hi) => d.ContainsKey(k) ? (float)Math.Clamp(d[k].AsDouble(), lo, hi) : def;
 		On = d.ContainsKey("on") && d["on"].AsBool();
 		Width = F("width", Width, 0, 200); Margin = F("margin", Margin, 0, 200); Opacity = F("opacity", Opacity * 100, 0, 100) / 100;
-		Line = F("line", Line, 0, 16); Corner = F("corner", Corner, 0, 300);
+		Line = F("line", Line, 0, 16); Corner = F("corner", Corner, 0, 300); Scale = F("scale", Scale * 100, 30, 300) / 100;
 		if (d.ContainsKey("style")) Style = Styles.Contains(d["style"].AsString()) ? d["style"].AsString() : "esports";
 		var cs = d["corners"].Arr();
 		for (int i = 0; i < 4 && i < cs.Count; i++) Corners[i] = Kinds.Contains(cs[i].AsString()) ? cs[i].AsString() : "bevel";
@@ -121,7 +125,9 @@ public sealed class Frame
 
 	void Build(int w, int h)
 	{
-		float u = h / 1080f, m = Margin * u, t = (Margin + Width) * u, r = Corner * u;
+		float u = h / 1080f, m = Margin * u, r = Corner * u;
+		// край выреза: по толщине рамки, но не ближе к краю экрана, чем нужно узору (украшения — снаружи линии)
+		float t = Math.Max((Margin + Width) * u, Reach(u));
 		var hole = Base(t, t, w - t, h - t, r);
 		var outer = new[] { m, m, w - m, m, w - m, h - m, m, h - m };
 		paths.Clear(); paths.Add(outer); paths.Add(hole);
@@ -133,16 +139,18 @@ public sealed class Frame
 			poly.Feather(paths, bg, 1.2f);
 		}
 		sh.Begin(); sh.Screen();
-		if (Line > 0) Decor(hole, t, t, w - t, h - t, r, u, Width * u);
+		if (Line > 0) Decor(hole, t, t, w - t, h - t, r, u);
 	}
 
 	// ---------- стили ----------
 
-	// украшения стиля: вырез hole по прямоугольнику (x0, y0)–(x1, y1) с углами r, полоса толщиной band (украшения — в ней, наружу от
-	// выреза). Размеры украшений — по толщине полосы (k), чтобы на тонкой рамке они не вылезали за край
-	void Decor(float[] hole, float x0, float y0, float x1, float y1, float r, float u, float band)
+	// насколько украшения стиля выходят наружу от линии выреза (точки экрана): планки, вкладки, штрихи — до 13 · k, плюс линия
+	float Reach(float u) => Line <= 0 ? 0 : Style == "plain" ? Line * u : 13 * Scale * u + Line * u * 1.2f;
+
+	// украшения стиля: вырез hole по прямоугольнику (x0, y0)–(x1, y1) с углами r; украшения — наружу от выреза, размер — Scale
+	void Decor(float[] hole, float x0, float y0, float x1, float y1, float r, float u)
 	{
-		float lw = Line * u, k = Math.Clamp(band / (36 * u), 0.45f, 1.6f) * u, thin = Math.Max(1 * u, lw * 0.5f);
+		float lw = Line * u, k = Scale * u, thin = Math.Max(1 * u, lw * 0.5f);
 		float cx = (x0 + x1) / 2;
 		uint lc = Col(0, 255), bright = Col(0.12, 255);
 		// планка вдоль стороны: от (ax, ay) по направлению (dx, dy) длиной len, толщиной th наружу от выреза (нормаль nx, ny);

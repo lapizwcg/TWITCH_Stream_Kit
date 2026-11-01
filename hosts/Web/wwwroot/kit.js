@@ -20,6 +20,15 @@ export const STYLE = {
 };
 const style = () => structuredClone(STYLE);
 
+// логотипы канала (векторные, logos/<id>.svg): обложка мини-карты, табличка, водяной знак — каждый в трёх цветах; w, h — родной
+// размер рисунка (соотношение сторон)
+export const LOGOS = [
+  ['Обложка мини-карты', [['cover', 'Основная', 400, 370], ['cover_blue', 'Синяя', 400, 370], ['cover_emerald', 'Изумрудная', 400, 370]]],
+  ['Табличка', [['plaque', 'Основная', 1200, 400], ['plaque_blue', 'Синяя', 1200, 400], ['plaque_emerald', 'Изумрудная', 1200, 400]]],
+  ['Водяной знак', [['watermark', 'Основной', 1200, 340], ['watermark_blue', 'Синий', 1200, 340], ['watermark_emerald', 'Изумрудный', 1200, 340]]],
+];
+export const logoOf = (id) => LOGOS.flatMap(([, list]) => list).find(([v]) => v === id) || LOGOS[0][1][0];
+
 export const DEFAULTS = {
   // pad — отступ от края экрана (точки при высоте 1080), sx/sy — размер по X и по Y (проценты), inner — внутренний отступ
   // (проценты высоты кадра); то же у цели
@@ -33,9 +42,12 @@ export const DEFAULTS = {
   // style: ltr rtl ttb btt radial — вид прогресса
   // рамка эфира: толщина, отступ от края, непрозрачность фона (%), линия по краю выреза; внутренние углы
   // (round bevel rect scoop notch) и их размер; стиль — esports (киберспорт), blades (клинки), panels (панели),
-  // plain (одна линия) — только чёткие фигуры, без свечения; точки при 1080
+  // plain (одна линия) — только чёткие фигуры, без свечения; scale — размер узора (%), сам по себе; точки при 1080
+  // логотип поверх всего (например, закрыть мини-карту): место из девяти, ширина и сдвиг — точки кадра при высоте 1080,
+  // непрозрачность (%). Рамка эфира его не сдвигает — встаёт ровно туда, куда задано
+  logo: { on: false, file: 'cover', pos: 'br', size: 400, dx: 0, dy: 0, opacity: 100 },
   frame: {
-    on: false, style: 'esports', width: 36, margin: 0, opacity: 35, line: 2,
+    on: false, style: 'esports', width: 36, margin: 0, opacity: 35, line: 2, scale: 100,
     corners: ['bevel', 'bevel', 'bevel', 'bevel'], corner: 24,
     look: { bg: 'obsidian@0.12', border: 'citrine@0.75' },
   },
