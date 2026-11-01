@@ -6,26 +6,26 @@
 <title>Stream Kit — оповещения</title>
 <script type="importmap">{
   "imports": {
+    "./_framework/dotnet.js": "./_framework/dotnet.7d2kh1ypm5.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.wt4kq00rhc.js",
-    "./dock.js": "./dock.rwd6a9dg0j.js",
-    "./kit.js": "./kit.ef80cwyn16.js",
+    "./dock.js": "./dock.28v1x9bgoj.js",
+    "./kit.js": "./kit.bp4d0hlgd7.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.js": "sha256-dG8qY6IODrFc6MFCzFyfmLmW7nIoO4vgvLZePJI35FY=",
+    "./_framework/dotnet.7d2kh1ypm5.js": "sha256-+/06sD7sGRlJ/3TIj6f5ruEK9OYCkOkTnacabyxQMDI=",
+    "./_framework/dotnet.js": "sha256-+/06sD7sGRlJ/3TIj6f5ruEK9OYCkOkTnacabyxQMDI=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./_framework/dotnet.wt4kq00rhc.js": "sha256-dG8qY6IODrFc6MFCzFyfmLmW7nIoO4vgvLZePJI35FY=",
-    "./dock.js": "sha256-FZbXC2rLptPN9PMNy6vfsHbRZGSbiIjtlvYrIZPvirI=",
-    "./dock.rwd6a9dg0j.js": "sha256-FZbXC2rLptPN9PMNy6vfsHbRZGSbiIjtlvYrIZPvirI=",
-    "./kit.ef80cwyn16.js": "sha256-VunmEuR8LJDvuEYhF7G8qae2qjKVYaXsNBL5SsNRH2g=",
-    "./kit.js": "sha256-VunmEuR8LJDvuEYhF7G8qae2qjKVYaXsNBL5SsNRH2g=",
+    "./dock.28v1x9bgoj.js": "sha256-UolskE5wMKYnel13S/BJxPR52pOjFeSxfxhFe/sipfg=",
+    "./dock.js": "sha256-UolskE5wMKYnel13S/BJxPR52pOjFeSxfxhFe/sipfg=",
+    "./kit.bp4d0hlgd7.js": "sha256-D42H0z+tw90/2se8dzCdb6dEQ3Ufs3X5vR6oC/RVpow=",
+    "./kit.js": "sha256-D42H0z+tw90/2se8dzCdb6dEQ3Ufs3X5vR6oC/RVpow=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261101-084927-4558de8';
+  var CURRENT = '20261101-085617-5b14c11';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -124,8 +124,9 @@ const apply = (s) => {
   if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100, s.follow.inner ?? 1);
   if (s.goal) B.GoalSize(s.goal.pad ?? 50, (s.goal.sx ?? 100) / 100, (s.goal.sy ?? 100) / 100, s.goal.inner ?? 1);
   if (s.announce) {
-    // карточка в оверлее — при выводе «оверлей» или «оба»; таймер живёт в доке, «Показать сейчас» работает и без него
-    B.Announce(s.announce.output !== 'chat', s.announce.pos, s.announce.title, s.announce.seconds);
+    // анонсов несколько, у каждого свой вывод и таймер — живут в доке и присылают карточку со своим заголовком (bus 'card');
+    // окошко здесь общее: место, заголовок по умолчанию, время
+    B.Announce(true, s.announce.pos, s.announce.title, s.announce.seconds);
     B.AnnounceSize(s.announce.pad ?? 70, (s.announce.sx ?? 100) / 100, (s.announce.sy ?? 100) / 100, s.announce.inner ?? 1);
   }
   // оформление: размер частиц в доке — проценты, в показе — доля
