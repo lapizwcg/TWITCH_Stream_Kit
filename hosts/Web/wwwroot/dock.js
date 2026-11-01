@@ -604,12 +604,15 @@ for (const part of LOOK_PARTS) buildLook(part);
 // ---------- рамка эфира ----------
 
 const FRAME_CORNERS = [['round', 'Скругление'], ['bevel', 'Срез'], ['rect', 'Прямой'], ['scoop', 'Вогнутый'], ['notch', 'Ступенька']];
-const FRAME_EDGES = [['line', 'Прямая'], ['wave', 'Волна'], ['zigzag', 'Зигзаг'], ['scallop', 'Дуги'], ['crenel', 'Зубцы']];
+const FRAME_EDGES = [
+  ['line', 'Прямая'], ['wave', 'Волна'], ['zigzag', 'Зигзаг'], ['scallop', 'Дуги'], ['crenel', 'Зубцы'], ['saw', 'Пила'], ['spikes', 'Шипы'],
+  ['steps', 'Ступени'], ['bulbs', 'Капли'], ['tee', 'Т-узор'], ['meander', 'Меандр'],
+];
 // ползунки: ключ, подпись, мин, макс, шаг, единица
 const FRAME_RANGES = {
   width: ['Толщина', 0, 120, 1, 'px'], margin: ['Отступ от края экрана', 0, 100, 1, 'px'], opacity: ['Непрозрачность фона', 0, 100, 1, '%'],
   line: ['Толщина линии', 0, 12, 0.5, 'px'], glow: ['Свечение линии', 0, 60, 1, 'px'], corner: ['Размер углов', 0, 200, 1, 'px'],
-  amp: ['Высота формы', 0, 40, 1, 'px'], period: ['Шаг формы', 20, 300, 5, 'px'],
+  amp: ['Высота узора (доля толщины)', 0, 100, 1, '%'], period: ['Шаг узора', 20, 300, 5, 'px'],
 };
 function buildFrame() {
   const box = document.querySelector('#tab-frame .frame-body');
@@ -626,9 +629,10 @@ function buildFrame() {
     <div class="corners">${CORNER_CELLS.map(([i, a]) => `<select data-corner="${i}" title="угол ${a}">${opts(FRAME_CORNERS.map(([v, t]) => [v, `${a} ${t}`]))}</select>`).join('')}</div>
     <div class="chips">${FRAME_CORNERS.map(([v, t]) => `<button class="btn ghost small" data-all="${v}" type="button">Все: ${t.toLowerCase()}</button>`).join('')}</div>
     ${range('corner')}
-    <h4>Форма края</h4>
-    <label class="field"><span class="label">Край</span><select data-edge>${opts(FRAME_EDGES)}</select></label>
+    <h4>Узор контура</h4>
+    <label class="field"><span class="label">Узор</span><select data-edge>${opts(FRAME_EDGES)}</select></label>
     ${range('amp')}${range('period')}
+    <p class="note">Узор — сам край рамки: идёт по всему контуру, огибает скруглённые углы, на срезе и вогнутом угле — свои звенья.</p>
     <button class="btn ghost small" data-reset type="button">Сбросить рамку</button>`;
   const fr = () => settings.frame;
   $('frameOn').onchange = (e) => {
@@ -668,8 +672,8 @@ function renderFrame() {
   fr.look ??= structuredClone(DEFAULTS.frame.look);
   $('frameOn').checked = fr.on;
   for (const k of Object.keys(FRAME_RANGES)) {
-    box.querySelector(`[data-range="${k}"]`).value = fr[k];
-    box.querySelector(`[data-val="${k}"]`).textContent = `${fr[k]} ${FRAME_RANGES[k][4]}`;
+    box.querySelector(`[data-range="${k}"]`).value = fr[k] ?? DEFAULTS.frame[k];
+    box.querySelector(`[data-val="${k}"]`).textContent = `${fr[k] ?? DEFAULTS.frame[k]} ${FRAME_RANGES[k][4]}`;
   }
   for (const b of box.querySelectorAll('.mp')) {
     const { mat, tone } = parseMt(fr.look[b.dataset.key]);
