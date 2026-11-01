@@ -6,26 +6,26 @@
 <title>Stream Kit — пульт</title>
 <script type="importmap">{
   "imports": {
+    "./_framework/dotnet.js": "./_framework/dotnet.7lzjf8slmo.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.x52525egly.js",
-    "./dock.js": "./dock.bjutm29f2c.js",
-    "./kit.js": "./kit.pimivhgvwa.js",
+    "./dock.js": "./dock.7o66fxlt4q.js",
+    "./kit.js": "./kit.3cf5yphygx.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.js": "sha256-yw8AG6owXwfe+MdVPj8IdHTGcW7+sky7lHGYd9TkiM0=",
+    "./_framework/dotnet.7lzjf8slmo.js": "sha256-FTbFaOElmAjzMstdePbAvMhaV4tdaq3+HEXW0awSxzg=",
+    "./_framework/dotnet.js": "sha256-FTbFaOElmAjzMstdePbAvMhaV4tdaq3+HEXW0awSxzg=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./_framework/dotnet.x52525egly.js": "sha256-yw8AG6owXwfe+MdVPj8IdHTGcW7+sky7lHGYd9TkiM0=",
-    "./dock.bjutm29f2c.js": "sha256-161dMGExN1hUKqfbuVNQBJAFbalKnvxSJurEYVOr/HA=",
-    "./dock.js": "sha256-161dMGExN1hUKqfbuVNQBJAFbalKnvxSJurEYVOr/HA=",
-    "./kit.js": "sha256-gWWv6/cZuxQHRlyBaZci2XStQWVmiDq+y4aIaLQpYd8=",
-    "./kit.pimivhgvwa.js": "sha256-gWWv6/cZuxQHRlyBaZci2XStQWVmiDq+y4aIaLQpYd8=",
+    "./dock.7o66fxlt4q.js": "sha256-uXVWEZ1v57vKLTwvZq5z+0zueY/2m4ptp7FU73x5S0A=",
+    "./dock.js": "sha256-uXVWEZ1v57vKLTwvZq5z+0zueY/2m4ptp7FU73x5S0A=",
+    "./kit.3cf5yphygx.js": "sha256-49K9y9SOx8dRfR3814Y3sSSwdpEcyKgRbzkjqifhvFg=",
+    "./kit.js": "sha256-49K9y9SOx8dRfR3814Y3sSSwdpEcyKgRbzkjqifhvFg=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261101-065213-374a011';
+  var CURRENT = '20261101-072024-ebef4ad';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -82,6 +82,7 @@
   <button class="tab" data-tab="goals">Цели</button>
   <button class="tab" data-tab="announce">Анонсы</button>
   <button class="tab" data-tab="frame">Рамка</button>
+  <button class="tab" data-tab="logo">Логотип</button>
 </nav>
 
 <main>
@@ -271,6 +272,32 @@
       <span>Показывать рамку</span>
     </label>
     <div class="frame-body look-body"></div>
+  </section>
+  <!-- логотип канала поверх кадра: например, закрыть мини-карту -->
+  <section id="tab-logo" class="pane" hidden>
+    <label class="row switch">
+      <input type="checkbox" id="logoOn">
+      <span>Показывать логотип</span>
+    </label>
+    <label class="field"><span class="label">Рисунок</span><select id="logoFile"></select></label>
+    <div class="logo-preview"><img id="logoPreview" alt=""></div>
+    <div class="field">
+      <div class="label">Место на экране</div>
+      <div id="logoPos" class="screen" role="radiogroup" aria-label="Место логотипа на экране">
+        <button data-pos="tl" title="слева сверху"></button><button data-pos="t" title="сверху"></button><button data-pos="tr" title="справа сверху"></button>
+        <button data-pos="l" title="слева"></button><button data-pos="c" title="по центру"></button><button data-pos="r" title="справа"></button>
+        <button data-pos="bl" title="слева снизу"></button><button data-pos="b" title="снизу"></button><button data-pos="br" title="справа снизу"></button>
+      </div>
+    </div>
+    <div class="field sizes">
+      <label><span class="label">Ширина: <b id="logoSizeVal"></b></span><input id="logoSize" type="range" min="80" max="1200" step="2"></label>
+      <label><span class="label">Сдвиг по X: <b id="logoDxVal"></b></span><input id="logoDx" type="range" min="-600" max="600" step="1"></label>
+      <label><span class="label">Сдвиг по Y: <b id="logoDyVal"></b></span><input id="logoDy" type="range" min="-600" max="600" step="1"></label>
+      <label><span class="label">Непрозрачность: <b id="logoOpacityVal"></b></span><input id="logoOpacity" type="range" min="10" max="100" step="1"></label>
+      <button class="btn ghost small" id="logoReset" type="button">Сбросить место и размер</button>
+    </div>
+    <p class="note">Ширина и сдвиг — в точках кадра 1920×1080, как в OBS. Мини-карта Albion — справа снизу: ставьте «справа снизу» и
+      подгоняйте шириной и сдвигом. Рамка эфира логотип не сдвигает.</p>
   </section>
 </main>
 

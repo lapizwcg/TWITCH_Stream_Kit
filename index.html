@@ -6,26 +6,26 @@
 <title>Stream Kit — оповещения</title>
 <script type="importmap">{
   "imports": {
+    "./_framework/dotnet.js": "./_framework/dotnet.7lzjf8slmo.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.x52525egly.js",
-    "./dock.js": "./dock.bjutm29f2c.js",
-    "./kit.js": "./kit.pimivhgvwa.js",
+    "./dock.js": "./dock.7o66fxlt4q.js",
+    "./kit.js": "./kit.3cf5yphygx.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.js": "sha256-yw8AG6owXwfe+MdVPj8IdHTGcW7+sky7lHGYd9TkiM0=",
+    "./_framework/dotnet.7lzjf8slmo.js": "sha256-FTbFaOElmAjzMstdePbAvMhaV4tdaq3+HEXW0awSxzg=",
+    "./_framework/dotnet.js": "sha256-FTbFaOElmAjzMstdePbAvMhaV4tdaq3+HEXW0awSxzg=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./_framework/dotnet.x52525egly.js": "sha256-yw8AG6owXwfe+MdVPj8IdHTGcW7+sky7lHGYd9TkiM0=",
-    "./dock.bjutm29f2c.js": "sha256-161dMGExN1hUKqfbuVNQBJAFbalKnvxSJurEYVOr/HA=",
-    "./dock.js": "sha256-161dMGExN1hUKqfbuVNQBJAFbalKnvxSJurEYVOr/HA=",
-    "./kit.js": "sha256-gWWv6/cZuxQHRlyBaZci2XStQWVmiDq+y4aIaLQpYd8=",
-    "./kit.pimivhgvwa.js": "sha256-gWWv6/cZuxQHRlyBaZci2XStQWVmiDq+y4aIaLQpYd8=",
+    "./dock.7o66fxlt4q.js": "sha256-uXVWEZ1v57vKLTwvZq5z+0zueY/2m4ptp7FU73x5S0A=",
+    "./dock.js": "sha256-uXVWEZ1v57vKLTwvZq5z+0zueY/2m4ptp7FU73x5S0A=",
+    "./kit.3cf5yphygx.js": "sha256-49K9y9SOx8dRfR3814Y3sSSwdpEcyKgRbzkjqifhvFg=",
+    "./kit.js": "sha256-49K9y9SOx8dRfR3814Y3sSSwdpEcyKgRbzkjqifhvFg=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261101-065213-374a011';
+  var CURRENT = '20261101-072024-ebef4ad';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -55,14 +55,17 @@
 /* оверлей: страница и холст прозрачные — OBS кладёт их поверх видео */
 html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
 canvas { display: block; width: 100vw; height: 100vh; }
+/* логотип канала — векторный рисунок поверх холста (над рамкой и окошками), щелчки не ловит */
+#logo { position: absolute; left: 0; top: 0; pointer-events: none; }
 </style>
 </head>
 <body>
 <canvas id="game"></canvas>
+<img id="logo" alt="" hidden>
 <script type="module">
 // ключи — из адреса (?demo → --demo)
 import { boot } from './wcg.js';
-import { loadSettings, createBus } from './kit.js';
+import { loadSettings, createBus, logoOf } from './kit.js';
 const q = new URLSearchParams(location.search);
 const args = [...q].map(([k, v]) => v === '' ? '--' + k : '--' + k + '=' + v);
 // maxDpr 1: в OBS источник и так рисуется в своём размере (1920×1080), лишние точки — лишняя работа видеокарте
@@ -95,7 +98,25 @@ async function ensureFonts(s) {
 // настройки — по очереди: пока качается шрифт, следующие ждут, чтобы старые не легли поверх новых
 let chain = Promise.resolve();
 const settle = (s) => (chain = chain.then(() => ensureFonts(s)).then(() => apply(s)));
+// логотип: место из девяти (как у окошек), ширина и сдвиг — точки при высоте 1080, по размеру окна
+let logo = null;
+function placeLogo() {
+  const el = document.getElementById('logo');
+  if (!logo?.on) { el.hidden = true; return; }
+  const [id, , lw, lh] = logoOf(logo.file);
+  const u = innerHeight / 1080, w = (logo.size ?? 400) * u, h = (w * lh) / lw, pos = logo.pos || 'br';
+  const ax = pos.includes('l') ? 0 : pos.includes('r') ? 1 : 0.5, ay = pos.includes('t') ? 0 : pos.includes('b') ? 1 : 0.5;
+  if (!el.src.endsWith(`logos/${id}.svg`)) el.src = `logos/${id}.svg`;
+  el.style.width = `${w}px`;
+  el.style.height = `${h}px`;
+  el.style.left = `${ax * (innerWidth - w) + (logo.dx ?? 0) * u}px`;
+  el.style.top = `${ay * (innerHeight - h) + (logo.dy ?? 0) * u}px`;
+  el.style.opacity = (logo.opacity ?? 100) / 100;
+  el.hidden = false;
+}
+addEventListener('resize', placeLogo);
 const apply = (s) => {
+  if (s.logo) { logo = s.logo; placeLogo(); }
   if (s.follow) B.Follow(s.follow.on, q.get('pos') || s.follow.pos, s.follow.title, s.follow.seconds);
   if (s.follow) B.FollowSize(s.follow.pad ?? 70, (s.follow.sx ?? 100) / 100, (s.follow.sy ?? 100) / 100, s.follow.inner ?? 1);
   if (s.goal) B.GoalSize(s.goal.pad ?? 50, (s.goal.sx ?? 100) / 100, (s.goal.sy ?? 100) / 100, s.goal.inner ?? 1);
