@@ -2,8 +2,12 @@
   "code": "it",
   "name": "Italiano",
   "pageTitle": "Albion: Solo Leveling — regole",
-  "title": { "pre": "Albion: ", "accent": "Solo Leveling", "post": "" },
-  "lead": "Porta un personaggio nuovo fino a un set completo T8 da solo, senza mai usare il mercato e senza ricevere nulla da altri giocatori.",
+  "title": {
+    "pre": "Albion: ",
+    "accent": "Solo Leveling",
+    "post": ""
+  },
+  "lead": "Porta un personaggio nuovo fino a un set completo T8 da solo, senza comprare nulla sul mercato e senza ricevere nulla da altri giocatori.",
   "note": "Questa sfida è solo per divertimento. Nessuno controlla nessuno: chiunque può partecipare, e l'onestà è una sfida personale con te stesso.",
   "language": "Lingua",
   "footer": "Canale {channel} · Albion Online",
@@ -19,124 +23,217 @@
     {
       "h": "Due princìpi",
       "principles": [
-        ["Origine: solo il gioco", "Tutto ciò che dà il gioco stesso è permesso. Tutto ciò che arriva dal mercato o da altri giocatori è vietato."],
-        ["Uso: solo il tuo", "Tutto ciò che il tuo personaggio indossa, mangia, beve e cavalca è creato da lui stesso. Anche i miglioramenti arrivano solo dal tuo crafting."]
+        [
+          "Origine: solo il gioco",
+          "Tutto ciò che dà il gioco stesso è permesso. Tutto ciò che arriva dal mercato o da altri giocatori è vietato."
+        ],
+        [
+          "Uso: solo il tuo",
+          "Tutto ciò che il tuo personaggio indossa, mangia, beve e cavalca è creato da lui stesso. Anche i miglioramenti arrivano solo dal tuo crafting."
+        ]
+      ]
+    },
+    {
+      "h": "Casi particolari",
+      "p": [
+        "Le missioni del tutorial «Primi passi» (First Steps) sono un'eccezione alle regole: tutto ciò che chiedono di fare è permesso, anche se le regole qui sotto lo vietano."
+      ],
+      "cols": [
+        {
+          "kind": "yes",
+          "h": "Permesso",
+          "ul": [
+            "Tutto ciò che chiedono le missioni «Primi passi» (First Steps)",
+            "Comprare il tuo primo bue: fa parte delle missioni «Primi passi» (First Steps)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Vietato",
+          "ul": [
+            "Journey Back"
+          ]
+        }
       ]
     },
     {
       "h": "1. Mercato e Premium",
-      "p": ["Il mercato è vietato del tutto. Puoi comprare oro, ma non puoi riconvertirlo in argento: così non si può portare argento da fuori."],
+      "p": [
+        "Non puoi comprare nulla sul mercato. Puoi solo vendere beni di lusso. Puoi comprare oro, ma non puoi riconvertirlo in argento: così non si può portare argento da fuori."
+      ],
       "cols": [
-        { "kind": "no", "h": "Vietato", "ul": [
-          "Comprare qualsiasi cosa sul mercato: dagli ordini di vendita o tramite ordini di acquisto",
-          "Vendere qualsiasi cosa sul mercato: agli ordini di acquisto di altri giocatori o tramite i tuoi ordini di vendita",
-          "Vendere al Mercato Nero di Caerleon",
-          "Cambiare oro in argento"
-        ] },
-        { "kind": "yes", "h": "Permesso", "ul": [
-          "Comprare oro con argento o con denaro reale",
-          "Trasferire argento dal tuo account principale, ma solo per il Premium: esattamente il prezzo in oro del Premium al cambio del momento dell'acquisto, da spendere subito",
-          "Il Premium e tutti i suoi bonus",
-          "Comprare un'isola e i suoi miglioramenti con l'argento: non è il mercato",
-          "Pagare in argento riparazioni, tasse delle postazioni e altri servizi del gioco"
-        ] }
+        {
+          "kind": "no",
+          "h": "Vietato",
+          "ul": [
+            "Comprare qualsiasi cosa sul mercato: dagli ordini di vendita o tramite ordini di acquisto",
+            "Vendere sul mercato qualsiasi cosa tranne i beni di lusso: agli ordini di acquisto di altri giocatori o tramite i tuoi ordini di vendita",
+            "Vendere al Mercato Nero di Caerleon",
+            "Cambiare oro in argento"
+          ]
+        },
+        {
+          "kind": "yes",
+          "h": "Permesso",
+          "ul": [
+            "Comprare oro con argento o con denaro reale",
+            "Vendere beni di lusso sul mercato",
+            "Trasferire argento dal tuo account principale, ma solo per il Premium: esattamente il prezzo in oro del Premium al cambio del momento dell'acquisto, da spendere subito",
+            "Il Premium e tutti i suoi bonus",
+            "Comprare un'isola e i suoi miglioramenti con l'argento: non è il mercato",
+            "Pagare in argento riparazioni, tasse delle postazioni e altri servizi del gioco"
+          ]
+        }
       ]
     },
     {
       "h": "2. Altri giocatori",
-      "p": ["Qualsiasi attività con altri giocatori è permessa, compresi i contenuti di massa, e l'aiuto in combattimento va bene. L'unica cosa vietata è ricevere oggetti di valore dai giocatori, direttamente o indirettamente. Gilde e gruppi sono vietati perché attraverso di essi passano fama e argento condivisi. Il bottino dei giocatori uccisi è bottino del gioco ed è permesso."],
+      "p": [
+        "Qualsiasi attività con altri giocatori è permessa, compresi i contenuti di massa, e l'aiuto in combattimento va bene. L'unica cosa vietata è ricevere oggetti di valore dai giocatori, direttamente o indirettamente. Gilde e gruppi sono vietati perché attraverso di essi passano fama e argento condivisi. Il bottino dei giocatori uccisi è bottino del gioco ed è permesso."
+      ],
       "cols": [
-        { "kind": "no", "h": "Vietato", "ul": [
-          "Commerciare con i giocatori in qualsiasi forma",
-          "Accettare regali: oggetti, risorse, argento",
-          "Raccogliere l'argento che i giocatori lasciano cadere a terra",
-          "Fare duelli per argento: è commercio nascosto",
-          "Usare personaggi secondari o trasferire qualcosa da altri personaggi (tranne argento per il Premium)",
-          "Entrare in una gilda",
-          "Stare in un gruppo fuori da una città"
-        ] },
-        { "kind": "yes", "h": "Permesso", "ul": [
-          "Parlare con i giocatori",
-          "Partecipare ad attività di massa e del mondo aperto senza entrare in un gruppo",
-          "Aiutare gli altri e accettare aiuto in combattimento",
-          "Combattere contro i giocatori e prendere il bottino di quelli che uccidi",
-          "Usare le postazioni di altri giocatori pagando la normale tassa d'uso"
-        ] }
+        {
+          "kind": "no",
+          "h": "Vietato",
+          "ul": [
+            "Commerciare con i giocatori in qualsiasi forma",
+            "Accettare regali: oggetti, risorse, argento",
+            "Raccogliere l'argento che i giocatori lasciano cadere a terra",
+            "Fare duelli per argento: è commercio nascosto",
+            "Usare personaggi secondari o trasferire qualcosa da altri personaggi (tranne argento per il Premium)",
+            "Entrare in una gilda",
+            "Stare in un gruppo fuori da una città"
+          ]
+        },
+        {
+          "kind": "yes",
+          "h": "Permesso",
+          "ul": [
+            "Parlare con i giocatori",
+            "Partecipare ad attività di massa e del mondo aperto senza entrare in un gruppo",
+            "Aiutare gli altri e accettare aiuto in combattimento",
+            "Combattere contro i giocatori e prendere il bottino di quelli che uccidi",
+            "Usare le postazioni di altri giocatori pagando la normale tassa d'uso"
+          ]
+        }
       ]
     },
     {
       "h": "3. Equipaggiamento e consumabili",
-      "p": ["Tutto ciò che il tuo personaggio indossa o usa è craftato da lui stesso. Non puoi equipaggiare un oggetto finito che hai trovato, anche se sai craftarlo. L'equipaggiamento iniziale lo crafta il giocatore nel tutorial, quindi è permesso."],
+      "p": [
+        "Tutto ciò che il tuo personaggio indossa o usa è craftato da lui stesso. Non puoi equipaggiare un oggetto finito che hai trovato, anche se sai craftarlo. L'equipaggiamento iniziale lo crafta il giocatore nel tutorial, quindi è permesso."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Solo di tuo crafting", "ul": [
-          "Arma, mano secondaria, elmo, armatura, scarpe",
-          "Borsa e mantello",
-          "Strumenti e equipaggiamento da raccolta",
-          "Cibo e pozioni",
-          "Cavalcature (sezione 6)"
-        ] },
-        { "kind": "no", "h": "Vietato", "ul": [
-          "Indossare o usare equipaggiamento finito trovato, ottenuto come bottino o ricevuto come ricompensa",
-          "Mangiare o bere cibo e pozioni trovati",
-          "Usare strumenti trovati"
-        ] }
+        {
+          "kind": "yes",
+          "h": "Solo di tuo crafting",
+          "ul": [
+            "Arma, mano secondaria, elmo, armatura, scarpe",
+            "Borsa e mantello",
+            "Strumenti e equipaggiamento da raccolta",
+            "Cibo e pozioni",
+            "Cavalcature (sezione 6)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Vietato",
+          "ul": [
+            "Indossare o usare equipaggiamento finito trovato, ottenuto come bottino o ricevuto come ricompensa",
+            "Mangiare o bere cibo e pozioni trovati",
+            "Usare strumenti trovati"
+          ]
+        }
       ]
     },
     {
       "h": "4. Bottino e ricompense",
-      "p": ["Qualsiasi bottino del gioco è permesso come materia prima per il tuo crafting: mob e boss, forzieri del mondo aperto, dungeon e nebbie, forzieri di fazione e stagionali, giocatori uccisi, ricompense di missioni e diari."],
+      "p": [
+        "Qualsiasi bottino del gioco è permesso come materia prima per il tuo crafting: mob e boss, forzieri del mondo aperto, dungeon e nebbie, forzieri di fazione e stagionali, giocatori uccisi, ricompense di missioni e diari."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Si può usare direttamente", "ul": [
-          "Risorse: grezze e raffinate, comprese quelle incantate",
-          "Artefatti; rune, anime e reliquie: solo per creare artefatti",
-          "Tomi della conoscenza",
-          "Sacchi d'argento e argento dai mob",
-          "Cuccioli di animali e semi"
-        ] },
-        { "kind": "no", "h": "Solo da smantellare", "ul": [
-          "Equipaggiamento finito, strumenti, borse, mantelli",
-          "Cibo, pozioni e cavalcature finiti"
-        ], "p": "Smantellali per ottenere risorse o argento alla postazione di riparazione." }
+        {
+          "kind": "yes",
+          "h": "Si può usare direttamente",
+          "ul": [
+            "Risorse: grezze e raffinate, comprese quelle incantate",
+            "Artefatti; rune, anime e reliquie: solo per creare artefatti",
+            "Tomi della conoscenza",
+            "Sacchi d'argento e argento dai mob",
+            "Cuccioli di animali e semi"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Solo da smantellare",
+          "ul": [
+            "Equipaggiamento finito, strumenti, borse, mantelli",
+            "Cibo, pozioni e cavalcature finiti"
+          ],
+          "p": "Smantellali per ottenere risorse o argento alla postazione di riparazione."
+        }
       ]
     },
     {
       "h": "5. Crafting e miglioramenti",
-      "p": ["Un oggetto migliora solo se lo crafti di nuovo con materiali migliori, mai potenziandolo da un PNG."],
+      "p": [
+        "Un oggetto migliora solo se lo crafti di nuovo con materiali migliori, mai potenziandolo da un PNG."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Permesso", "ul": [
-          "Qualsiasi postazione di crafting e raffinazione: nelle città, sulle isole, nei rifugi e nelle città della zona nera, comprese quelle di altri giocatori",
-          "Il focus per craftare e raffinare",
-          "Trasformare rune, anime e reliquie in artefatti",
-          "Craftare oggetti incantati con risorse incantate",
-          "Riparare gli oggetti alla postazione di riparazione"
-        ] },
-        { "kind": "no", "h": "Vietato", "ul": [
-          "Alzare la qualità di un oggetto alla postazione di riparazione: la qualità è solo quella ottenuta craftando",
-          "Incantare oggetti finiti con rune, anime e reliquie",
-          "Aumentare l'incantamento delle risorse (per esempio da .0 a .1)"
-        ] }
+        {
+          "kind": "yes",
+          "h": "Permesso",
+          "ul": [
+            "Qualsiasi postazione di crafting e raffinazione: nelle città, sulle isole, nei rifugi e nelle città della zona nera, comprese quelle di altri giocatori",
+            "Il focus per craftare e raffinare",
+            "Trasformare rune, anime e reliquie in artefatti",
+            "Craftare oggetti incantati con risorse incantate",
+            "Riparare gli oggetti alla postazione di riparazione"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Vietato",
+          "ul": [
+            "Alzare la qualità di un oggetto alla postazione di riparazione: la qualità è solo quella ottenuta craftando",
+            "Incantare oggetti finiti con rune, anime e reliquie",
+            "Aumentare l'incantamento delle risorse (per esempio da .0 a .1)"
+          ]
+        }
       ]
     },
     {
       "h": "6. Isola, fattoria e cavalcature",
-      "p": ["All'inizio hai solo il mulo iniziale. Ogni altra cavalcatura va allevata o domata e sellata da te."],
+      "p": [
+        "All'inizio hai solo il mulo iniziale. Ogni altra cavalcatura va allevata o domata e sellata da te."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Permesso", "ul": [
-          "Un'isola e i suoi miglioramenti in argento; fattorie, pascoli e postazioni sull'isola",
-          "Semi e cuccioli da fonti del gioco: la tua fattoria, raccolta, bottino, ricompense",
-          "Il mulo iniziale",
-          "Cavalcature allevate o domate da te: buoi, cavalli, cavalcature selvagge",
-          "Cavalcature di fazione: anche queste le alleni e selli da te"
-        ] },
-        { "kind": "no", "h": "Vietato", "ul": [
-          "Cavalcature stagionali: arrivano già sellate",
-          "Cavalcature finite comprate, regalate o trovate"
-        ] }
+        {
+          "kind": "yes",
+          "h": "Permesso",
+          "ul": [
+            "Un'isola e i suoi miglioramenti in argento; fattorie, pascoli e postazioni sull'isola",
+            "Semi e cuccioli da fonti del gioco: la tua fattoria, raccolta, bottino, ricompense",
+            "Il mulo iniziale",
+            "Cavalcature allevate o domate da te: buoi, cavalli, cavalcature selvagge",
+            "Cavalcature di fazione: anche queste le alleni e selli da te"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Vietato",
+          "ul": [
+            "Cavalcature stagionali: arrivano già sellate",
+            "Cavalcature finite comprate, regalate o trovate (tranne il primo bue di «Primi passi» (First Steps))"
+          ]
+        }
       ]
     },
     {
       "h3": "Perdere il set",
-      "p": ["Nessuna penalità: se perdi il set, ne crafti uno nuovo. Il tuo equipaggiamento lo fai comunque da solo: è questo il senso della sfida."]
+      "p": [
+        "Nessuna penalità: se perdi il set, ne crafti uno nuovo. Il tuo equipaggiamento lo fai comunque da solo: è questo il senso della sfida."
+      ]
     }
   ]
 }

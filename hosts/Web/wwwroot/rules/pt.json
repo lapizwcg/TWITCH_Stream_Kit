@@ -2,8 +2,12 @@
   "code": "pt",
   "name": "Português",
   "pageTitle": "Albion: Solo Leveling — regras",
-  "title": { "pre": "Albion: ", "accent": "Solo Leveling", "post": "" },
-  "lead": "Leve um personagem novo até um set completo de T8 sozinho, sem nunca usar o mercado e sem receber nada de outros jogadores.",
+  "title": {
+    "pre": "Albion: ",
+    "accent": "Solo Leveling",
+    "post": ""
+  },
+  "lead": "Leve um personagem novo até um set completo de T8 sozinho, sem comprar nada no mercado e sem receber nada de outros jogadores.",
   "note": "Este desafio é só por diversão. Ninguém fiscaliza ninguém: qualquer pessoa pode participar, e a honestidade é um desafio pessoal consigo mesmo.",
   "language": "Idioma",
   "footer": "Canal {channel} · Albion Online",
@@ -19,124 +23,217 @@
     {
       "h": "Dois princípios",
       "principles": [
-        ["Origem: só o jogo", "Tudo o que o próprio jogo dá é permitido. Tudo o que vem pelo mercado ou de outros jogadores é proibido."],
-        ["Uso: só o que é seu", "Tudo o que seu personagem veste, come, bebe e monta foi feito por ele mesmo. As melhorias também vêm somente do seu próprio craft."]
+        [
+          "Origem: só o jogo",
+          "Tudo o que o próprio jogo dá é permitido. Tudo o que vem pelo mercado ou de outros jogadores é proibido."
+        ],
+        [
+          "Uso: só o que é seu",
+          "Tudo o que seu personagem veste, come, bebe e monta foi feito por ele mesmo. As melhorias também vêm somente do seu próprio craft."
+        ]
+      ]
+    },
+    {
+      "h": "Casos especiais",
+      "p": [
+        "As missões do tutorial «Primeiros passos» (First Steps) são uma exceção às regras: tudo o que elas pedem para fazer é permitido, mesmo que as regras abaixo proíbam."
+      ],
+      "cols": [
+        {
+          "kind": "yes",
+          "h": "Permitido",
+          "ul": [
+            "Tudo o que as missões de «Primeiros passos» (First Steps) pedem para fazer",
+            "Comprar o seu primeiro boi: faz parte das missões de «Primeiros passos» (First Steps)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Proibido",
+          "ul": [
+            "Journey Back"
+          ]
+        }
       ]
     },
     {
       "h": "1. Mercado e Premium",
-      "p": ["O mercado é totalmente proibido. Você pode comprar ouro, mas não pode trocá-lo de volta por prata: assim não dá para trazer prata de fora."],
+      "p": [
+        "Você não pode comprar nada no mercado. Só pode vender artigos de luxo. Você pode comprar ouro, mas não pode trocá-lo de volta por prata: assim não dá para trazer prata de fora."
+      ],
       "cols": [
-        { "kind": "no", "h": "Proibido", "ul": [
-          "Comprar qualquer coisa no mercado: de ordens de venda ou por ordens de compra",
-          "Vender qualquer coisa no mercado: para ordens de compra de outros jogadores ou por suas próprias ordens de venda",
-          "Vender no Mercado Negro em Caerleon",
-          "Trocar ouro por prata"
-        ] },
-        { "kind": "yes", "h": "Permitido", "ul": [
-          "Comprar ouro com prata ou com dinheiro real",
-          "Transferir prata da sua conta principal, mas só para o Premium: exatamente o preço do Premium em ouro, na cotação do momento da compra, e gastar na hora",
-          "O Premium e todos os seus bônus",
-          "Comprar uma ilha e suas melhorias com prata: isso não é o mercado",
-          "Pagar prata por reparos, taxas de estações e outros serviços do jogo"
-        ] }
+        {
+          "kind": "no",
+          "h": "Proibido",
+          "ul": [
+            "Comprar qualquer coisa no mercado: de ordens de venda ou por ordens de compra",
+            "Vender no mercado qualquer coisa que não seja artigo de luxo: para ordens de compra de outros jogadores ou por suas próprias ordens de venda",
+            "Vender no Mercado Negro em Caerleon",
+            "Trocar ouro por prata"
+          ]
+        },
+        {
+          "kind": "yes",
+          "h": "Permitido",
+          "ul": [
+            "Comprar ouro com prata ou com dinheiro real",
+            "Vender artigos de luxo no mercado",
+            "Transferir prata da sua conta principal, mas só para o Premium: exatamente o preço do Premium em ouro, na cotação do momento da compra, e gastar na hora",
+            "O Premium e todos os seus bônus",
+            "Comprar uma ilha e suas melhorias com prata: isso não é o mercado",
+            "Pagar prata por reparos, taxas de estações e outros serviços do jogo"
+          ]
+        }
       ]
     },
     {
       "h": "2. Outros jogadores",
-      "p": ["Qualquer atividade com outros jogadores é permitida, inclusive conteúdo em massa, e ajuda em combate não tem problema. A única coisa proibida é receber itens de valor dos jogadores, direta ou indiretamente. Guildas e grupos são proibidos porque por eles circulam fama e prata compartilhadas. O loot de jogadores abatidos é loot do jogo e é permitido."],
+      "p": [
+        "Qualquer atividade com outros jogadores é permitida, inclusive conteúdo em massa, e ajuda em combate não tem problema. A única coisa proibida é receber itens de valor dos jogadores, direta ou indiretamente. Guildas e grupos são proibidos porque por eles circulam fama e prata compartilhadas. O loot de jogadores abatidos é loot do jogo e é permitido."
+      ],
       "cols": [
-        { "kind": "no", "h": "Proibido", "ul": [
-          "Negociar com jogadores de qualquer forma",
-          "Aceitar presentes: itens, recursos, prata",
-          "Pegar a prata que os jogadores jogam no chão",
-          "Fazer duelos por prata: é comércio disfarçado",
-          "Usar contas secundárias ou transferir qualquer coisa de outros personagens (exceto prata para o Premium)",
-          "Entrar em uma guilda",
-          "Ficar em um grupo fora de uma cidade"
-        ] },
-        { "kind": "yes", "h": "Permitido", "ul": [
-          "Conversar com os jogadores",
-          "Participar de atividades em massa e do mundo aberto sem entrar em um grupo",
-          "Ajudar os outros e aceitar ajuda em combate",
-          "Lutar contra jogadores e pegar o loot dos que você abater",
-          "Usar as estações de outros jogadores pagando a taxa de uso normal"
-        ] }
+        {
+          "kind": "no",
+          "h": "Proibido",
+          "ul": [
+            "Negociar com jogadores de qualquer forma",
+            "Aceitar presentes: itens, recursos, prata",
+            "Pegar a prata que os jogadores jogam no chão",
+            "Fazer duelos por prata: é comércio disfarçado",
+            "Usar contas secundárias ou transferir qualquer coisa de outros personagens (exceto prata para o Premium)",
+            "Entrar em uma guilda",
+            "Ficar em um grupo fora de uma cidade"
+          ]
+        },
+        {
+          "kind": "yes",
+          "h": "Permitido",
+          "ul": [
+            "Conversar com os jogadores",
+            "Participar de atividades em massa e do mundo aberto sem entrar em um grupo",
+            "Ajudar os outros e aceitar ajuda em combate",
+            "Lutar contra jogadores e pegar o loot dos que você abater",
+            "Usar as estações de outros jogadores pagando a taxa de uso normal"
+          ]
+        }
       ]
     },
     {
       "h": "3. Equipamento e consumíveis",
-      "p": ["Tudo o que seu personagem veste ou usa é craftado por ele mesmo. Você não pode equipar um item pronto que encontrou, mesmo que saiba craftá-lo. O equipamento inicial é craftado pelo próprio jogador no tutorial, então é permitido."],
+      "p": [
+        "Tudo o que seu personagem veste ou usa é craftado por ele mesmo. Você não pode equipar um item pronto que encontrou, mesmo que saiba craftá-lo. O equipamento inicial é craftado pelo próprio jogador no tutorial, então é permitido."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Só do seu próprio craft", "ul": [
-          "Arma, mão secundária, capacete, armadura, botas",
-          "Bolsa e capa",
-          "Ferramentas e equipamento de coleta",
-          "Comida e poções",
-          "Montarias (seção 6)"
-        ] },
-        { "kind": "no", "h": "Proibido", "ul": [
-          "Vestir ou usar equipamento pronto que você encontrou, pegou de loot ou recebeu como recompensa",
-          "Comer ou beber comida e poções que você encontrou",
-          "Usar ferramentas que você encontrou"
-        ] }
+        {
+          "kind": "yes",
+          "h": "Só do seu próprio craft",
+          "ul": [
+            "Arma, mão secundária, capacete, armadura, botas",
+            "Bolsa e capa",
+            "Ferramentas e equipamento de coleta",
+            "Comida e poções",
+            "Montarias (seção 6)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Proibido",
+          "ul": [
+            "Vestir ou usar equipamento pronto que você encontrou, pegou de loot ou recebeu como recompensa",
+            "Comer ou beber comida e poções que você encontrou",
+            "Usar ferramentas que você encontrou"
+          ]
+        }
       ]
     },
     {
       "h": "4. Loot e recompensas",
-      "p": ["Todo loot do jogo é permitido como matéria-prima para o seu próprio craft: mobs e chefes, baús do mundo aberto, masmorras e névoas, baús de facção e de temporada, jogadores abatidos, recompensas de missões e diários."],
+      "p": [
+        "Todo loot do jogo é permitido como matéria-prima para o seu próprio craft: mobs e chefes, baús do mundo aberto, masmorras e névoas, baús de facção e de temporada, jogadores abatidos, recompensas de missões e diários."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Pode usar direto", "ul": [
-          "Recursos: brutos e refinados, inclusive os encantados",
-          "Artefatos; runas, almas e relíquias: só para fazer artefatos",
-          "Tomos de conhecimento",
-          "Bolsas de prata e a prata dos mobs",
-          "Filhotes de animais e sementes"
-        ] },
-        { "kind": "no", "h": "Só para desmanche", "ul": [
-          "Equipamento pronto, ferramentas, bolsas, capas",
-          "Comida, poções e montarias prontas"
-        ], "p": "Desmanche-os para obter recursos ou prata na estação de reparo." }
+        {
+          "kind": "yes",
+          "h": "Pode usar direto",
+          "ul": [
+            "Recursos: brutos e refinados, inclusive os encantados",
+            "Artefatos; runas, almas e relíquias: só para fazer artefatos",
+            "Tomos de conhecimento",
+            "Bolsas de prata e a prata dos mobs",
+            "Filhotes de animais e sementes"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Só para desmanche",
+          "ul": [
+            "Equipamento pronto, ferramentas, bolsas, capas",
+            "Comida, poções e montarias prontas"
+          ],
+          "p": "Desmanche-os para obter recursos ou prata na estação de reparo."
+        }
       ]
     },
     {
       "h": "5. Craft e melhorias",
-      "p": ["Um item só melhora se você craftá-lo de novo com materiais melhores, nunca melhorando-o com um NPC."],
+      "p": [
+        "Um item só melhora se você craftá-lo de novo com materiais melhores, nunca melhorando-o com um NPC."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Permitido", "ul": [
-          "Qualquer estação de craft e refino: em cidades, em ilhas, em esconderijos e em cidades da zona negra, inclusive as de outros jogadores",
-          "Foco para craftar e refinar",
-          "Transformar runas, almas e relíquias em artefatos",
-          "Craftar itens encantados com recursos encantados",
-          "Reparar itens na estação de reparo"
-        ] },
-        { "kind": "no", "h": "Proibido", "ul": [
-          "Subir a qualidade do item na estação de reparo: a qualidade é só a que saiu no craft",
-          "Encantar itens prontos com runas, almas e relíquias",
-          "Aumentar o encantamento dos recursos (por exemplo, de .0 para .1)"
-        ] }
+        {
+          "kind": "yes",
+          "h": "Permitido",
+          "ul": [
+            "Qualquer estação de craft e refino: em cidades, em ilhas, em esconderijos e em cidades da zona negra, inclusive as de outros jogadores",
+            "Foco para craftar e refinar",
+            "Transformar runas, almas e relíquias em artefatos",
+            "Craftar itens encantados com recursos encantados",
+            "Reparar itens na estação de reparo"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Proibido",
+          "ul": [
+            "Subir a qualidade do item na estação de reparo: a qualidade é só a que saiu no craft",
+            "Encantar itens prontos com runas, almas e relíquias",
+            "Aumentar o encantamento dos recursos (por exemplo, de .0 para .1)"
+          ]
+        }
       ]
     },
     {
       "h": "6. Ilha, fazenda e montarias",
-      "p": ["No começo você só tem a mula inicial. Toda outra montaria precisa ser criada ou domada e selada por você mesmo."],
+      "p": [
+        "No começo você só tem a mula inicial. Toda outra montaria precisa ser criada ou domada e selada por você mesmo."
+      ],
       "cols": [
-        { "kind": "yes", "h": "Permitido", "ul": [
-          "Uma ilha e suas melhorias com prata; fazendas, pastos e estações na ilha",
-          "Sementes e filhotes de fontes do jogo: sua própria fazenda, coleta, loot, recompensas",
-          "A mula inicial",
-          "Montarias que você criou ou domou: bois, cavalos, montarias selvagens",
-          "Montarias de facção: elas também são criadas e seladas por você mesmo"
-        ] },
-        { "kind": "no", "h": "Proibido", "ul": [
-          "Montarias de temporada: elas já vêm seladas",
-          "Montarias prontas que foram compradas, ganhas de presente ou encontradas"
-        ] }
+        {
+          "kind": "yes",
+          "h": "Permitido",
+          "ul": [
+            "Uma ilha e suas melhorias com prata; fazendas, pastos e estações na ilha",
+            "Sementes e filhotes de fontes do jogo: sua própria fazenda, coleta, loot, recompensas",
+            "A mula inicial",
+            "Montarias que você criou ou domou: bois, cavalos, montarias selvagens",
+            "Montarias de facção: elas também são criadas e seladas por você mesmo"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Proibido",
+          "ul": [
+            "Montarias de temporada: elas já vêm seladas",
+            "Montarias prontas que foram compradas, ganhas de presente ou encontradas (exceto o primeiro boi de «Primeiros passos» (First Steps))"
+          ]
+        }
       ]
     },
     {
       "h3": "Perdendo seu set",
-      "p": ["Não há penalidade: perdeu o set, craft um novo. Você faz seu próprio equipamento de qualquer jeito; esse é o objetivo do desafio."]
+      "p": [
+        "Não há penalidade: perdeu o set, craft um novo. Você faz seu próprio equipamento de qualquer jeito; esse é o objetivo do desafio."
+      ]
     }
   ]
 }
