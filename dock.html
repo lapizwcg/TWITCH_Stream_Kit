@@ -6,26 +6,26 @@
 <title>Stream Kit — пульт</title>
 <script type="importmap">{
   "imports": {
-    "./_framework/dotnet.js": "./_framework/dotnet.a65p87i44b.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.npt9s6m3yh.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./dock.js": "./dock.il86oxzml7.js",
-    "./kit.js": "./kit.7d3i1q2ljx.js",
+    "./dock.js": "./dock.o9ip7z80px.js",
+    "./kit.js": "./kit.zkknaslj2y.js",
     "./twitch.js": "./twitch.k6qhxleg2c.js",
     "./wcg.js": "./wcg.giu2jrnd8e.js"
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.a65p87i44b.js": "sha256-jnXeC+bucKHhyscgFPrqdghGtnJDG/UU/SQmR9rvVU0=",
-    "./_framework/dotnet.js": "sha256-jnXeC+bucKHhyscgFPrqdghGtnJDG/UU/SQmR9rvVU0=",
+    "./_framework/dotnet.js": "sha256-q5JwZpc2HjlPz0pl9/IMuW5QiX+7ZO4AArMUGCXt8CI=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
+    "./_framework/dotnet.npt9s6m3yh.js": "sha256-q5JwZpc2HjlPz0pl9/IMuW5QiX+7ZO4AArMUGCXt8CI=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./dock.il86oxzml7.js": "sha256-+qKb1OOS5v215l5di0aKLOPORBttf34TJzeutLIahv4=",
-    "./dock.js": "sha256-+qKb1OOS5v215l5di0aKLOPORBttf34TJzeutLIahv4=",
-    "./kit.7d3i1q2ljx.js": "sha256-i4qrWqDNL/xrSKwt7eFeQxS0E0vx5ddLhHGPaqxsIXY=",
-    "./kit.js": "sha256-i4qrWqDNL/xrSKwt7eFeQxS0E0vx5ddLhHGPaqxsIXY=",
+    "./dock.js": "sha256-vHsvSr66t6JNrRobmJXmjedJtWd9cMh0H2rXenipNjo=",
+    "./dock.o9ip7z80px.js": "sha256-vHsvSr66t6JNrRobmJXmjedJtWd9cMh0H2rXenipNjo=",
+    "./kit.js": "sha256-De7fP9xxLF3M4BWK21Rb8/3lVEmyYVI7328u9VZwd3w=",
+    "./kit.zkknaslj2y.js": "sha256-De7fP9xxLF3M4BWK21Rb8/3lVEmyYVI7328u9VZwd3w=",
     "./twitch.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./twitch.k6qhxleg2c.js": "sha256-zLNSY4CczaBns4j1Y81nstGkNo4cQdBf+1/CR0FewXI=",
     "./wcg.giu2jrnd8e.js": "sha256-CApU85p2R5rudYGmC5SrWIUdo4FZIv/4kAeAX52ms04=",
@@ -37,7 +37,7 @@
      которого нет в кэше. Локально (номер не вписан) — ничего не делаем -->
 <script>
 (function () {
-  var CURRENT = '20261102-070353-34e445c';
+  var CURRENT = '20261102-121251-7c1725c';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })
@@ -84,6 +84,7 @@
   <button class="tab" data-tab="frame">Рамка</button>
   <button class="tab" data-tab="challenge">Челлендж</button>
   <button class="tab" data-tab="stats">Статистика</button>
+  <button class="tab" data-tab="chat">Чат</button>
   <button class="tab" data-tab="logo">Логотип</button>
 </nav>
 
@@ -380,6 +381,32 @@
       </div>
     </details>
 
+  </section>
+  <!-- чат Twitch — отдельный источник OBS (chat.html); размер окна чата — размер этого источника в OBS -->
+  <section id="tab-chat" class="pane" hidden>
+    <p class="note">Чат — отдельный источник: в OBS Источники → + → Браузер, адрес ниже. Размер и место окна чата — размер и место
+      этого источника в OBS; входить в Twitch не нужно.</p>
+    <div class="copy"><code id="chatUrl"></code><button class="btn small" id="copyChatUrl" type="button">Копировать</button></div>
+    <label class="field"><div class="label">Канал</div><input id="chatChannel" type="text" maxlength="40" placeholder="lapizwcg"></label>
+    <div class="row2"><button class="btn" id="chatTest" type="button">Тестовое сообщение</button></div>
+
+    <div class="field sizes">
+      <label><span class="label">Размер текста: <b data-chat-val="size"></b></span><input data-chat="size" type="range" min="12" max="60" step="1"></label>
+      <label><span class="label">Фон сообщения: <b data-chat-val="bg"></b></span><input data-chat="bg" type="range" min="0" max="100" step="5"></label>
+      <label><span class="label">Сколько сообщений: <b data-chat-val="max"></b></span><input data-chat="max" type="range" min="3" max="60" step="1"></label>
+      <label><span class="label">Гаснут через: <b data-chat-val="fade"></b></span><input data-chat="fade" type="range" min="0" max="120" step="5"></label>
+    </div>
+    <label class="field"><div class="label">Шрифт</div><select data-chat="font" id="chatFont"></select></label>
+    <label class="field"><div class="label">Цвет текста</div><input data-chat="text" type="color"></label>
+    <div class="row2 type">
+      <label class="field"><div class="label">Новые сообщения</div><select data-chat="from"><option value="bottom">снизу</option><option value="top">сверху</option></select></label>
+      <label class="field"><div class="label">Выравнивание</div><select data-chat="align"><option value="left">влево</option><option value="right">вправо</option></select></label>
+    </div>
+    <label class="row switch"><input type="checkbox" data-chat="colors"><span>Цвета ников</span></label>
+    <label class="row switch"><input type="checkbox" data-chat="badges"><span>Значки: стример, модератор, VIP, саб</span></label>
+    <label class="row switch"><input type="checkbox" data-chat="shadow"><span>Тень у текста</span></label>
+    <label class="row switch"><input type="checkbox" data-chat="hideCommands"><span>Не показывать «!команды»</span></label>
+    <label class="field"><div class="label">Не показывать (боты) — через пробел</div><input data-chat="hideUsers" type="text" maxlength="400"></label>
   </section>
   <!-- логотип канала поверх кадра: например, закрыть мини-карту -->
   <section id="tab-logo" class="pane" hidden>
