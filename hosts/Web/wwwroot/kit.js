@@ -83,6 +83,14 @@ export const DEFAULTS = {
   // {kills} — счётчики челленджа, строки — через перевод строки. stats — статистика, показывают и прячут кнопкой: rows — какие строки
   // (ключи STAT_ROWS) по порядку
   badge: { on: true, pos: 'tl', title: 'СОЛО ЛЕВЕЛИНГ', text: 'ДЕНЬ {day}', pad: 20, sx: 100, sy: 100, inner: 1, look: style() },
+  // чат Twitch — отдельный источник OBS (chat.html): канал; size — кегль (точки при высоте 1080); font — шрифт движка; bg — фон
+  // сообщения (%); text — цвет текста; fade — через сколько секунд сообщение гаснет (0 — не гаснет); max — сколько держать; from —
+  // откуда идут новые (bottom | top); align — left | right; colors — цвета ников; badges — значки «СТРИМЕР» «МОД» «VIP» «САБ»;
+  // hideCommands — не показывать «!команды»; hideUsers — боты и кого не показывать (через пробел или запятую)
+  chat: {
+    channel: 'lapizwcg', size: 26, font: 'noto', bg: 45, text: '#f2f3f5', fade: 0, max: 20, from: 'bottom', align: 'left',
+    colors: true, badges: true, shadow: true, hideCommands: true, hideUsers: 'nightbot streamelements moobot fossabot wizebot',
+  },
   stats: {
     on: false, pos: 'r', title: 'СТАТИСТИКА', rows: ['kills', 'deaths', 'silverEarned', 'silverSpent', 'fameCrafting', 'fameGathering', 'famePve', 'famePvp'],
     pad: 20, sx: 100, sy: 100, inner: 1, look: style(),
@@ -140,7 +148,8 @@ export function saveSettings(s) {
 }
 
 // сообщения: { type: 'settings', settings } | { type: 'alert', kind, name } — настоящее событие канала или тест из дока |
-// { type: 'card', title, text } — карточка окошком анонса со своим заголовком | { type: 'game', game } — счёт сессии AoMarket из дока
+// { type: 'card', title, text } — карточка окошком анонса со своим заголовком | { type: 'chatTest' } — тестовое сообщение в чат
+// (chat.html) | { type: 'game', game } — счёт сессии AoMarket из дока
 // (для статистики в оверлее) |
 // { type: 'goalTest', frac } — тест цели | { type: 'ping' } | { type: 'pong', page }
 export function createBus(onMessage) {

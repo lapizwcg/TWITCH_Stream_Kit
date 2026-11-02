@@ -57,6 +57,7 @@
   <button class="tab" data-tab="frame">Рамка</button>
   <button class="tab" data-tab="challenge">Челлендж</button>
   <button class="tab" data-tab="stats">Статистика</button>
+  <button class="tab" data-tab="chat">Чат</button>
   <button class="tab" data-tab="logo">Логотип</button>
 </nav>
 
@@ -353,6 +354,32 @@
       </div>
     </details>
 
+  </section>
+  <!-- чат Twitch — отдельный источник OBS (chat.html); размер окна чата — размер этого источника в OBS -->
+  <section id="tab-chat" class="pane" hidden>
+    <p class="note">Чат — отдельный источник: в OBS Источники → + → Браузер, адрес ниже. Размер и место окна чата — размер и место
+      этого источника в OBS; входить в Twitch не нужно.</p>
+    <div class="copy"><code id="chatUrl"></code><button class="btn small" id="copyChatUrl" type="button">Копировать</button></div>
+    <label class="field"><div class="label">Канал</div><input id="chatChannel" type="text" maxlength="40" placeholder="lapizwcg"></label>
+    <div class="row2"><button class="btn" id="chatTest" type="button">Тестовое сообщение</button></div>
+
+    <div class="field sizes">
+      <label><span class="label">Размер текста: <b data-chat-val="size"></b></span><input data-chat="size" type="range" min="12" max="60" step="1"></label>
+      <label><span class="label">Фон сообщения: <b data-chat-val="bg"></b></span><input data-chat="bg" type="range" min="0" max="100" step="5"></label>
+      <label><span class="label">Сколько сообщений: <b data-chat-val="max"></b></span><input data-chat="max" type="range" min="3" max="60" step="1"></label>
+      <label><span class="label">Гаснут через: <b data-chat-val="fade"></b></span><input data-chat="fade" type="range" min="0" max="120" step="5"></label>
+    </div>
+    <label class="field"><div class="label">Шрифт</div><select data-chat="font" id="chatFont"></select></label>
+    <label class="field"><div class="label">Цвет текста</div><input data-chat="text" type="color"></label>
+    <div class="row2 type">
+      <label class="field"><div class="label">Новые сообщения</div><select data-chat="from"><option value="bottom">снизу</option><option value="top">сверху</option></select></label>
+      <label class="field"><div class="label">Выравнивание</div><select data-chat="align"><option value="left">влево</option><option value="right">вправо</option></select></label>
+    </div>
+    <label class="row switch"><input type="checkbox" data-chat="colors"><span>Цвета ников</span></label>
+    <label class="row switch"><input type="checkbox" data-chat="badges"><span>Значки: стример, модератор, VIP, саб</span></label>
+    <label class="row switch"><input type="checkbox" data-chat="shadow"><span>Тень у текста</span></label>
+    <label class="row switch"><input type="checkbox" data-chat="hideCommands"><span>Не показывать «!команды»</span></label>
+    <label class="field"><div class="label">Не показывать (боты) — через пробел</div><input data-chat="hideUsers" type="text" maxlength="400"></label>
   </section>
   <!-- логотип канала поверх кадра: например, закрыть мини-карту -->
   <section id="tab-logo" class="pane" hidden>

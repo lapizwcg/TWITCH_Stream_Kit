@@ -77,6 +77,7 @@ function render() {
         : 'Считает Twitch: все фолловеры канала, новые прибавляются сами.';
   renderChallenge();
   renderBoards();
+  renderChat();
 }
 
 // ---------- Twitch ----------
@@ -408,6 +409,41 @@ $('copyUrl').onclick = () => {
   );
 };
 
+// ---------- чат Twitch: отдельный источник OBS (chat.html) ----------
+const chatUrl = new URL('chat.html', location.href).href;
+$('chatUrl').textContent = chatUrl;
+$('copyChatUrl').onclick = () => {
+  navigator.clipboard?.writeText(chatUrl).then(
+    () => ($('copyChatUrl').textContent = 'Скопировано'),
+    () => getSelection().selectAllChildren($('chatUrl')),
+  );
+};
+const CHAT_UNITS = { size: ' px', bg: '%', max: '', fade: ' с' };
+function renderChat() {
+  const c = settings.chat;
+  if (document.activeElement !== $('chatChannel')) $('chatChannel').value = c.channel;
+  for (const el of document.querySelectorAll('[data-chat]')) {
+    if (el === document.activeElement && el.type === 'text') continue;
+    if (el.type === 'checkbox') el.checked = !!c[el.dataset.chat];
+    else el.value = c[el.dataset.chat] ?? '';
+  }
+  for (const b of document.querySelectorAll('[data-chat-val]')) {
+    const k = b.dataset.chatVal;
+    b.textContent = k === 'fade' && !c.fade ? 'не гаснут' : `${c[k]}${CHAT_UNITS[k]}`;
+  }
+}
+$('chatChannel').oninput = (e) => {
+  settings.chat.channel = e.target.value.trim();
+  commit();
+};
+$('tab-chat').addEventListener('input', (e) => {
+  const el = e.target, k = el.dataset.chat;
+  if (!k) return;
+  settings.chat[k] = el.type === 'checkbox' ? el.checked : el.type === 'range' ? +el.value : el.value;
+  commit();
+});
+$('chatTest').onclick = () => bus.send('chatTest');
+
 // ---------- оформление окошек: цвета (только материалы движка), углы, эффект появления ----------
 
 // палитра — цвета материалов по тонам, собрана из движка (KitDesktop --palette); в настройках хранится «материал@тон», не цвет
@@ -442,6 +478,8 @@ fetch('game/data/fonts.json')
       document.head.append(st);
     }
     for (const part of LOOK_PARTS) fillFonts(part);
+    $('chatFont').innerHTML = fonts.map((f) => `<option value="${f.id}">${f.label} · ${f.kind}</option>`).join('');
+    $('chatFont').value = settings.chat.font;
     render();
   })
   .catch(() => {});

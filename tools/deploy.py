@@ -56,7 +56,7 @@ def main():
                 dst = os.path.join(tmp, os.path.relpath(src, OUT))
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 shutil.copy2(src, dst)
-        for page in ('index.html', 'dock.html'):
+        for page in ('index.html', 'dock.html', 'chat.html'):
             p = os.path.join(tmp, page)
             with open(p, encoding='utf-8') as fh:
                 s = fh.read()

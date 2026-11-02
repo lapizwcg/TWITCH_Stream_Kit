@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stream Kit — чат</title>
+<script type="importmap"></script>
+<!-- САМООБНОВЛЕНИЕ — как в index.html: номер версии вписывает tools/deploy.py; отстали — перезагружаемся по новому адресу -->
+<script>
+(function () {
+  var CURRENT = '__KIT_VERSION__';
+  if (CURRENT.indexOf('__') === 0) return;
+  fetch('version.json', { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.v || j.v === CURRENT || sessionStorage.getItem('kit.updatedTo') === j.v) return;
+      sessionStorage.setItem('kit.updatedTo', j.v);
+      var u = new URL(location.href);
+      u.searchParams.set('v', j.v);
+      location.replace(u.href);
+    })
+    .catch(function () {});
+})();
+</script>
+<!-- ЧАТ TWITCH для OBS: отдельный источник «Браузер», размер и место — в самом OBS. Читает чат канала анонимно (Twitch IRC по
+     WebSocket, ник justinfan…) — входить не нужно. Настройки — вкладка «Чат» в доке (localStorage и BroadcastChannel, как у
+     оверлея): канал, размер и шрифт текста, фон, сколько сообщений и сколько секунд держать, цвета ников, значки, скрытые боты -->
+<style>
+html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+#chat { position: absolute; inset: 0; display: flex; flex-direction: column; gap: calc(var(--px) * 0.3); padding: calc(var(--px) * 0.4); box-sizing: border-box;
+  font: var(--px)/1.3 var(--font); color: var(--text); }
+#chat.bottom { justify-content: flex-end; }
+#chat.right { align-items: flex-end; text-align: right; }
+.msg { max-width: 100%; padding: calc(var(--px) * 0.25) calc(var(--px) * 0.5); border-radius: calc(var(--px) * 0.4); background: var(--bg);
+  overflow-wrap: anywhere; transition: opacity .6s, transform .3s; }
+.msg.new { opacity: 0; transform: translateY(calc(var(--px) * 0.5)); }
+.msg.gone { opacity: 0; }
+.shadow .msg { text-shadow: 0 1px 2px #000, 0 0 3px #000; }
+.name { font-weight: 700; }
+.badge { display: inline-block; margin-right: .3em; padding: 0 .3em; border-radius: .25em; font-size: .7em; font-weight: 700; vertical-align: .15em; color: #fff; }
+.b-broadcaster { background: #e91916; } .b-moderator { background: #00ad03; } .b-vip { background: #e005b9; } .b-subscriber { background: #8205b4; }
+.emote { height: 1.6em; vertical-align: -.45em; margin: 0 .05em; }
+.action .text { font-style: italic; }
+</style>
+</head>
+<body>
+<div id="chat"></div>
+<script type="module">
+import { loadSettings, createBus, DEFAULTS } from './kit.js';
+
+const box = document.getElementById('chat');
+let s = { ...DEFAULTS.chat, ...loadSettings().chat };
+let ws = null, joined = '', retry = 0;
+
+// ---------- вид ----------
+const fontLoaded = new Set();
+function look() {
+  const px = (s.size * innerHeight) / 1080;
+  document.body.style.setProperty('--px', `${px}px`);
+  document.body.style.setProperty('--bg', `rgba(10, 12, 18, ${s.bg / 100})`);
+  document.body.style.setProperty('--text', s.text || '#f2f3f5');
+  // шрифты — те же, что у окошек оверлея (TTF движка); подгружаются, только когда выбраны
+  if (s.font && !fontLoaded.has(s.font) && /^[a-z0-9_-]+$/.test(s.font)) {
+    const st = document.createElement('style');
+    st.textContent = `@font-face { font-family: 'kit-${s.font}'; src: url('game/ttf/${s.font}/font.ttf'); }`;
+    document.head.append(st);
+    fontLoaded.add(s.font);
+  }
+  document.body.style.setProperty('--font', `'kit-${s.font || 'noto'}', 'Segoe UI', sans-serif`);
+  box.className = `${s.from === 'top' ? '' : 'bottom'} ${s.align === 'right' ? 'right' : ''}`;
+  document.body.classList.toggle('shadow', !!s.shadow);
+  trim();
+}
+addEventListener('resize', look);
+
+// ник без своего цвета — цвет от имени; слишком тёмный — светлее (на тёмном фоне не читается)
+const PALETTE = ['#ff6b6b', '#4dabf7', '#51cf66', '#fcc419', '#cc5de8', '#ff922b', '#22b8cf', '#f06595', '#94d82d', '#9775fa'];
+function nameColor(name, tag) {
+  let c = tag || PALETTE[[...name].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) % PALETTE.length];
+  const n = parseInt(c.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  if (lum < 0.45) { const k = 0.45 / Math.max(lum, 0.05); c = `rgb(${Math.min(255, r * k + 60)}, ${Math.min(255, g * k + 60)}, ${Math.min(255, b * k + 60)})`; }
+  return c;
+}
+
+// ---------- сообщения ----------
+const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+// эмоуты: тег emotes «id:0-4,6-8/id2:…» — позиции в символах (кодовых точках), не в единицах UTF-16
+function withEmotes(text, emotes) {
+  const chars = [...text];
+  const at = [];
+  for (const part of (emotes || '').split('/').filter(Boolean)) {
+    const [id, ranges] = part.split(':');
+    for (const r of (ranges || '').split(',')) { const [a, b] = r.split('-').map(Number); at.push([a, b, id]); }
+  }
+  at.sort((x, y) => x[0] - y[0]);
+  let out = '', i = 0;
+  for (const [a, b, id] of at) {
+    out += esc(chars.slice(i, a).join(''));
+    out += `<img class="emote" alt="${esc(chars.slice(a, b + 1).join(''))}" src="https://static-cdn.jtvnw.net/emoticons/v2/${encodeURIComponent(id)}/default/dark/2.0">`;
+    i = b + 1;
+  }
+  return out + esc(chars.slice(i).join(''));
+}
+
+const BADGES = { broadcaster: 'СТРИМЕР', moderator: 'МОД', vip: 'VIP', subscriber: 'САБ' };
+function add({ id = '', user = '', name, color, badges = '', text, emotes, action = false }) {
+  const hidden = (s.hideUsers || '').split(/[\s,]+/).map((x) => x.toLowerCase()).filter(Boolean);
+  if (hidden.includes(user.toLowerCase())) return;
+  if (s.hideCommands && text.startsWith('!')) return;
+  const el = document.createElement('div');
+  el.className = `msg new${action ? ' action' : ''}`;
+  el.dataset.id = id;
+  el.dataset.user = user.toLowerCase();
+  const b = s.badges
+    ? badges.split(',').map((x) => x.split('/')[0]).filter((x) => BADGES[x]).map((x) => `<span class="badge b-${x}">${BADGES[x]}</span>`).join('')
+    : '';
+  const col = s.colors ? nameColor(name, color) : 'inherit';
+  el.innerHTML = `${b}<span class="name" style="color:${col}">${esc(name)}</span>${action ? ' ' : ': '}<span class="text">${withEmotes(text, emotes)}</span>`;
+  if (s.from === 'top') box.prepend(el); else box.append(el);
+  // плавное появление: стиль «new» применён (чтение offsetHeight) — снимаем; без ожидания кадра — не застревает прозрачным, когда
+  // страница не рисуется (скрытый источник, фоновая вкладка)
+  void el.offsetHeight;
+  el.classList.remove('new');
+  if (s.fade > 0) setTimeout(() => { el.classList.add('gone'); setTimeout(() => el.remove(), 700); }, s.fade * 1000);
+  trim();
+}
+// не больше max сообщений; старые — с дальнего от новых края; не влезающие по высоте — тоже убираем
+function trim() {
+  const list = [...box.children];
+  const old = s.from === 'top' ? list.slice(s.max) : list.slice(0, Math.max(0, list.length - s.max));
+  old.forEach((el) => el.remove());
+  // вылезло ли самое старое сообщение за край окна (scrollHeight тут не годится: у колонки с отступами он всегда чуть больше)
+  const r = box.getBoundingClientRect();
+  const out = (el) => (s.from === 'top' ? el.getBoundingClientRect().bottom > r.bottom : el.getBoundingClientRect().top < r.top);
+  while (box.children.length > 1 && out(s.from === 'top' ? box.lastElementChild : box.firstElementChild)) (s.from === 'top' ? box.lastElementChild : box.firstElementChild).remove();
+}
+
+// ---------- Twitch IRC, анонимно ----------
+function parse(line) {
+  const m = { tags: {} };
+  let rest = line;
+  if (rest.startsWith('@')) {
+    const sp = rest.indexOf(' ');
+    for (const kv of rest.slice(1, sp).split(';')) {
+      const eq = kv.indexOf('=');
+      m.tags[kv.slice(0, eq)] = kv.slice(eq + 1).replace(/\\s/g, ' ').replace(/\\:/g, ';').replace(/\\\\/g, '\\');
+    }
+    rest = rest.slice(sp + 1);
+  }
+  if (rest.startsWith(':')) { const sp = rest.indexOf(' '); m.prefix = rest.slice(1, sp); rest = rest.slice(sp + 1); }
+  const ti = rest.indexOf(' :');
+  m.trailing = ti >= 0 ? rest.slice(ti + 2) : '';
+  const head = (ti >= 0 ? rest.slice(0, ti) : rest).split(' ');
+  m.command = head[0];
+  m.params = head.slice(1);
+  return m;
+}
+
+function onLine(line) {
+  const m = parse(line);
+  if (m.command === 'PING') return ws.send(`PONG :${m.trailing}`);
+  if (m.command === 'PRIVMSG') {
+    const user = (m.prefix || '').split('!')[0];
+    let text = m.trailing, action = false;
+    // «/me текст»
+    if (text.startsWith('\u0001ACTION ') && text.endsWith('\u0001')) { text = text.slice(8, -1); action = true; }
+    add({ id: m.tags.id, user, name: m.tags['display-name'] || user, color: m.tags.color, badges: m.tags.badges, text, emotes: m.tags.emotes, action });
+  } else if (m.command === 'CLEARMSG') {
+    box.querySelector(`[data-id="${CSS.escape(m.tags['target-msg-id'] || '')}"]`)?.remove();
+  } else if (m.command === 'CLEARCHAT') {
+    // бан или таймаут — сообщения этого зрителя; без имени — весь чат очищен
+    if (m.trailing) box.querySelectorAll(`[data-user="${CSS.escape(m.trailing.toLowerCase())}"]`).forEach((el) => el.remove());
+    else box.replaceChildren();
+  }
+}
+
+function connect() {
+  ws?.close();
+  const channel = (s.channel || '').trim().toLowerCase().replace(/^#/, '');
+  joined = channel;
+  if (!channel) return;
+  const sock = (ws = new WebSocket('wss://irc-ws.chat.twitch.tv:443'));
+  sock.onopen = () => {
+    retry = 0;
+    sock.send('CAP REQ :twitch.tv/tags twitch.tv/commands');
+    sock.send('PASS SCHMOOPIIE');
+    sock.send(`NICK justinfan${Math.floor(10000 + Math.random() * 80000)}`);
+    sock.send(`JOIN #${channel}`);
+  };
+  sock.onmessage = (e) => String(e.data).split('\r\n').filter(Boolean).forEach(onLine);
+  // оборвалось — переподключаемся, всё реже (до 30 с)
+  sock.onclose = () => { if (ws === sock) setTimeout(() => ws === sock && connect(), Math.min(30000, 1000 * 2 ** retry++)); };
+}
+
+// ---------- настройки из дока ----------
+function apply(next) {
+  s = { ...DEFAULTS.chat, ...next };
+  look();
+  if ((s.channel || '').trim().toLowerCase().replace(/^#/, '') !== joined) connect();
+}
+const TEST = [['LapizWCG', 'broadcaster/1', 'Добро пожаловать на стрим! Kappa'], ['котик_в_тапках', 'subscriber/3', 'Привет, какой сегодня день челленджа?'], ['xXSlayerXx', 'moderator/1', 'Правила — !rules'], ['Gamer2007', 'vip/1', 'Без рынка — это жёстко']];
+let testN = 0;
+createBus((msg) => {
+  if (msg.type === 'settings' && msg.settings.chat) apply(msg.settings.chat);
+  // тест из дока: сообщение как настоящее (в «Kappa» — эмоут)
+  else if (msg.type === 'chatTest') {
+    const [name, badges, text] = TEST[testN++ % TEST.length];
+    const k = text.indexOf('Kappa');
+    add({ id: `test-${testN}`, user: name, name, badges, text, emotes: k >= 0 ? `25:${[...text.slice(0, k)].length}-${[...text.slice(0, k)].length + 4}` : '' });
+  }
+});
+apply(s);
+</script>
+</body>
+</html>
