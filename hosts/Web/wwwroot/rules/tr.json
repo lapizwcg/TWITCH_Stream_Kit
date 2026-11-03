@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Yasak",
-          "ul": [
-            "Pazar yerinden herhangi bir şey almak: satış emirlerinden veya alım emirleriyle",
-            "Pazar yerinde lüks eşya dışında herhangi bir şey satmak: başka oyuncuların alım emirlerine veya kendi satış emirlerinle",
-            "Caerleon'daki Kara Pazar'a satmak",
-            "Altını gümüşe çevirmek"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Serbest",
           "ul": [
@@ -81,7 +71,17 @@
             "Ana hesabından gümüş aktarmak, ama sadece Premium için: satın alma anındaki kura göre Premium'un altın fiyatı kadar, hemen harcanmak şartıyla",
             "Premium ve tüm bonusları",
             "Gümüşle ada ve ada geliştirmeleri satın almak — bu pazar yeri sayılmaz",
-            "Tamir, istasyon ücretleri ve diğer oyun hizmetleri için gümüş ödemek"
+            "İstasyon ücretlerini ve diğer oyun hizmetlerini gümüşle ödemek (tamir hariç)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Yasak",
+          "ul": [
+            "Pazar yerinden herhangi bir şey almak: satış emirlerinden veya alım emirleriyle",
+            "Pazar yerinde lüks eşya dışında herhangi bir şey satmak: başka oyuncuların alım emirlerine veya kendi satış emirlerinle",
+            "Caerleon'daki Kara Pazar'a satmak",
+            "Altını gümüşe çevirmek"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Serbest",
+          "ul": [
+            "Oyuncularla konuşmak",
+            "Partiye girmeden büyük çaplı ve açık dünya etkinliklerine katılmak",
+            "Savaşta başkalarına yardım etmek ve yardım kabul etmek",
+            "Oyuncularla savaşmak ve öldürdüklerinin ganimetini almak",
+            "Diğer oyuncuların istasyonlarını normal kullanım ücretiyle kullanmak"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Yasak",
           "ul": [
@@ -103,17 +114,6 @@
             "Yan karakter kullanmak veya diğer karakterlerden bir şey aktarmak (Premium için gümüş hariç)",
             "Bir loncaya katılmak",
             "Şehir dışında partide olmak"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Serbest",
-          "ul": [
-            "Oyuncularla konuşmak",
-            "Partiye girmeden büyük çaplı ve açık dünya etkinliklerine katılmak",
-            "Savaşta başkalarına yardım etmek ve yardım kabul etmek",
-            "Oyuncularla savaşmak ve öldürdüklerinin ganimetini almak",
-            "Diğer oyuncuların istasyonlarını normal kullanım ücretiyle kullanmak"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Her türlü üretim ve işleme istasyonu: şehirlerde, adalarda, sığınaklarda ve kara bölge şehirlerinde, başkalarının istasyonları dahil",
             "Üretim ve işleme için odak",
             "Rünleri, ruhları ve kalıntıları artifakta çevirmek",
-            "Büyülü kaynaklardan büyülü eşya üretmek",
-            "Eşyaları tamir istasyonunda onarmak"
+            "Büyülü kaynaklardan büyülü eşya üretmek"
           ]
         },
         {
           "kind": "no",
           "h": "Yasak",
           "ul": [
+            "Ekipmanı tamir istasyonunda tamir etmek",
             "Eşya kalitesini tamir istasyonunda yükseltmek: kalite sadece üretimde çıkan kalitedir",
             "Hazır eşyaları rünler, ruhlar ve kalıntılarla büyülemek",
             "Kaynakların büyü seviyesini yükseltmek (örneğin .0'dan .1'e)"

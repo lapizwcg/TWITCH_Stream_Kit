@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Zabronione",
-          "ul": [
-            "Kupowanie czegokolwiek na rynku: ze zleceń sprzedaży lub przez zlecenia kupna",
-            "Sprzedawanie na rynku czegokolwiek poza dobrami luksusowymi: na zlecenia kupna innych graczy lub przez własne zlecenia sprzedaży",
-            "Sprzedaż na Czarnym Rynku w Caerleon",
-            "Wymiana złota na srebro"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Dozwolone",
           "ul": [
@@ -81,7 +71,17 @@
             "Przelewanie srebra z głównego konta, ale tylko na Premium: dokładnie cena Premium w złocie według kursu z chwili zakupu, wydana od razu",
             "Premium i wszystkie jego bonusy",
             "Kupno wyspy i jej ulepszeń za srebro — to nie jest rynek",
-            "Płacenie srebrem za naprawy, opłaty za stacje i inne usługi w grze"
+            "Płacić srebrem za opłaty stacji i inne usługi w grze (oprócz napraw)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Zabronione",
+          "ul": [
+            "Kupowanie czegokolwiek na rynku: ze zleceń sprzedaży lub przez zlecenia kupna",
+            "Sprzedawanie na rynku czegokolwiek poza dobrami luksusowymi: na zlecenia kupna innych graczy lub przez własne zlecenia sprzedaży",
+            "Sprzedaż na Czarnym Rynku w Caerleon",
+            "Wymiana złota na srebro"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Dozwolone",
+          "ul": [
+            "Rozmawianie z graczami",
+            "Udział w aktywnościach na dużą skalę i w otwartym świecie bez dołączania do drużyny",
+            "Pomaganie innym i przyjmowanie pomocy w walce",
+            "Walka z graczami i branie łupów z tych, których zabijesz",
+            "Korzystanie ze stacji innych graczy za zwykłą opłatę"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Zabronione",
           "ul": [
@@ -103,17 +114,6 @@
             "Używanie alternatywnych postaci lub przenoszenie czegokolwiek z innych postaci (poza srebrem na Premium)",
             "Dołączanie do gildii",
             "Bycie w drużynie poza miastem"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Dozwolone",
-          "ul": [
-            "Rozmawianie z graczami",
-            "Udział w aktywnościach na dużą skalę i w otwartym świecie bez dołączania do drużyny",
-            "Pomaganie innym i przyjmowanie pomocy w walce",
-            "Walka z graczami i branie łupów z tych, których zabijesz",
-            "Korzystanie ze stacji innych graczy za zwykłą opłatę"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Wszelkie stacje wytwarzania i przetwarzania: w miastach, na wyspach, w kryjówkach i w miastach czarnych stref, także stacje innych graczy",
             "Skupienie przy wytwarzaniu i przetwarzaniu",
             "Przerabianie run, dusz i reliktów na artefakty",
-            "Wytwarzanie zaklętych przedmiotów z zaklętych surowców",
-            "Naprawianie przedmiotów w stacji napraw"
+            "Wytwarzanie zaklętych przedmiotów z zaklętych surowców"
           ]
         },
         {
           "kind": "no",
           "h": "Zabronione",
           "ul": [
+            "Naprawiać ekwipunek w stacji napraw",
             "Podnoszenie jakości przedmiotu w stacji napraw: jakość to tylko to, co dostałeś przy wytwarzaniu",
             "Zaklinanie gotowych przedmiotów runami, duszami i reliktami",
             "Podnoszenie zaklęcia surowców (na przykład z .0 na .1)"

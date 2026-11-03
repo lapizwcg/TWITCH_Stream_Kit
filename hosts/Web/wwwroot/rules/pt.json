@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Proibido",
-          "ul": [
-            "Comprar qualquer coisa no mercado: de ordens de venda ou por ordens de compra",
-            "Vender no mercado qualquer coisa que não seja artigo de luxo: para ordens de compra de outros jogadores ou por suas próprias ordens de venda",
-            "Vender no Mercado Negro em Caerleon",
-            "Trocar ouro por prata"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Permitido",
           "ul": [
@@ -81,7 +71,17 @@
             "Transferir prata da sua conta principal, mas só para o Premium: exatamente o preço do Premium em ouro, na cotação do momento da compra, e gastar na hora",
             "O Premium e todos os seus bônus",
             "Comprar uma ilha e suas melhorias com prata: isso não é o mercado",
-            "Pagar prata por reparos, taxas de estações e outros serviços do jogo"
+            "Pagar com prata as taxas das estações e outros serviços do jogo (exceto reparos)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Proibido",
+          "ul": [
+            "Comprar qualquer coisa no mercado: de ordens de venda ou por ordens de compra",
+            "Vender no mercado qualquer coisa que não seja artigo de luxo: para ordens de compra de outros jogadores ou por suas próprias ordens de venda",
+            "Vender no Mercado Negro em Caerleon",
+            "Trocar ouro por prata"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Permitido",
+          "ul": [
+            "Conversar com os jogadores",
+            "Participar de atividades em massa e do mundo aberto sem entrar em um grupo",
+            "Ajudar os outros e aceitar ajuda em combate",
+            "Lutar contra jogadores e pegar o loot dos que você abater",
+            "Usar as estações de outros jogadores pagando a taxa de uso normal"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Proibido",
           "ul": [
@@ -103,17 +114,6 @@
             "Usar contas secundárias ou transferir qualquer coisa de outros personagens (exceto prata para o Premium)",
             "Entrar em uma guilda",
             "Ficar em um grupo fora de uma cidade"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Permitido",
-          "ul": [
-            "Conversar com os jogadores",
-            "Participar de atividades em massa e do mundo aberto sem entrar em um grupo",
-            "Ajudar os outros e aceitar ajuda em combate",
-            "Lutar contra jogadores e pegar o loot dos que você abater",
-            "Usar as estações de outros jogadores pagando a taxa de uso normal"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Qualquer estação de craft e refino: em cidades, em ilhas, em esconderijos e em cidades da zona negra, inclusive as de outros jogadores",
             "Foco para craftar e refinar",
             "Transformar runas, almas e relíquias em artefatos",
-            "Craftar itens encantados com recursos encantados",
-            "Reparar itens na estação de reparo"
+            "Craftar itens encantados com recursos encantados"
           ]
         },
         {
           "kind": "no",
           "h": "Proibido",
           "ul": [
+            "Reparar equipamentos na estação de reparo",
             "Subir a qualidade do item na estação de reparo: a qualidade é só a que saiu no craft",
             "Encantar itens prontos com runas, almas e relíquias",
             "Aumentar o encantamento dos recursos (por exemplo, de .0 para .1)"
