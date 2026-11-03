@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Prohibido",
-          "ul": [
-            "Comprar cualquier cosa en el mercado: de órdenes de venta o mediante órdenes de compra",
-            "Vender en el mercado cualquier cosa que no sean artículos de lujo: a órdenes de compra de otros jugadores o mediante tus propias órdenes de venta",
-            "Vender en el Mercado Negro de Caerleon",
-            "Cambiar oro por plata"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Permitido",
           "ul": [
@@ -81,7 +71,17 @@
             "Pasar plata desde tu cuenta principal, pero solo para el Premium: exactamente el precio en oro del Premium al cambio del momento de la compra, y gastarla enseguida",
             "El Premium y todas sus bonificaciones",
             "Comprar una isla y sus mejoras con plata: eso no es el mercado",
-            "Pagar plata por reparaciones, tasas de estaciones y otros servicios del juego"
+            "Pagar con plata las tarifas de las estaciones y otros servicios del juego (excepto reparaciones)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Prohibido",
+          "ul": [
+            "Comprar cualquier cosa en el mercado: de órdenes de venta o mediante órdenes de compra",
+            "Vender en el mercado cualquier cosa que no sean artículos de lujo: a órdenes de compra de otros jugadores o mediante tus propias órdenes de venta",
+            "Vender en el Mercado Negro de Caerleon",
+            "Cambiar oro por plata"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Permitido",
+          "ul": [
+            "Hablar con los jugadores",
+            "Participar en actividades masivas y del mundo abierto sin unirte a un grupo",
+            "Ayudar a otros y aceptar ayuda en combate",
+            "Combatir contra jugadores y quedarte con el botín de los que abatas",
+            "Usar las estaciones de otros jugadores pagando la tasa de uso normal"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Prohibido",
           "ul": [
@@ -103,17 +114,6 @@
             "Usar personajes secundarios o traspasar algo desde otros personajes (salvo plata para el Premium)",
             "Unirte a un gremio",
             "Estar en un grupo fuera de una ciudad"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Permitido",
-          "ul": [
-            "Hablar con los jugadores",
-            "Participar en actividades masivas y del mundo abierto sin unirte a un grupo",
-            "Ayudar a otros y aceptar ayuda en combate",
-            "Combatir contra jugadores y quedarte con el botín de los que abatas",
-            "Usar las estaciones de otros jugadores pagando la tasa de uso normal"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Cualquier estación de crafteo y refinado: en ciudades, en islas, en guaridas y en ciudades de la zona negra, incluidas las de otros jugadores",
             "Enfoque para craftear y refinar",
             "Convertir runas, almas y reliquias en artefactos",
-            "Craftear objetos encantados con recursos encantados",
-            "Reparar objetos en la estación de reparación"
+            "Craftear objetos encantados con recursos encantados"
           ]
         },
         {
           "kind": "no",
           "h": "Prohibido",
           "ul": [
+            "Reparar el equipo en la estación de reparación",
             "Subir la calidad de un objeto en la estación de reparación: la calidad es solo la que obtuviste al craftearlo",
             "Encantar objetos terminados con runas, almas y reliquias",
             "Subir el encantamiento de los recursos (por ejemplo, de .0 a .1)"

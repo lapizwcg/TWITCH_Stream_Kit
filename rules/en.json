@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Forbidden",
-          "ul": [
-            "Buying anything on the marketplace: from sell orders or through buy orders",
-            "Selling anything except luxury goods on the marketplace: to other players' buy orders or through your own sell orders",
-            "Selling to the Black Market in Caerleon",
-            "Exchanging gold for silver"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Allowed",
           "ul": [
@@ -81,7 +71,17 @@
             "Transferring silver from your main account, but only for Premium: exactly the gold price of Premium at the exchange rate at the time of purchase, spent right away",
             "Premium and all of its bonuses",
             "Buying an island and its upgrades with silver — that is not the marketplace",
-            "Paying silver for repairs, station fees and other game services"
+            "Paying silver for station fees and other game services (except repairs)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Forbidden",
+          "ul": [
+            "Buying anything on the marketplace: from sell orders or through buy orders",
+            "Selling anything except luxury goods on the marketplace: to other players' buy orders or through your own sell orders",
+            "Selling to the Black Market in Caerleon",
+            "Exchanging gold for silver"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Allowed",
+          "ul": [
+            "Talking to players",
+            "Taking part in large-scale and open-world activities without joining a party",
+            "Helping others and accepting help in combat",
+            "Fighting players and taking loot from the ones you kill",
+            "Using other players' stations for the normal usage fee"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Forbidden",
           "ul": [
@@ -103,17 +114,6 @@
             "Using alts or transferring anything from other characters (except silver for Premium)",
             "Joining a guild",
             "Being in a party outside of a city"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Allowed",
-          "ul": [
-            "Talking to players",
-            "Taking part in large-scale and open-world activities without joining a party",
-            "Helping others and accepting help in combat",
-            "Fighting players and taking loot from the ones you kill",
-            "Using other players' stations for the normal usage fee"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Any crafting and refining stations: in cities, on islands, in hideouts and in black zone cities, including other players' stations",
             "Focus for crafting and refining",
             "Turning runes, souls and relics into artifacts",
-            "Crafting enchanted items from enchanted resources",
-            "Repairing items at the repair station"
+            "Crafting enchanted items from enchanted resources"
           ]
         },
         {
           "kind": "no",
           "h": "Forbidden",
           "ul": [
+            "Repairing equipment at the repair station",
             "Raising item quality at the repair station: quality is only what you got when crafting",
             "Enchanting finished items with runes, souls and relics",
             "Upgrading the enchantment of resources (for example, from .0 to .1)"

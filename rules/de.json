@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Verboten",
-          "ul": [
-            "Etwas auf dem Marktplatz kaufen: über Verkaufsaufträge oder über Kaufaufträge",
-            "Auf dem Marktplatz alles außer Luxusgütern verkaufen: an Kaufaufträge anderer Spieler oder über eigene Verkaufsaufträge",
-            "An den Schwarzmarkt in Caerleon verkaufen",
-            "Gold in Silber tauschen"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Erlaubt",
           "ul": [
@@ -81,7 +71,17 @@
             "Silber vom Hauptaccount übertragen, aber nur für Premium: genau der Goldpreis von Premium zum Wechselkurs beim Kauf, sofort ausgegeben",
             "Premium und alle seine Boni",
             "Eine Insel und ihre Upgrades mit Silber kaufen — das ist nicht der Marktplatz",
-            "Silber für Reparaturen, Stationsgebühren und andere Spieldienste zahlen"
+            "Silber für Stationsgebühren und andere Spieldienste zahlen (außer Reparaturen)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Verboten",
+          "ul": [
+            "Etwas auf dem Marktplatz kaufen: über Verkaufsaufträge oder über Kaufaufträge",
+            "Auf dem Marktplatz alles außer Luxusgütern verkaufen: an Kaufaufträge anderer Spieler oder über eigene Verkaufsaufträge",
+            "An den Schwarzmarkt in Caerleon verkaufen",
+            "Gold in Silber tauschen"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Erlaubt",
+          "ul": [
+            "Mit Spielern reden",
+            "An Großinhalten und Aktivitäten in der offenen Welt teilnehmen, ohne einer Gruppe beizutreten",
+            "Anderen helfen und im Kampf Hilfe annehmen",
+            "Gegen Spieler kämpfen und die Beute der Getöteten nehmen",
+            "Stationen anderer Spieler gegen die normale Nutzungsgebühr verwenden"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Verboten",
           "ul": [
@@ -103,17 +114,6 @@
             "Zweitcharaktere nutzen oder irgendetwas von anderen Charakteren übertragen (außer Silber für Premium)",
             "Einer Gilde beitreten",
             "Außerhalb einer Stadt in einer Gruppe sein"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Erlaubt",
-          "ul": [
-            "Mit Spielern reden",
-            "An Großinhalten und Aktivitäten in der offenen Welt teilnehmen, ohne einer Gruppe beizutreten",
-            "Anderen helfen und im Kampf Hilfe annehmen",
-            "Gegen Spieler kämpfen und die Beute der Getöteten nehmen",
-            "Stationen anderer Spieler gegen die normale Nutzungsgebühr verwenden"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Alle Herstellungs- und Veredelungsstationen: in Städten, auf Inseln, in Verstecken und in Städten der schwarzen Zonen, auch Stationen anderer Spieler",
             "Fokus für Herstellung und Veredelung",
             "Runen, Seelen und Relikte zu Artefakten verarbeiten",
-            "Verzauberte Gegenstände aus verzauberten Ressourcen herstellen",
-            "Gegenstände an der Reparaturstation reparieren"
+            "Verzauberte Gegenstände aus verzauberten Ressourcen herstellen"
           ]
         },
         {
           "kind": "no",
           "h": "Verboten",
           "ul": [
+            "Ausrüstung an der Reparaturstation reparieren",
             "Die Qualität eines Gegenstands an der Reparaturstation erhöhen: Qualität ist nur das, was du beim Herstellen bekommen hast",
             "Fertige Gegenstände mit Runen, Seelen und Relikten verzaubern",
             "Die Verzauberung von Ressourcen erhöhen (zum Beispiel von .0 auf .1)"

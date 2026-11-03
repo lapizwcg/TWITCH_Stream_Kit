@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Interdit",
-          "ul": [
-            "Acheter quoi que ce soit sur le marché : via des ordres de vente ou des ordres d'achat",
-            "Vendre sur le marché autre chose que des produits de luxe : aux ordres d'achat des autres joueurs ou via vos propres ordres de vente",
-            "Vendre au marché noir de Caerleon",
-            "Échanger de l'or contre de l'argent"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Autorisé",
           "ul": [
@@ -81,7 +71,17 @@
             "Transférer de l'argent depuis votre compte principal, mais uniquement pour le Premium : exactement le prix en or du Premium au taux de change du moment, dépensé aussitôt",
             "Le Premium et tous ses bonus",
             "Acheter une île et ses améliorations avec de l'argent — ce n'est pas le marché",
-            "Payer en argent les réparations, les frais de station et les autres services du jeu"
+            "Payer en argent les taxes des stations et les autres services du jeu (sauf les réparations)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Interdit",
+          "ul": [
+            "Acheter quoi que ce soit sur le marché : via des ordres de vente ou des ordres d'achat",
+            "Vendre sur le marché autre chose que des produits de luxe : aux ordres d'achat des autres joueurs ou via vos propres ordres de vente",
+            "Vendre au marché noir de Caerleon",
+            "Échanger de l'or contre de l'argent"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Autorisé",
+          "ul": [
+            "Parler aux joueurs",
+            "Participer à des activités à grande échelle et en monde ouvert sans rejoindre de groupe",
+            "Aider les autres et accepter de l'aide au combat",
+            "Combattre des joueurs et prendre le butin de ceux que vous tuez",
+            "Utiliser les stations des autres joueurs contre les frais d'utilisation normaux"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Interdit",
           "ul": [
@@ -103,17 +114,6 @@
             "Utiliser des personnages secondaires ou transférer quoi que ce soit depuis d'autres personnages (sauf l'argent pour le Premium)",
             "Rejoindre une guilde",
             "Être en groupe en dehors d'une ville"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Autorisé",
-          "ul": [
-            "Parler aux joueurs",
-            "Participer à des activités à grande échelle et en monde ouvert sans rejoindre de groupe",
-            "Aider les autres et accepter de l'aide au combat",
-            "Combattre des joueurs et prendre le butin de ceux que vous tuez",
-            "Utiliser les stations des autres joueurs contre les frais d'utilisation normaux"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Toutes les stations de fabrication et de raffinage : en ville, sur les îles, dans les repaires et dans les villes des zones noires, y compris les stations des autres joueurs",
             "La concentration pour la fabrication et le raffinage",
             "Transformer des runes, des âmes et des reliques en artefacts",
-            "Fabriquer des objets enchantés à partir de ressources enchantées",
-            "Réparer les objets à la station de réparation"
+            "Fabriquer des objets enchantés à partir de ressources enchantées"
           ]
         },
         {
           "kind": "no",
           "h": "Interdit",
           "ul": [
+            "Réparer l'équipement à la station de réparation",
             "Augmenter la qualité d'un objet à la station de réparation : la qualité est uniquement celle obtenue à la fabrication",
             "Enchanter des objets finis avec des runes, des âmes et des reliques",
             "Améliorer l'enchantement des ressources (par exemple, de .0 à .1)"

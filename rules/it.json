@@ -63,16 +63,6 @@
       ],
       "cols": [
         {
-          "kind": "no",
-          "h": "Vietato",
-          "ul": [
-            "Comprare qualsiasi cosa sul mercato: dagli ordini di vendita o tramite ordini di acquisto",
-            "Vendere sul mercato qualsiasi cosa tranne i beni di lusso: agli ordini di acquisto di altri giocatori o tramite i tuoi ordini di vendita",
-            "Vendere al Mercato Nero di Caerleon",
-            "Cambiare oro in argento"
-          ]
-        },
-        {
           "kind": "yes",
           "h": "Permesso",
           "ul": [
@@ -81,7 +71,17 @@
             "Trasferire argento dal tuo account principale, ma solo per il Premium: esattamente il prezzo in oro del Premium al cambio del momento dell'acquisto, da spendere subito",
             "Il Premium e tutti i suoi bonus",
             "Comprare un'isola e i suoi miglioramenti con l'argento: non è il mercato",
-            "Pagare in argento riparazioni, tasse delle postazioni e altri servizi del gioco"
+            "Pagare in argento le tasse delle postazioni e gli altri servizi di gioco (tranne le riparazioni)"
+          ]
+        },
+        {
+          "kind": "no",
+          "h": "Vietato",
+          "ul": [
+            "Comprare qualsiasi cosa sul mercato: dagli ordini di vendita o tramite ordini di acquisto",
+            "Vendere sul mercato qualsiasi cosa tranne i beni di lusso: agli ordini di acquisto di altri giocatori o tramite i tuoi ordini di vendita",
+            "Vendere al Mercato Nero di Caerleon",
+            "Cambiare oro in argento"
           ]
         }
       ]
@@ -93,6 +93,17 @@
       ],
       "cols": [
         {
+          "kind": "yes",
+          "h": "Permesso",
+          "ul": [
+            "Parlare con i giocatori",
+            "Partecipare ad attività di massa e del mondo aperto senza entrare in un gruppo",
+            "Aiutare gli altri e accettare aiuto in combattimento",
+            "Combattere contro i giocatori e prendere il bottino di quelli che uccidi",
+            "Usare le postazioni di altri giocatori pagando la normale tassa d'uso"
+          ]
+        },
+        {
           "kind": "no",
           "h": "Vietato",
           "ul": [
@@ -103,17 +114,6 @@
             "Usare personaggi secondari o trasferire qualcosa da altri personaggi (tranne argento per il Premium)",
             "Entrare in una gilda",
             "Stare in un gruppo fuori da una città"
-          ]
-        },
-        {
-          "kind": "yes",
-          "h": "Permesso",
-          "ul": [
-            "Parlare con i giocatori",
-            "Partecipare ad attività di massa e del mondo aperto senza entrare in un gruppo",
-            "Aiutare gli altri e accettare aiuto in combattimento",
-            "Combattere contro i giocatori e prendere il bottino di quelli che uccidi",
-            "Usare le postazioni di altri giocatori pagando la normale tassa d'uso"
           ]
         }
       ]
@@ -187,14 +187,14 @@
             "Qualsiasi postazione di crafting e raffinazione: nelle città, sulle isole, nei rifugi e nelle città della zona nera, comprese quelle di altri giocatori",
             "Il focus per craftare e raffinare",
             "Trasformare rune, anime e reliquie in artefatti",
-            "Craftare oggetti incantati con risorse incantate",
-            "Riparare gli oggetti alla postazione di riparazione"
+            "Craftare oggetti incantati con risorse incantate"
           ]
         },
         {
           "kind": "no",
           "h": "Vietato",
           "ul": [
+            "Riparare l'equipaggiamento alla postazione di riparazione",
             "Alzare la qualità di un oggetto alla postazione di riparazione: la qualità è solo quella ottenuta craftando",
             "Incantare oggetti finiti con rune, anime e reliquie",
             "Aumentare l'incantamento delle risorse (per esempio da .0 a .1)"
