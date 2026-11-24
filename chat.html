@@ -6,9 +6,9 @@
 <title>Stream Kit — чат</title>
 <script type="importmap">{
   "imports": {
+    "./_framework/dotnet.js": "./_framework/dotnet.f8ppuh1jrg.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.2hapm3virf.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.azrfhwb804.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.ycmqh2naek.js",
     "./dock.js": "./dock.0de4qz0wk4.js",
     "./kit.js": "./kit.ewyn9hlvma.js",
     "./twitch.js": "./twitch.7kdl5ouyhn.js",
@@ -16,12 +16,12 @@
   },
   "scopes": {},
   "integrity": {
-    "./_framework/dotnet.js": "sha256-stzy6pAteFBelpTpGaHMgNUvl/YztvwODcX02A3F+fY=",
+    "./_framework/dotnet.f8ppuh1jrg.js": "sha256-ASJfKHqGGJy7fuYz/rbjp4dMNwBqc+IJmpjMDkPTM+g=",
+    "./_framework/dotnet.js": "sha256-ASJfKHqGGJy7fuYz/rbjp4dMNwBqc+IJmpjMDkPTM+g=",
     "./_framework/dotnet.native.2hapm3virf.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.native.js": "sha256-usyfTg6hDZOQxoXlVCEUrACh7J61CVKR9X2/Vmw1Nxw=",
     "./_framework/dotnet.runtime.azrfhwb804.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
     "./_framework/dotnet.runtime.js": "sha256-muN076HgyOCoAaid7zD7a2/GN7aQ7tmK/BzdnKgw78g=",
-    "./_framework/dotnet.ycmqh2naek.js": "sha256-stzy6pAteFBelpTpGaHMgNUvl/YztvwODcX02A3F+fY=",
     "./dock.0de4qz0wk4.js": "sha256-TBhSnj1Lksu1Drargi9mg8CToA2dLfUxQ44ZcYtz9k8=",
     "./dock.js": "sha256-TBhSnj1Lksu1Drargi9mg8CToA2dLfUxQ44ZcYtz9k8=",
     "./kit.ewyn9hlvma.js": "sha256-bq1QwVTuR3J2wSyI2JYBp/X40KFWINlMPWPabJXG88g=",
@@ -35,7 +35,7 @@
 <!-- САМООБНОВЛЕНИЕ — как в index.html: номер версии вписывает tools/deploy.py; отстали — перезагружаемся по новому адресу -->
 <script>
 (function () {
-  var CURRENT = '20261124-183732-89c1384';
+  var CURRENT = '20261124-184655-eb3758f';
   if (CURRENT.indexOf('__') === 0) return;
   fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.json(); })

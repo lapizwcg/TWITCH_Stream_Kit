@@ -7,7 +7,7 @@
     "accent": "Solo Leveling",
     "post": ""
   },
-  "lead": "Menez un tout nouveau personnage jusqu'à un set complet de tier 8 en ne portant que ce que vous avez fabriqué vous-même avec des ressources obtenues.",
+  "lead": "Atteignez un set complet de tier 8 en ne portant que ce que vous avez fabriqué vous-même avec des ressources obtenues.",
   "note": "Ce challenge est juste pour le plaisir. Personne ne vérifie personne : tout le monde peut participer, et l'honnêteté est un défi personnel envers soi-même.",
   "language": "Langue",
   "footer": "Chaîne {channel} · Albion Online",
@@ -15,7 +15,7 @@
     {
       "h": "Comment participer",
       "ul": [
-        "Créez un nouveau personnage. Commencer avec un personnage déjà monté en niveau est interdit.",
+        "Vous pouvez commencer avec n'importe quel personnage : nouveau ou déjà développé.",
         "Jouez selon les règles ci-dessous.",
         "Partagez votre progression dans le chat {twitch}."
       ]

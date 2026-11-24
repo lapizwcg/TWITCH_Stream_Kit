@@ -7,7 +7,7 @@
     "accent": "Solo Leveling",
     "post": ""
   },
-  "lead": "Porta un personaggio nuovo fino a un set completo T8 indossando solo ciò che hai craftato tu stesso con risorse ottenute da te.",
+  "lead": "Arriva a un set completo T8 indossando solo ciò che hai craftato tu stesso con risorse ottenute da te.",
   "note": "Questa sfida è solo per divertimento. Nessuno controlla nessuno: chiunque può partecipare, e l'onestà è una sfida personale con te stesso.",
   "language": "Lingua",
   "footer": "Canale {channel} · Albion Online",
@@ -15,7 +15,7 @@
     {
       "h": "Come partecipare",
       "ul": [
-        "Crea un personaggio nuovo. Non è permesso iniziare con un personaggio già potenziato.",
+        "Puoi iniziare con qualsiasi personaggio: nuovo o già sviluppato.",
         "Gioca secondo le regole qui sotto.",
         "Condividi i tuoi progressi nella chat di {twitch}."
       ]

@@ -7,7 +7,7 @@
     "accent": "Solo Leveling",
     "post": ""
   },
-  "lead": "Doprowadź zupełnie nową postać do pełnego zestawu Tier 8, nosząc tylko to, co wytworzysz samodzielnie ze zdobytych surowców.",
+  "lead": "Zdobądź pełny zestaw Tier 8, nosząc tylko to, co wytworzysz samodzielnie ze zdobytych surowców.",
   "note": "Ten challenge jest tylko dla zabawy. Nikt nikogo nie sprawdza: każdy może dołączyć, a uczciwość to osobiste wyzwanie wobec samego siebie.",
   "language": "Język",
   "footer": "Kanał {channel} · Albion Online",
@@ -15,7 +15,7 @@
     {
       "h": "Jak dołączyć",
       "ul": [
-        "Stwórz nową postać. Start z już wyleveloną postacią jest niedozwolony.",
+        "Możesz zacząć dowolną postacią: nową lub już rozwiniętą.",
         "Graj według zasad poniżej.",
         "Dziel się postępami na czacie {twitch}."
       ]

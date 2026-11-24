@@ -7,7 +7,7 @@
     "accent": "Solo Leveling",
     "post": ""
   },
-  "lead": "Leve um personagem novo até um set completo de T8 usando apenas o que você mesmo craftou com recursos que obteve.",
+  "lead": "Chegue a um set completo de T8 usando apenas o que você mesmo craftou com recursos que obteve.",
   "note": "Este desafio é só por diversão. Ninguém fiscaliza ninguém: qualquer pessoa pode participar, e a honestidade é um desafio pessoal consigo mesmo.",
   "language": "Idioma",
   "footer": "Canal {channel} · Albion Online",
@@ -15,7 +15,7 @@
     {
       "h": "Como participar",
       "ul": [
-        "Crie um personagem novo. Não vale começar com um personagem já evoluído.",
+        "Você pode começar com qualquer personagem: novo ou já evoluído.",
         "Jogue pelas regras abaixo.",
         "Compartilhe seu progresso no chat de {twitch}."
       ]

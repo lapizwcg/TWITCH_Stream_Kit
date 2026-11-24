@@ -7,7 +7,7 @@
     "accent": "Solo Leveling",
     "post": ""
   },
-  "lead": "Yepyeni bir karakterle başla ve yalnızca elde ettiğin kaynaklardan kendi ürettiklerini giyerek tam bir Tier 8 sete ulaş.",
+  "lead": "Yalnızca elde ettiğin kaynaklardan kendi ürettiklerini giyerek tam bir Tier 8 sete ulaş.",
   "note": "Bu challenge sadece eğlence için. Kimse kimseyi denetlemez: herkes katılabilir, dürüstlük herkesin kendine karşı kişisel bir meydan okumasıdır.",
   "language": "Dil",
   "footer": "Kanal {channel} · Albion Online",
@@ -15,7 +15,7 @@
     {
       "h": "Nasıl katılırsın",
       "ul": [
-        "Yeni bir karakter oluştur. Önceden geliştirilmiş bir karakterle başlamak yasak.",
+        "İstediğin karakterle başlayabilirsin: yeni ya da zaten gelişmiş.",
         "Aşağıdaki kurallara göre oyna.",
         "İlerlemeni {twitch} sohbetinde paylaş."
       ]

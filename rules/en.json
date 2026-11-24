@@ -7,7 +7,7 @@
     "accent": "Solo Leveling",
     "post": ""
   },
-  "lead": "Take a brand-new character all the way to a full Tier 8 set, wearing only what you crafted yourself from resources you obtained.",
+  "lead": "Reach a full Tier 8 set, wearing only what you crafted yourself from resources you obtained.",
   "note": "This challenge is just for fun. Nobody checks anyone: anyone can join, and honesty is a personal challenge to yourself.",
   "language": "Language",
   "footer": "Channel {channel} · Albion Online",
@@ -15,7 +15,7 @@
     {
       "h": "How to join",
       "ul": [
-        "Create a new character. Starting with an already leveled character is not allowed.",
+        "Start with any character: a new one or an already leveled one.",
         "Play by the rules below.",
         "Share your progress in the {twitch} chat."
       ]
