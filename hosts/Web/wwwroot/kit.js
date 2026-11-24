@@ -45,7 +45,9 @@ export function frameInset(f) {
 export function announceItem(name = 'Анонс', output = 'overlay', messages = 'Подписывайтесь на канал!', every = 15) {
   return { id: crypto.randomUUID(), name, on: false, output, messages, every, title: '' };
 }
-const RULES_MSG = 'Челлендж «Соло Левелинг без рынка»: без рынка, без помощи игроков, всё своим крафтом. Правила: https://lapizwcg.github.io/TWITCH_Stream_Kit/rules.html';
+const RULES_MSG = 'Челлендж «Соло Левелинг»: ношу только то, что сам скрафтил из добытых ресурсов. Правила: https://lapizwcg.github.io/TWITCH_Stream_Kit/rules.html';
+// прежний текст анонса правил: сохранённый в доке без правок — меняется на новый
+const OLD_RULES_MSG = 'Челлендж «Соло Левелинг без рынка»: без рынка, без помощи игроков, всё своим крафтом. Правила: https://lapizwcg.github.io/TWITCH_Stream_Kit/rules.html';
 
 export const DEFAULTS = {
   // pad — отступ от края экрана (точки при высоте 1080), sx/sy — размер по X и по Y (проценты), inner — внутренний отступ
@@ -72,7 +74,7 @@ export const DEFAULTS = {
     look: { bg: 'obsidian@0.12', border: 'citrine@0.75' },
   },
   goal: { on: true, pos: 'b', title: 'ЦЕЛЬ: ФОЛЛОВЕРЫ', source: 'followers', current: 0, target: 100, style: 'ltr', pad: 50, sx: 100, sy: 100, inner: 1, look: style() },
-  // челлендж «Альбион: Соло Левелинг без рынка» (правила — rules.html): счётчики дня, смертей и убийств
+  // челлендж «Альбион: Соло Левелинг» (правила — rules.html): счётчики дня, смертей и убийств
   challenge: {
     day: 1, deaths: 0, kills: 0,
     // статистика из игры: AoMarket --stats-port (AO-Auras) на этом компьютере; смерти и убийства прибавляются к счётчикам сами,
@@ -112,6 +114,7 @@ export function loadSettings() {
     an.items = [{ ...announceItem('Анонс', old.output, old.messages, old.every), on: !!old.on }, announceItem('Правила челленджа', 'chat', RULES_MSG, 20)];
   }
   for (const k of ['on', 'output', 'messages', 'every']) delete an[k];
+  an.items = an.items.map((a) => (a.messages === OLD_RULES_MSG ? { ...a, messages: RULES_MSG } : a));
   // ранги, достижения, нарушения и журнал челленджа убраны — их поля из прежних версий не храним
   for (const k of ['rank', 'ranks', 'ranksVer', 'done', 'goal', 'rankTitle', 'log', 'cards', 'achTitle', 'vioTitle']) delete out.challenge[k];
   return out;

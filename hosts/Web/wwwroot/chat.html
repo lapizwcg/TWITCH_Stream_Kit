@@ -199,7 +199,7 @@ function apply(next) {
   look();
   if ((s.channel || '').trim().toLowerCase().replace(/^#/, '') !== joined) connect();
 }
-const TEST = [['LapizWCG', 'broadcaster/1', 'Добро пожаловать на стрим! Kappa'], ['котик_в_тапках', 'subscriber/3', 'Привет, какой сегодня день челленджа?'], ['xXSlayerXx', 'moderator/1', 'Правила — !rules'], ['Gamer2007', 'vip/1', 'Без рынка — это жёстко']];
+const TEST = [['LapizWCG', 'broadcaster/1', 'Добро пожаловать на стрим! Kappa'], ['котик_в_тапках', 'subscriber/3', 'Привет, какой сегодня день челленджа?'], ['xXSlayerXx', 'moderator/1', 'Правила — !rules'], ['Gamer2007', 'vip/1', 'Всё своим крафтом — это жёстко']];
 let testN = 0;
 createBus((msg) => {
   if (msg.type === 'settings' && msg.settings.chat) apply(msg.settings.chat);
