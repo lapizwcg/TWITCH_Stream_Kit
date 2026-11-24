@@ -7,7 +7,7 @@
     "accent": "Solo Leveling",
     "post": ""
   },
-  "lead": "Bring einen komplett neuen Charakter bis zum vollen Tier-8-Set und trage dabei nur, was du selbst aus erbeuteten oder gesammelten Ressourcen hergestellt hast.",
+  "lead": "Erreiche ein volles Tier-8-Set und trage dabei nur, was du selbst aus erbeuteten oder gesammelten Ressourcen hergestellt hast.",
   "note": "Diese Challenge ist nur zum Spaß. Niemand kontrolliert jemanden: Jeder kann mitmachen, und Ehrlichkeit ist eine persönliche Herausforderung an dich selbst.",
   "language": "Sprache",
   "footer": "Kanal {channel} · Albion Online",
@@ -15,7 +15,7 @@
     {
       "h": "So machst du mit",
       "ul": [
-        "Erstelle einen neuen Charakter. Mit einem bereits hochgelevelten Charakter zu starten ist nicht erlaubt.",
+        "Du kannst mit jedem Charakter starten: neu oder bereits hochgelevelt.",
         "Spiele nach den Regeln unten.",
         "Teile deinen Fortschritt im {twitch}-Chat."
       ]
